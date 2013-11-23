@@ -1,0 +1,18 @@
+[user]
+	name = yk_marble
+	email = milkcocoapple@gmail.com
+[core]
+	pager = lv -Ou8 -c
+	editor = /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n
+	excludesfile = ~/.gitignore
+[alias]
+	st = status
+	df = diff
+	cm = commit -v
+	mg = marge
+	br = branch
+	graph = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
+	gr = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
+[color]
+	ui = true
+	diff = true

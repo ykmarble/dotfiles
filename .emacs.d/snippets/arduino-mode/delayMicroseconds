@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: delayMicroseconds()
+# key: delayMicro
+# --
+delayMicroseconds(${1:us});$0

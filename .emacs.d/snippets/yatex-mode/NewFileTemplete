@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: NewFileTemplete
+# key: NewFile
+# --
+\documentclass[a4j,12pt]{jsarticle}
+\usepackage{amsmath}
+
+\title{$1}
+\author{201311357 黒川佑郁}
+\date{}
+
+\begin{document}
+\maketitle
+
+$0
+
+\end{document}

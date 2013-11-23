@@ -1,0 +1,10 @@
+#environment settings
+export SHELL=/bin/zsh
+export PATH=/usr/local/bin:$PATH:$HOME/bin
+export EDITOR=emacsclient
+export LANG=jp_JP.UTF-8
+export LC_ALL=ja_JP.UTF-8
+export XMODIFIERS=@im=uim
+export GTK_IM_MODULE=uim
+export KCODE=u
+export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8

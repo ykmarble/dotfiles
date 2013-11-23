@@ -1,0 +1,5 @@
+# -*- mode: snippet -*-
+# name: digitalRead()
+# key: digitalR
+# --
+digitalRead(${1:pin});$0
