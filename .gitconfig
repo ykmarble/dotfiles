@@ -6,9 +6,14 @@
 	editor = /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n
 	excludesfile = ~/.gitignore
 [alias]
+	a = add
+	s = status
 	st = status
+	d = diff
 	df = diff
-	cm = commit -v
+	dif = diff
+	c = commit
+	cm = commit
 	mg = marge
 	br = branch
 	graph = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
