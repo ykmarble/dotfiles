@@ -43,7 +43,7 @@
 (setq completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
  
-;;; give excutable flag to files which start with #!
+;;; give executable flag to files which start with #!
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
  
@@ -75,6 +75,9 @@
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
 
+
+;;; PATH setting
+(exec-path-from-shell-copy-env "PATH")
 
 ;;; ======
 ;;;  face 
@@ -242,6 +245,16 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'yatex-mode-hook 'flyspell-mode)
 (setq-default flyspell-mode t)
+
+;;; migemo
+(when (and (executable-find "cmigemo")
+	   (require 'migemo nil t))
+  (setq migemo-options '("-q" "--emacs"))  
+  (setq migemo-command "cmigemo")
+  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-coding-system 'utf-8-unix)
+  (load-library "migemo")
+  (migemo-init))
 
 ;;; flymake
 (require 'flymake)
