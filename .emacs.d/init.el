@@ -254,7 +254,9 @@
   (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
   (setq migemo-coding-system 'utf-8-unix)
   (load-library "migemo")
-  (migemo-init))
+  (migemo-init)
+  (require 'helm-migemo)
+  (setq helm-use-migemo t))
 
 ;;; flymake
 (require 'flymake)
