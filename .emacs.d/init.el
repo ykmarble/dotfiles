@@ -433,14 +433,13 @@
 (require 'popwin)
 (require 'popwin-yatex)
 (popwin-mode 1)
-(push '("*Kill Ring*") popwin:special-display-config)
+(setq display-buffer-function 'popwin:display-buffer)
+(setq popwin:popup-window-height 20)
 (push '("*Completions*") popwin:special-display-config)
 (push '("*Backtrace*") popwin:special-display-config)
+(push '("*Warnings*") popwin:special-display-config)
 (push '("*YaTeX-typesetting*") popwin:special-display-config)
-(push '("*Buffer List*") popwin:special-display-config)
-(push '("*Moccur*") popwin:special-display-config)
-(push '("*Google Translate*") popwin:special-display-config)
-
+(push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
 
 ;;; ==============
 ;;;  key bindings
