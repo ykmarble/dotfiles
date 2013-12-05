@@ -3,7 +3,7 @@
 ;;; ======
 
 ;;; change frequency of garbage collection
-(setq gc-cons-threshold 134217728)  ;; 128MB
+(setq gc-cons-threshold 33554432)  ;; 32MB
 
 ;;; language setting
 (set-language-environment "Japanese")
@@ -122,8 +122,12 @@
 ;;; set color theme
 (load-theme 'tsdh-dark t)
 
+;;; change bg-color
+(set-face-background 'default "grey10")
+(set-face-background 'hl-line "grey20")
+
 ;;; use transparent frame
-(set-frame-parameter nil 'alpha 80)
+(set-frame-parameter nil 'alpha 67)
 
 ;;; emacs powerline: change the face of footer
 (setq-default
@@ -189,29 +193,29 @@
 (make-face 'mode-line-process-face)
 (make-face 'mode-line-80col-face)
 (set-face-attribute 'mode-line nil
-    :foreground "SkyBlue1" :background "gray10"
+    :foreground "SkyBlue1" :background "grey20"
     :inverse-video nil
-    :box '(:line-width 2 :color "gray10" :style nil))
+    :box '(:line-width 2 :color "grey20" :style nil))
 (set-face-attribute 'mode-line-inactive nil
-    :foreground "SkyBlue1" :background "gray10"
+    :foreground "SkyBlue1" :background "grey20"
     :inverse-video nil
-    :box '(:line-width 2 :color "gray10" :style nil))
+    :box '(:line-width 2 :color "grey20" :style nil))
 (set-face-attribute 'mode-line-read-only-face nil
     :inherit 'mode-line-face
     :foreground "#4271ae"
     :height 110
-    :box '(:line-width 2 :color "gray10" :style nil))
+    :box '(:line-width 2 :color "grey20" :style nil))
 (set-face-attribute 'mode-line-modified-face nil
     :inherit 'mode-line-face
     :foreground "#c82829"
     :height 110
-    :box '(:line-width 2 :color "gray10" :style nil))
+    :box '(:line-width 2 :color "grey20" :style nil))
 (set-face-attribute 'mode-line-folder-face nil
     :inherit 'mode-line-face
-    :foreground "#04b037" :height 110)
+    :foreground "#7fff00" :height 110)
 (set-face-attribute 'mode-line-filename-face nil
     :inherit 'mode-line-face
-    :foreground "#04b037"
+    :foreground "#7fff00"
     :weight 'bold)
 (set-face-attribute 'mode-line-position-face nil
     :inherit 'mode-line-face
@@ -221,7 +225,7 @@
     :foreground "white")
 (set-face-attribute 'mode-line-minor-mode-face nil
     :inherit 'mode-line-mode-face
-    :foreground "gray80"
+    :foreground "grey80"
     :height 110)
 (set-face-attribute 'mode-line-process-face nil
     :inherit 'mode-line-face
@@ -439,6 +443,7 @@
 (push '("*Backtrace*") popwin:special-display-config)
 (push '("*Warnings*") popwin:special-display-config)
 (push '("*YaTeX-typesetting*") popwin:special-display-config)
+(push '("*dvi-peview*") popwin:special-display-config)
 (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
 
 ;;; ==============
