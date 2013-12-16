@@ -4,13 +4,15 @@ alias g='git'
 alias l='ls'
 alias e='emacs'
 alias ls='ls -hvFG'
-alias la='ls -lA'
+alias la='ls -A'
 alias ll='ls -l'
+alias lla 'ls -Al'
 alias emacs='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n'
 alias sshe='cocot -t UTF-8 -p EUC-JP -- ssh'
 alias lv='lv -Ou8'
-alias -g G='|egrep'
-alias -g L='|lv'
+alias top='top -o cpu'
+alias -g G='|grep --color=auto'
+alias -g L='|lv -c'
 alias -s tex=platex
 alias -s pdf=open
 alias -s java=javac
@@ -35,13 +37,15 @@ function extract() {
 }
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
-
 #histry settings
 HISTFILE=~/.histfile
 HISTSIZE=10000000
 SAVEHIST=10000000
 setopt appendhistory
 setopt extended_history
+
+# ignore C-d
+setopt IGNOREEOF
 
 #color settings
 autoload colors
@@ -151,3 +155,6 @@ function mkdir(){
 
 # for rbenv
 eval "$(rbenv init -)"
+
+# run tmux
+which tmux 2>&1 >/dev/null && [ -z $TMUX ] && (tmux -2 attach || tmux -2 new-session)

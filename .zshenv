@@ -1,5 +1,4 @@
 #environment settings
-export SHELL=/bin/zsh
 export PATH=/usr/local/bin:$PATH:$HOME/bin
 export EDITOR=emacsclient
 export LANG=jp_JP.UTF-8
