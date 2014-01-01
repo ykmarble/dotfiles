@@ -17,7 +17,7 @@
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path)))
-
+      
 ;;; add package-archives
 (require 'package)
 (add-to-list 'package-archives
@@ -77,7 +77,7 @@
 
 
 ;;; PATH setting
-(exec-path-from-shell-copy-env "PATH")
+(exec-path-from-shell-initialize)
 
 ;;; ======
 ;;;  face 
@@ -248,7 +248,7 @@
 (setq-default ispell-program-name "aspell")
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'yatex-mode-hook 'flyspell-mode)
-(setq-default flyspell-mode t)
+(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
 
 ;;; migemo
 (when (and (executable-find "cmigemo")
@@ -266,9 +266,9 @@
 (require 'flymake)
 (require 'flymake-cursor)
 (add-hook 'find-file-hook 'flymake-find-file-hook)
-(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
-  (setq flymake-check-was-interrupted t))
-(ad-activate 'flymake-post-syntax-check)
+;(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
+;  (setq flymake-check-was-interrupted t))
+;(ad-activate 'flymake-post-syntax-check)
 ;; function to do flymake without Makefile easily
 (defun flymake-simple-generic-init (cmd &optional opts)
   (let* ((temp-file  (flymake-init-create-temp-buffer-copy
@@ -281,7 +281,7 @@
 (defun flymake-ino-init ()
  (flymake-simple-generic-init
   "/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-g++"
-  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "~/Source/arduino/include")
+  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "/Users/marble/Source/arduino/include")
     "-include" "Arduino.h" "-Wall" "-Wextra" "-fsyntax-only")))
 (push '("\\.ino\\'" flymake-ino-init) flymake-allowed-file-name-masks)
 ;; C/C++
@@ -292,7 +292,7 @@
  (flymake-simple-generic-init
   "g++" '("-Wall" "-Wextra" "-fsyntax-only")))
 (push '("\\.c\\'" flymake-c-init) flymake-allowed-file-name-masks)
-(push '("\\.\\(cc\\|cpp\\|C\\|CPP\\|hpp\\)\\'" flymake-cc-init)
+(push '("\\.\\(cc\\|h\\|cpp\\|C\\|CPP\\|hpp\\)\\'" flymake-cc-init)
       flymake-allowed-file-name-masks)
 ;; Java
 (defun flymake-java-init ()
@@ -300,19 +300,19 @@
    'flymake-create-temp-with-folder-structure nil nil
    buffer-file-name
    'flymake-get-java-cmdline))
-(defun flymake-get-java-cmdline (source base-dir)
+(defun flymake-get-java-cmdline (source ase-dir)
   (list "javac" (list "-J-Dfile.encoding=utf-8" "-encoding" "utf-8"
               source)))
-(push '("\\.java$" flymake-java-init) flymake-allowed-file-name-masks)
+(push '("\\.java\\'" flymake-java-init) flymake-allowed-file-name-masks)
 (add-hook 'java-mode-hook '(lambda () (flymake-mode t)))
 ;; Python
-(defun flymake-python-init ()
-  (flymake-simple-generic-init
-   "pyflakes" '()))
-(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
-;; disable error dialog
-(setq flymake-gui-warnings-enabled nil)
-
+;(defun flymake-python-init ()
+;  (flymake-simple-generic-init
+;   "pyflakes" '()))
+;(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
+(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
+(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+(setq flymake-gui-warnings-enabled nil) ;; disable error dialog
 
 ;;; ==============
 ;;;  global modes 
@@ -377,6 +377,15 @@
 (if window-system (require 'caml-font))
 (setq inferior-caml-program "/usr/local/bin/ocaml")
 
+
+;;; SGML + Zen-coding
+(require 'emmet-mode)
+(add-hook 'sgml-mode-hook 'emmet-mode)
+(add-hook 'css-mode-hook 'emmet-mode)
+(add-hook 'emmet-mode-hook '(lambda () (setq emmet-indentation 2)))
+(define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
+(eval-after-load "emmet-mode"  
+  (define-key emmet-mode-keymap (kbd "C-j") nil))
 
 ;;; =============
 ;;;  completions
