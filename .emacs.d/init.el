@@ -266,6 +266,9 @@
   ;;; reset selection
   (define-key map (kbd "C-c") 'zlc-reset))
 
+;;; enable anzu
+(global-anzu-mode +1)
+
 ;;; migemo
 (when (and (executable-find "cmigemo")
 	   (require 'migemo nil t))
