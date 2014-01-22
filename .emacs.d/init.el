@@ -274,6 +274,10 @@
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
 
+;;; magit
+(require 'magit)
+(set-face-background 'magit-item-highlight "#000000") ; disable highlight
+
 ;;; migemo
 (when (and (executable-find "cmigemo")
 	   (require 'migemo nil t))
