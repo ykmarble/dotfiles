@@ -59,6 +59,10 @@
 ;;; delete auto save files
 (setq delete-auto-save-files t)
 
+;;; change tab width and indent width
+(setq default-tab-width 4)
+(setq c-basic-offset 4)
+(setq c-default-style "stroustrup")
 ;;; dired configuration
 (require 'dired)
 (put 'dired-find-alternate-file 'disabled nil)
