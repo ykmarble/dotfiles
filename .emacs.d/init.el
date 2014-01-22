@@ -269,6 +269,10 @@
 ;;; enable anzu
 (global-anzu-mode +1)
 
+;;; ediff settings
+(setq ediff-window-setup-function 'ediff-setup-windows-plain)
+(setq ediff-split-window-function 'split-window-horizontally)
+
 ;;; migemo
 (when (and (executable-find "cmigemo")
 	   (require 'migemo nil t))
