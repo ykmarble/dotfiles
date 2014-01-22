@@ -63,6 +63,7 @@
 (setq default-tab-width 4)
 (setq c-basic-offset 4)
 (setq c-default-style "stroustrup")
+
 ;;; dired configuration
 (require 'dired)
 (put 'dired-find-alternate-file 'disabled nil)
@@ -300,13 +301,6 @@
                       temp-file
                       (file-name-directory buffer-file-name))))
     (list cmd (append opts (list local-file)))))
-;; Arduino
-(defun flymake-ino-init ()
- (flymake-simple-generic-init
-  "/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-g++"
-  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "/Users/marble/Source/arduino/include")
-    "-include" "Arduino.h" "-Wall" "-Wextra" "-fsyntax-only")))
-(push '("\\.ino\\'" flymake-ino-init) flymake-allowed-file-name-masks)
 ;; C/C++
 (defun flymake-c-init ()
  (flymake-simple-generic-init
@@ -333,6 +327,13 @@
 ;  (flymake-simple-generic-init
 ;   "pyflakes" '()))
 ;(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
+;; Arduino
+(defun flymake-ino-init ()
+ (flymake-simple-generic-init
+  "/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-g++"
+  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "/Users/marble/Source/arduino/include")
+    "-include" "Arduino.h" "-Wall" "-Wextra" "-fsyntax-only")))
+(push '("\\.ino\\'" flymake-ino-init) flymake-allowed-file-name-masks)
 (add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 (setq flymake-gui-warnings-enabled nil) ;; disable error dialog
