@@ -250,9 +250,10 @@
 ;;; enable spell checker
 (require 'ispell)
 (setq-default ispell-program-name "aspell")
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'yatex-mode-hook 'flyspell-mode)
-(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
+;(add-hook 'text-mode-hook 'flyspell-mode)
+;(add-hook 'yatex-mode-hook 'flyspell-mode)
+;(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
+
 ;;; zsh like completion
 (require 'zlc)
 (zlc-mode t)
