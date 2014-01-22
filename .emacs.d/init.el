@@ -479,7 +479,7 @@
 (global-set-key (kbd "C-c <up>")    'windmove-up)
 (global-set-key (kbd "C-c <down>")  'windmove-down)
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
-(global-set-key (kbd "C-q") 'query-replace)
+(global-set-key (kbd "C-q") 'anzu-query-replace)
 (global-set-key (kbd "C-o") 'moccur)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-x C-b") 'helm-buffers-list)
