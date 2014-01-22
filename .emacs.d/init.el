@@ -253,6 +253,17 @@
 (add-hook 'text-mode-hook 'flyspell-mode)
 (add-hook 'yatex-mode-hook 'flyspell-mode)
 (add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
+;;; zsh like completion
+(require 'zlc)
+(zlc-mode t)
+(let ((map minibuffer-local-map))
+  ;;; like menu select
+  (define-key map (kbd "<down>")  'zlc-select-next-vertical)
+  (define-key map (kbd "<up>")    'zlc-select-previous-vertical)
+  (define-key map (kbd "<right>") 'zlc-select-next)
+  (define-key map (kbd "<left>")  'zlc-select-previous)
+  ;;; reset selection
+  (define-key map (kbd "C-c") 'zlc-reset))
 
 ;;; migemo
 (when (and (executable-find "cmigemo")
