@@ -3,11 +3,11 @@ alias あのあの='ping -c 3 www.google.com'
 alias g='git'
 alias l='ls'
 alias e='emacs'
-alias ls='ls -hvFG'
+alias o='open'
+alias ls='ls -hF --color=auto'
 alias la='ls -A'
 alias ll='ls -l'
-alias lla 'ls -Al'
-alias emacs='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n'
+alias lla='ls -Al'
 alias sshe='cocot -t UTF-8 -p EUC-JP -- ssh'
 alias lv='lv -Ou8'
 alias top='top -o cpu'
@@ -36,6 +36,15 @@ function extract() {
   esac
 }
 alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+
+case "${OSTYPE}" in
+    darwin*)
+        source $HOME/.zsh.d/mac
+        ;;
+    linux*)
+        source $HOME/.zsh.d/linux
+        ;;
+esac
 
 #histry settings
 HISTFILE=~/.histfile
@@ -153,8 +162,9 @@ function mkdir(){
     /bin/mkdir $@ && cd $@;
 }
 
-# for rbenv
-eval "$(rbenv init -)"
+
+# disable power key
+#[ -e $HOME/bin/mbl.dispower ] && .. $HOME/bin/mbl.dispower
 
 # run tmux
 which tmux 2>&1 >/dev/null && [ -z $TMUX ] && (tmux -2 attach || tmux -2 new-session)

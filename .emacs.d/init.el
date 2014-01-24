@@ -108,14 +108,14 @@
 ;;; font setting
 (set-face-attribute 'default nil
 		    :family "Ricty" ;;font
-		    :height 160) ;;font-size
+		    :height 115) ;;font-size
 (set-fontset-font
  nil 'japanese-jisx0208
  (font-spec :family "Ricty")) ;; font
 
 ;;; enable full screen mode with startup
-(custom-set-variables
- '(initial-frame-alist (quote ((fullscreen . maximized)))))
+;(custom-set-variables
+; '(initial-frame-alist (quote ((fullscreen . maximized)))))
 
 ;;; show line number
 (add-hook 'find-file-hook (lambda () (linum-mode 1)))
@@ -132,7 +132,7 @@
 (set-face-background 'hl-line "grey20")
 
 ;;; use transparent frame
-(set-frame-parameter nil 'alpha 67)
+(set-frame-parameter nil 'alpha 80)
 
 ;;; emacs powerline: change the face of footer
 (setq-default
