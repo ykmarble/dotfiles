@@ -46,6 +46,7 @@ case "${OSTYPE}" in
         ;;
 esac
 
+
 #histry settings
 HISTFILE=~/.histfile
 HISTSIZE=10000000
@@ -161,10 +162,6 @@ function chpwd(){
 function mkdir(){
     /bin/mkdir $@ && cd $@;
 }
-
-
-# disable power key
-#[ -e $HOME/bin/mbl.dispower ] && .. $HOME/bin/mbl.dispower
 
 # run tmux
 which tmux 2>&1 >/dev/null && [ -z $TMUX ] && (tmux -2 attach || tmux -2 new-session)

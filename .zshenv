@@ -1,4 +1,5 @@
 #environment settings
+typeset -U path PATH
 export PATH=$PATH:$HOME/bin
 export EDITOR=emacsclient
 export LANG=jp_JP.UTF-8
@@ -8,3 +9,5 @@ export GTK_IM_MODULE=ibus
 export QT_IM_MODULE=ibus
 export KCODE=u
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
+# for rbenv
+eval "$(rbenv init -)"
