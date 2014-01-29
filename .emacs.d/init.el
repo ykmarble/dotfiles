@@ -135,6 +135,11 @@
 ;;; use transparent frame
 (set-frame-parameter nil 'alpha 80)
 
+;; mode line
+(set-face-font 'mode-line "Ricty")
+(set-face-font 'mode-line-inactive "Ricty")
+(set-face-font 'mode-line-buffer-id "Ricty")
+
 ;;; emacs powerline: change the face of footer
 (setq-default
  mode-line-format
@@ -225,7 +230,7 @@
     :weight 'bold)
 (set-face-attribute 'mode-line-position-face nil
     :inherit 'mode-line-face
-    :height 110)
+    :height 90)
 (set-face-attribute 'mode-line-mode-face nil
     :inherit 'mode-line-face
     :foreground "white")
