@@ -63,6 +63,7 @@
 (setq default-tab-width 4)
 (setq c-basic-offset 4)
 (setq c-default-style "stroustrup")
+(setq-default indent-tabs-mode)
 
 ;;; dired configuration
 (require 'dired)
