@@ -482,6 +482,8 @@
 (setq-default ac-auto-show-menu nil)
 (setq-default ac-ignore-case 'smart)
 (setq-default ac-use-menu-map t)
+(define-key ac-menu-map "\C-n" 'ac-next)
+(define-key ac-menu-map "\C-p" 'ac-previous)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (setq-default ac-sources
   '(ac-source-dictionary ac-source-imenu ac-source-words-in-same-mode-buffers))
