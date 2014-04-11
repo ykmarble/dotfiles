@@ -296,12 +296,16 @@
 	   (require 'migemo nil t))
   (setq migemo-options '("-q" "--emacs"))  
   (setq migemo-command "cmigemo")
-  (setq migemo-dictionary "/usr/local/share/migemo/utf-8/migemo-dict")
+  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
   (setq migemo-coding-system 'utf-8-unix)
   (load-library "migemo")
   (migemo-init)
   (require 'helm-migemo)
   (setq helm-use-migemo t))
+
+;;; kogiku -- use migemo in find-file
+(require 'kogiku)
+(setq kogiku-enable-once nil)
 
 ;;; flymake
 (require 'flymake)
