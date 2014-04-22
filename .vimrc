@@ -1,6 +1,5 @@
 syntax on
-colorscheme jellybeans
-let g:jellybeans_use_lowcolor_black = 0
+colorscheme hybrid
 set autoindent
 set wrap
 set wrapscan
