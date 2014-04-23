@@ -1,5 +1,6 @@
 # alias
-alias あのあの='ping -c 3 www.google.com'
+alias あのあの='ping -c 3 www.google.co.jp'
+alias ping='ping -c 3'
 alias g='git'
 alias l='ls'
 alias e='emacs'
@@ -10,9 +11,10 @@ alias ll='ls -l'
 alias lla='ls -Al'
 alias sshe='cocot -t UTF-8 -p EUC-JP -- ssh'
 alias lv='lv -Ou8'
-alias top='top -o cpu'
+alias python='python2'
 alias -g G='|grep --color=auto'
 alias -g L='|lv -c'
+alias strace='strace -s 2000 -f -tt'
 alias -s tex=platex
 alias -s pdf=open
 alias -s java=javac
@@ -162,6 +164,9 @@ function chpwd(){
 function mkdir(){
     /bin/mkdir $@ && cd $@;
 }
+
+# disable screen lock of Ctrl+S
+stty stop undef
 
 # run tmux
 which tmux 2>&1 >/dev/null && [ -z $TMUX ] && (tmux -2 attach || tmux -2 new-session)
