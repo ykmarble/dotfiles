@@ -9,5 +9,3 @@ export GTK_IM_MODULE=ibus
 export QT_IM_MODULE=ibus
 export KCODE=u
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
-# for rbenv
-eval "$(rbenv init -)"

@@ -1,6 +1,7 @@
 # alias
 alias あのあの='ping -c 3 www.google.co.jp'
 alias ping='ping -c 3'
+alias percol='percol --match-method migemo'
 alias g='git'
 alias l='ls'
 alias e='emacs'
@@ -14,6 +15,7 @@ alias lv='lv -Ou8'
 alias python='python2'
 alias -g G='|grep --color=auto'
 alias -g L='|lv -c'
+alias -g P='|percol'
 alias strace='strace -s 2000 -f -tt'
 alias -s tex=platex
 alias -s pdf=open
@@ -118,7 +120,7 @@ zstyle ':completion:*:manuals' separate-sections true
 #change apperance of completion
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
-zstyle ':completion:*' completer _expand _complete _match _prefix _list _history
+zstyle ':completion:*' completer _expand _complete _match _prefix _list 
 zstyle ':completion:*:messages' format '%F{yellow}%d%f'$DEFAULT
 zstyle ':completion:*:warnings' format '%F{red}No matches.%f'$DEFAULT
 zstyle ':completion:*:options' description 'yes'
@@ -167,6 +169,9 @@ function mkdir(){
 
 # disable screen lock of Ctrl+S
 stty stop undef
+
+# for rbenv
+eval "$(rbenv init -)"
 
 # run tmux
 which tmux 2>&1 >/dev/null && [ -z $TMUX ] && (tmux -2 attach || tmux -2 new-session)
