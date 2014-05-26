@@ -3,7 +3,7 @@
 	email = milkcocoapple@gmail.com
 [core]
 	pager = lv -Ou8 -c
-	editor = /Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n
+	editor = emacsclient -n
 	excludesfile = ~/.gitignore
 [alias]
 	a = add
@@ -21,3 +21,5 @@
 [color]
 	ui = true
 	diff = true
+[push]
+	default = current

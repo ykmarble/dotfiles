@@ -43,7 +43,7 @@ alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
 
 case "${OSTYPE}" in
     darwin*)
-        source $HOME/.zsh.d/mac
+n        source $HOME/.zsh.d/mac
         ;;
     linux*)
         source $HOME/.zsh.d/linux

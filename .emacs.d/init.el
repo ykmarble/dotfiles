@@ -36,6 +36,9 @@
 ;;; disable dialog box
 (setq use-dialog-box nil)
 
+;;; stop cursor blinking
+(blink-cursor-mode)
+
 ;;; kill whole line when cursor is head of line and C-k is pressed
 (setq kill-whole-line t)
 
@@ -62,7 +65,7 @@
 ;;; change tab width and indent width
 (setq default-tab-width 4)
 (setq c-basic-offset 4)
-(setq c-default-style "stroustrup")
+(setq c-default-style '((java-mode . "java") (other . "linux")))
 (setq-default indent-tabs-mode)
 
 ;;; dired configuration
@@ -129,8 +132,8 @@
 (load-theme 'tsdh-dark t)
 
 ;;; change bg-color
-(set-face-background 'default "grey10")
-(set-face-background 'hl-line "grey20")
+(set-face-background 'default "#2C2717")
+(set-face-background 'hl-line "#3E361B")
 
 ;;; use transparent frame
 (set-frame-parameter nil 'alpha 80)
@@ -257,21 +260,21 @@
 ;;; enable spell checker
 (require 'ispell)
 (setq-default ispell-program-name "aspell")
-;(add-hook 'text-mode-hook 'flyspell-mode)
-;(add-hook 'yatex-mode-hook 'flyspell-mode)
-;(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
+(add-hook 'text-mode-hook 'flyspell-mode)
+(add-hook 'yatex-mode-hook 'flyspell-mode)
+(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
 
 ;;; zsh like completion
-(require 'zlc)
-(zlc-mode t)
-(let ((map minibuffer-local-map))
-  ;;; like menu select
-  (define-key map (kbd "<down>")  'zlc-select-next-vertical)
-  (define-key map (kbd "<up>")    'zlc-select-previous-vertical)
-  (define-key map (kbd "<right>") 'zlc-select-next)
-  (define-key map (kbd "<left>")  'zlc-select-previous)
-  ;;; reset selection
-  (define-key map (kbd "C-c") 'zlc-reset))
+;(require 'zlc)
+;(zlc-mode t)
+;(let ((map minibuffer-local-map))
+;  ;;; like menu select
+;  (define-key map (kbd "<down>")  'zlc-select-next-vertical)
+;  (define-key map (kbd "<up>")    'zlc-select-previous-vertical)
+;  (define-key map (kbd "<right>") 'zlc-select-next)
+;  (define-key map (kbd "<left>")  'zlc-select-previous)
+;  ;;; reset selection
+;  (define-key map (kbd "C-c") 'zlc-reset))
 
 ;;; enable anzu
 (global-anzu-mode +1)
@@ -290,6 +293,13 @@
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
 (setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+
+;;; ido-mode
+(require 'ido)
+(ido-mode t)
+(setq ido-create-new-buffer 'always)
+(when (boundp 'confirm-nonexistent-file-or-buffer)
+  (setq confirm-nonexistent-file-or-buffer nil))
 
 ;;; migemo
 (when (and (executable-find "cmigemo")
@@ -310,7 +320,8 @@
 ;;; flymake
 (require 'flymake)
 (require 'flymake-cursor)
-(add-hook 'find-file-hook 'flymake-find-file-hook)
+(setq flymake-allowed-file-name-masks '())
+;(add-hook 'find-file-hook 'flymake-find-file-hook)
 ;(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
 ;  (setq flymake-check-was-interrupted t))
 ;(ad-activate 'flymake-post-syntax-check)
@@ -332,6 +343,7 @@
 (push '("\\.c\\'" flymake-c-init) flymake-allowed-file-name-masks)
 (push '("\\.\\(cc\\|h\\|cpp\\|C\\|CPP\\|hpp\\)\\'" flymake-cc-init)
       flymake-allowed-file-name-masks)
+
 ;; Java
 (defun flymake-java-init ()
   (flymake-simple-make-init-impl
@@ -342,20 +354,19 @@
   (list "javac" (list "-J-Dfile.encoding=utf-8" "-encoding" "utf-8"
               source)))
 (push '("\\.java\\'" flymake-java-init) flymake-allowed-file-name-masks)
-(add-hook 'java-mode-hook '(lambda () (flymake-mode t)))
 ;; Python
-;(defun flymake-python-init ()
-;  (flymake-simple-generic-init
-;   "pyflakes" '()))
-;(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
+(defun flymake-python-init ()
+  (flymake-simple-generic-init
+   "pyflakes-python2" '()))
+(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
+(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 ;; Arduino
 (defun flymake-ino-init ()
  (flymake-simple-generic-init
-  "/Applications/Arduino.app/Contents/Resources/Java/hardware/tools/avr/bin/avr-g++"
-  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "/Users/marble/Source/arduino/include")
+  "/usr/bin/avr-g++"
+  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "~/Sources/arduino/include")
     "-include" "Arduino.h" "-Wall" "-Wextra" "-fsyntax-only")))
 (push '("\\.ino\\'" flymake-ino-init) flymake-allowed-file-name-masks)
-(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
 (add-hook 'ruby-mode-hook 'flymake-ruby-load)
 (setq flymake-gui-warnings-enabled nil) ;; disable error dialog
 
@@ -395,10 +406,11 @@
 (setq auto-mode-alist
       (append '(("\\.tex$" . yatex-mode)) auto-mode-alist))
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
+(setq YaTeX-no-begend-shortcut t)
 (setq YaTeX-kanji-code 4)
 (setq tex-command "platex")
 (setq dviprint-command-format "dvipdfmx %s")
-(setq dvi2-command "open -a Preview")
+(setq dvi2-command "evince")
 (setq YaTeX-use-AMS-LaTeX t)
 (setq bibtex-command "pbibtex")
 (add-hook 'yatex-mode-hook '(lambda ()
@@ -478,7 +490,7 @@
 ;;; Auto complete
 (require 'auto-complete-config)
 (require 'auto-complete-clang)
-(global-auto-complete-mode)
+(global-auto-complete-mode t)
 (setq-default ac-auto-show-menu nil)
 (setq-default ac-ignore-case 'smart)
 (setq-default ac-use-menu-map t)
@@ -498,6 +510,7 @@
 (add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
 (add-to-list 'ac-modes 'python-mode)
 (add-to-list 'ac-modes 'python-2-mode)
+(add-to-list 'ac-modes 'yatex-mode)
 
 
 ;;; ======== 
@@ -525,15 +538,17 @@
 (global-set-key (kbd "C-c <up>")    'windmove-up)
 (global-set-key (kbd "C-c <down>")  'windmove-down)
 (global-set-key (kbd "C-h") 'backward-delete-char-untabify)
+(global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
 (global-set-key (kbd "C-o") 'moccur)
 (global-set-key (kbd "M-g") 'goto-line)
-(global-set-key (kbd "C-x C-b") 'helm-buffers-list)
 (global-set-key (kbd "C-t") 'helm-etags-select)
 (global-set-key (kbd "M-o") 'helm-occur)
 (global-set-key (kbd "M-i") 'helm-imenu)
 (global-set-key (kbd "M-x") 'helm-M-x)
-(global-set-key (kbd "C-x b") 'helm-buffers-list)
 (global-set-key (kbd "M-s") 'helm-regexp)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)
 (global-set-key (kbd "C-x f") 'helm-recentf)
+(global-set-key (kbd "C-.") 'evil-numbers/inc-at-pt)
+(global-set-key (kbd "C-,") 'evil-numbers/dec-at-pt)
+(global-set-key (kbd "C-x C-x") nil)
