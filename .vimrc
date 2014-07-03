@@ -1,10 +1,16 @@
 syntax on
 colorscheme hybrid
+set encoding=utf-8
+set fileencodings=iso-2022-jp,euc-jp,sjis,utf-8
+set fileformats=unix,dos,mac
 set nocompatible
 set autoindent
 set smartindent
+set shiftwidth=4
+set tabstop=4
+set softtabstop=4
 set backspace=indent,eol,start
-set whichwrap=b,s,h,s,<,>,[,]
+set whichwrap=b,s,h,l,<,>,[,],~
 set noswapfile
 set nobackup
 set wrap

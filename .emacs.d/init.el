@@ -17,7 +17,7 @@
   (add-to-list 'load-path default-directory)
   (if (fboundp 'normal-top-level-add-subdirs-to-load-path)
       (normal-top-level-add-subdirs-to-load-path)))
-      
+
 ;;; add package-archives
 (require 'package)
 (add-to-list 'package-archives
@@ -45,11 +45,11 @@
 ;;; ignore case on completion
 (setq completion-ignore-case t)
 (setq read-file-name-completion-ignore-case t)
- 
+
 ;;; give executable flag to files which start with #!
 (add-hook 'after-save-hook
           'executable-make-buffer-file-executable-if-script-p)
- 
+
 ;;; append directory name to buffer name when they are duplicate
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
@@ -61,6 +61,22 @@
 
 ;;; delete auto save files
 (setq delete-auto-save-files t)
+
+;;; visible tab and spaces
+(require 'whitespace)
+(setq whitespace-style '(face trailing tabs empty tab-mark))
+(setq whitespace-display-mappings '((tab-mark ?\t [?\xBB ?\t] [?\\ ?\t])))
+(setq whitespace-action '(auto-cleanup))
+(global-whitespace-mode 1)
+(set-face-attribute 'whitespace-trailing nil
+                    :foreground "DeepPink"
+                    :underline t)
+(set-face-attribute 'whitespace-tab nil
+                    :foreground "LightSkyBlue"
+                    :underline t)
+(set-face-background 'whitespace-trailing nil)
+(set-face-background 'whitespace-tab nil)
+(set-face-background 'whitespace-empty nil)
 
 ;;; change tab width and indent width
 (setq default-tab-width 4)
@@ -89,7 +105,7 @@
 (exec-path-from-shell-initialize)
 
 ;;; ======
-;;;  face 
+;;;  face
 ;;; ======
 
 ;;; disable startup screen
@@ -100,7 +116,7 @@
 (scroll-bar-mode -1)
 (menu-bar-mode -1)
 
-;;; change string of title bar 
+;;; change string of title bar
 (setq frame-title-format (format "%%f - Emacs@%s" (system-name)))
 
 ;;; highlight pare of paren
@@ -136,12 +152,26 @@
 (set-face-background 'hl-line "#3E361B")
 
 ;;; use transparent frame
-(set-frame-parameter nil 'alpha 80)
+(set-frame-parameter nil 'alpha 70)
 
 ;; mode line
 (set-face-font 'mode-line "Ricty")
 (set-face-font 'mode-line-inactive "Ricty")
 (set-face-font 'mode-line-buffer-id "Ricty")
+
+;;; change color settings of diff-mode
+(require 'diff-mode)
+(set-face-attribute 'diff-added-face nil
+                    :foreground "green")
+(set-face-attribute 'diff-removed-face nil
+                    :foreground "firebrick1")
+(set-face-background 'diff-added-face nil)
+(set-face-background 'diff-removed-face nil)
+(set-face-background 'diff-changed-face nil)
+(set-face-background 'diff-function-face nil)
+(set-face-background 'diff-file-header-face nil)
+(set-face-background 'diff-refine-change nil)
+
 
 ;;; emacs powerline: change the face of footer
 (setq-default
@@ -260,9 +290,9 @@
 ;;; enable spell checker
 (require 'ispell)
 (setq-default ispell-program-name "aspell")
-(add-hook 'text-mode-hook 'flyspell-mode)
-(add-hook 'yatex-mode-hook 'flyspell-mode)
-(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
+;(add-hook 'text-mode-hook 'flyspell-mode)
+;(add-hook 'yatex-mode-hook 'flyspell-mode)
+;(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
 
 ;;; zsh like completion
 ;(require 'zlc)
@@ -285,7 +315,9 @@
 
 ;;; magit
 (require 'magit)
-(set-face-background 'magit-item-highlight "#000000") ; disable highlight
+(setq magit-diff-refine-hunk nil)
+(set-face-background 'magit-item-highlight nil) ; disable highlight
+(set-face-attribute 'magit-item-highlight nil :inherit nil)
 
 ;;; smooth scroll
 (require 'smooth-scroll)
@@ -300,11 +332,15 @@
 (setq ido-create-new-buffer 'always)
 (when (boundp 'confirm-nonexistent-file-or-buffer)
   (setq confirm-nonexistent-file-or-buffer nil))
+(setq ido-ignore-buffers (append ido-ignore-buffers '("\\`\\*.*\\*")))
+
+;;; quickrun
+(require 'quickrun)
 
 ;;; migemo
 (when (and (executable-find "cmigemo")
-	   (require 'migemo nil t))
-  (setq migemo-options '("-q" "--emacs"))  
+       (require 'migemo nil t))
+  (setq migemo-options '("-q" "--emacs"))
   (setq migemo-command "cmigemo")
   (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
   (setq migemo-coding-system 'utf-8-unix)
@@ -316,6 +352,15 @@
 ;;; kogiku -- use migemo in find-file
 (require 'kogiku)
 (setq kogiku-enable-once nil)
+
+;;; display set of parens in each colors
+(require 'smartparens-config)
+(smartparens-global-mode)
+(setq sp-autoescape-string-quote nil)
+
+;;; enable undo tree
+(global-undo-tree-mode t)
+(global-set-key (kbd "M-/") 'undo-tree-redo)
 
 ;;; flymake
 (require 'flymake)
@@ -371,7 +416,7 @@
 (setq flymake-gui-warnings-enabled nil) ;; disable error dialog
 
 ;;; ==============
-;;;  global modes 
+;;;  global modes
 ;;; ==============
 
 ;;; Markdown
@@ -380,6 +425,11 @@
 (setq auto-mode-alist
       (cons '("\\.md$" . markdown-mode) auto-mode-alist))
 (setq markdown-command-needs-filename t)
+(add-hook 'markdown-mode-hook '(lambda ()
+   (progn
+     (define-key markdown-mode-map (kbd "M-SPC") 'markdown-preview)
+     (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line))))
+
 
 ;;; Scala
 (require 'scala-mode2)
@@ -399,8 +449,16 @@
 ))
 
 ;;; Clojure
-(autoload 'clojure-mode "clojure-mode" "A major mode for Clojure" t)
-(add-to-list 'auto-mode-alist '("\\.clj$" . clojure-mode))
+(add-hook 'clojure-mode-hook 'cider-mode)
+;; mini bufferに関数の引数を表示させる
+(add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
+;; 'C-x b' した時に *nrepl-connection* と *nrepl-server* のbufferを一覧に表示しない
+(setq nrepl-hide-special-buffers t)
+;; RELPのbuffer名を 'project名:nREPLのport番号' と表示する
+;; project名は project.clj で defproject した名前
+(setq nrepl-buffer-name-show-port t)
+;; buffer listにnrepl関係のものを表示しない
+(setq nrepl-hide-special-buffers t)
 
 ;;; YaTeX
 (setq auto-mode-alist
@@ -413,8 +471,9 @@
 (setq dvi2-command "evince")
 (setq YaTeX-use-AMS-LaTeX t)
 (setq bibtex-command "pbibtex")
+(setq YaTeX-close-paren-always nil)
 (add-hook 'yatex-mode-hook '(lambda ()
-  (define-key YaTeX-mode-map (kbd "C-c C-p") '(lambda () 
+  (define-key YaTeX-mode-map (kbd "M-SPC") '(lambda ()
     (interactive)
     (YaTeX-typeset-menu nil ?j)
     (YaTeX-typeset-menu nil ?d)
@@ -434,6 +493,15 @@
 (if window-system (require 'caml-font))
 (setq inferior-caml-program "/usr/local/bin/ocaml")
 
+;;; Octave
+(autoload 'octave-mode "octave-mod" nil t)
+(setq auto-mode-alist
+      (cons '("\\.m$" . octave-mode) auto-mode-alist))
+(autoload 'run-octave "octave-inf" nil t)
+(add-hook 'inferior-octave-mode-hook
+    '(lambda ()
+        (setq inferior-octave-program "/usr/bin/octave")))
+
 ;;; Haskell
 (autoload 'haskell-mode "haskell-mode")
 (autoload 'haskell-cabal "haskell-cabal")
@@ -452,7 +520,7 @@
 (add-hook 'css-mode-hook 'emmet-mode)
 (add-hook 'emmet-mode-hook '(lambda () (setq emmet-indentation 2)))
 (define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
-(eval-after-load "emmet-mode"  
+(eval-after-load "emmet-mode"
   (define-key emmet-mode-keymap (kbd "C-j") nil))
 
 ;;; mikutter
@@ -486,19 +554,23 @@
           (nth n choices))
       (signal 'quit "user quit!"))))
 (custom-set-variables '(yas/prompt-functions '(my-yas/prompt)))
+(require 'clojure-snippets)
+(clojure-snippets-initialize)
 
 ;;; Auto complete
 (require 'auto-complete-config)
 (require 'auto-complete-clang)
 (global-auto-complete-mode t)
-(setq-default ac-auto-show-menu nil)
 (setq-default ac-ignore-case 'smart)
-(setq-default ac-use-menu-map t)
-(define-key ac-menu-map "\C-n" 'ac-next)
-(define-key ac-menu-map "\C-p" 'ac-previous)
+(setq ac-delay 0)
+(setq ac-quick-help nil)
+(setq ac-candidate-limit 10)
+;(setq ac-auto-start 4)
+;(define-key ac-menu-map "\C-n" 'ac-next)
+;(define-key ac-menu-map "\C-p" 'ac-previous)
 (add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
 (setq-default ac-sources
-  '(ac-source-dictionary ac-source-imenu ac-source-words-in-same-mode-buffers))
+  '(ac-source-yasnippet ac-source-dictionary ac-source-imenu ac-source-words-in-same-mode-buffers))
 (defun my-ac-cc-mode-setup ()
   (setq ac-sources (append '(ac-source-clang ac-source-semantic ac-source-semantic-raw) ac-sources)))
 (defun my-ac-elisp-mode-setup ()
@@ -506,14 +578,18 @@
 (add-hook 'c-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'arduino-mode-hook 'my-ac-cc-mode-setup)
-(add-to-list 'ac-modes 'arduino-mode)
 (add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
-(add-to-list 'ac-modes 'python-mode)
-(add-to-list 'ac-modes 'python-2-mode)
-(add-to-list 'ac-modes 'yatex-mode)
+;(require 'ac-python)
+(require 'ac-octave)
+(defun ac-octave-mode-setup ()
+  (setq ac-sources '(ac-source-octave)))
+(add-hook 'octave-mode-hook
+          '(lambda () (ac-octave-mode-setup)))
+(autoload 'ac-nrepl "ac-nrepl" nil t)
+(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-mode-hook 'ac-nrepl-setup)
 
-
-;;; ======== 
+;;; ========
 ;;;  popwin
 ;;; ========
 
@@ -528,6 +604,7 @@
 (push '("*YaTeX-typesetting*") popwin:special-display-config)
 (push '("*dvi-peview*") popwin:special-display-config)
 (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
+(push '("*quickrun*") popwin:special-display-config)
 
 ;;; ==============
 ;;;  key bindings
@@ -551,4 +628,6 @@
 (global-set-key (kbd "C-x f") 'helm-recentf)
 (global-set-key (kbd "C-.") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-,") 'evil-numbers/dec-at-pt)
+(global-set-key (kbd "M-SPC") 'quickrun)
 (global-set-key (kbd "C-x C-x") nil)
+(global-set-key (kbd "C-c m") 'magit-status)

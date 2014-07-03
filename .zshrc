@@ -2,6 +2,9 @@
 alias あのあの='ping -c 3 www.google.co.jp'
 alias ping='ping -c 3'
 alias percol='percol --match-method migemo'
+alias a='cd ..'
+alias w='wpa_cli'
+alias z='cd'
 alias g='git'
 alias l='ls'
 alias e='emacs'
@@ -57,6 +60,7 @@ HISTSIZE=10000000
 SAVEHIST=10000000
 setopt appendhistory
 setopt extended_history
+setopt hist_ignore_dups
 
 # ignore C-d
 setopt IGNOREEOF
@@ -139,6 +143,13 @@ setopt long_list_jobs
 #think "/" as word-divide unit
 WORDCHARS=${WORDCHARS:s,/,,}
 
+# cdr
+autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
+add-zsh-hook chpwd chpwd_recent_dirs
+zstyle ':chpwd:*' recent-dirs-max 5000
+zstyle ':chpwd:*' recent-dirs-default yes
+zstyle ':completion:*' recent-dirs-insert both
+ 
 #git utils
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats ' (%s:%b)'
@@ -170,8 +181,14 @@ function mkdir(){
 # disable screen lock of Ctrl+S
 stty stop undef
 
-# for rbenv
-eval "$(rbenv init -)"
+# zaw -- zsh anything.el-like widget
+source ${HOME}/.zsh.d/zaw/zaw.zsh
+zstyle ':filter-select' case-insensitive yes # 絞り込みをcase-insensitiveに
+bindkey '^xb' zaw-tmux-window
+bindkey '^xh' zaw-history
+bindkey '^x^f' zaw-cdr
+bindkey '^xr' zaw-ssh-hosts
+bindkey '^xi' zaw-open-file
 
 # run tmux
 which tmux 2>&1 >/dev/null && [ -z $TMUX ] && (tmux -2 attach || tmux -2 new-session)
