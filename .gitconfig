@@ -1,25 +1,26 @@
 [user]
-	name = yk_marble
-	email = milkcocoapple@gmail.com
+    name = yk_marble
+    email = milkcocoapple@gmail.com
 [core]
-	pager = lv -Ou8 -c
-	editor = emacsclient -n
-	excludesfile = ~/.gitignore
+    pager = lv -Ou8 -c
+    editor = emacsclient -n
+    excludesfile = ~/.gitignore
 [alias]
-	a = add
-	s = status
-	st = status
-	d = diff
-	df = diff
-	dif = diff
-	c = commit
-	cm = commit
-	mg = marge
-	br = branch
-	graph = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
-	gr = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
+    a = add
+    s = status
+    st = status
+    d = diff
+    df = diff
+    dif = diff
+    c = commit
+    cm = commit
+    ch = checkout
+    mg = marge
+    br = branch
+    graph = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
+    gr = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
 [color]
-	ui = true
-	diff = true
+    ui = true
+    diff = true
 [push]
-	default = current
+    default = current

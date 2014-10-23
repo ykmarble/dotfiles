@@ -3,9 +3,10 @@ alias あのあの='ping -c 3 www.google.co.jp'
 alias ping='ping -c 3'
 alias percol='percol --match-method migemo'
 alias a='cd ..'
+alias g='cd $(ls -A | peco)'
+alias c='pygmentize -O style=vim -f console256 -g'
 alias w='wpa_cli'
 alias z='cd'
-alias g='git'
 alias l='ls'
 alias e='emacs'
 alias o='open'
@@ -18,7 +19,8 @@ alias lv='lv -Ou8'
 alias python='python2'
 alias -g G='|grep --color=auto'
 alias -g L='|lv -c'
-alias -g P='|percol'
+alias -g P='|peco'
+alias -g C='|column'
 alias strace='strace -s 2000 -f -tt'
 alias -s tex=platex
 alias -s pdf=open
@@ -94,6 +96,7 @@ setopt correct
 
 #enable to use powerful glob,like regular expression
 setopt extendedglob
+setopt braceccl
 
 #change keybind like emacs
 bindkey -e
@@ -124,7 +127,7 @@ zstyle ':completion:*:manuals' separate-sections true
 #change apperance of completion
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
-zstyle ':completion:*' completer _expand _complete _match _prefix _list 
+zstyle ':completion:*' completer _expand _complete _match _prefix _list
 zstyle ':completion:*:messages' format '%F{yellow}%d%f'$DEFAULT
 zstyle ':completion:*:warnings' format '%F{red}No matches.%f'$DEFAULT
 zstyle ':completion:*:options' description 'yes'
@@ -149,7 +152,7 @@ add-zsh-hook chpwd chpwd_recent_dirs
 zstyle ':chpwd:*' recent-dirs-max 5000
 zstyle ':chpwd:*' recent-dirs-default yes
 zstyle ':completion:*' recent-dirs-insert both
- 
+
 #git utils
 autoload -Uz vcs_info
 zstyle ':vcs_info:*' formats ' (%s:%b)'
@@ -178,6 +181,10 @@ function mkdir(){
     /bin/mkdir $@ && cd $@;
 }
 
+function dict(){
+    w3m "http://ejje.weblio.jp/sentence/content/$1"
+}
+
 # disable screen lock of Ctrl+S
 stty stop undef
 
@@ -189,6 +196,3 @@ bindkey '^xh' zaw-history
 bindkey '^x^f' zaw-cdr
 bindkey '^xr' zaw-ssh-hosts
 bindkey '^xi' zaw-open-file
-
-# run tmux
-which tmux 2>&1 >/dev/null && [ -z $TMUX ] && (tmux -2 attach || tmux -2 new-session)

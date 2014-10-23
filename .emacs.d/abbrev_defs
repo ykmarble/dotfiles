@@ -1,6 +1,8 @@
 ;;-*-coding: utf-8;-*-
 (define-abbrev-table 'Buffer-menu-mode-abbrev-table '())
 
+(define-abbrev-table 'arduino-mode-abbrev-table '())
+
 (define-abbrev-table 'awk-mode-abbrev-table '())
 
 (define-abbrev-table 'bookmark-bmenu-mode-abbrev-table '())
@@ -33,9 +35,13 @@
 
 (define-abbrev-table 'eshell-mode-abbrev-table '())
 
+(define-abbrev-table 'flycheck-error-list-mode-abbrev-table '())
+
 (define-abbrev-table 'fundamental-mode-abbrev-table '())
 
 (define-abbrev-table 'gfm-mode-abbrev-table '())
+
+(define-abbrev-table 'git-commit-mode-abbrev-table '())
 
 (define-abbrev-table 'git-rebase-mode-abbrev-table '())
 
@@ -51,6 +57,8 @@
 
 (define-abbrev-table 'helm-grep-mode-abbrev-table '())
 
+(define-abbrev-table 'helm-moccur-mode-abbrev-table '())
+
 (define-abbrev-table 'help-mode-abbrev-table '())
 
 (define-abbrev-table 'html-mode-abbrev-table '())
@@ -65,6 +73,8 @@
 
 (define-abbrev-table 'inferior-lisp-mode-abbrev-table '())
 
+(define-abbrev-table 'inferior-octave-mode-abbrev-table '())
+
 (define-abbrev-table 'inferior-python-mode-abbrev-table '())
 
 (define-abbrev-table 'java-mode-abbrev-table '())
@@ -77,6 +87,8 @@
 
 (define-abbrev-table 'magit-branch-manager-mode-abbrev-table '())
 
+(define-abbrev-table 'magit-cherry-mode-abbrev-table '())
+
 (define-abbrev-table 'magit-commit-mode-abbrev-table '())
 
 (define-abbrev-table 'magit-diff-mode-abbrev-table '())
@@ -84,6 +96,10 @@
 (define-abbrev-table 'magit-log-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'magit-log-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-mode-abbrev-table '())
+
+(define-abbrev-table 'magit-process-mode-abbrev-table '())
 
 (define-abbrev-table 'magit-reflog-mode-abbrev-table '())
 
@@ -102,6 +118,12 @@
 (define-abbrev-table 'occur-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'occur-mode-abbrev-table '())
+
+(define-abbrev-table 'octave-abbrev-table
+  '(
+   ))
+
+(define-abbrev-table 'octave-mode-abbrev-table '())
 
 (define-abbrev-table 'org-mode-abbrev-table '())
 
@@ -125,6 +147,8 @@
     ("while" "" python-skeleton-while 0)
    ))
 
+(define-abbrev-table 'quickrun/mode-abbrev-table '())
+
 (define-abbrev-table 'scala-mode-abbrev-table '())
 
 (define-abbrev-table 'scala-mode-inf-abbrev-table '())
@@ -132,6 +156,8 @@
 (define-abbrev-table 'select-tags-table-mode-abbrev-table '())
 
 (define-abbrev-table 'sgml-mode-abbrev-table '())
+
+(define-abbrev-table 'sh-mode-abbrev-table '())
 
 (define-abbrev-table 'shell-mode-abbrev-table '())
 
@@ -150,6 +176,8 @@
 (define-abbrev-table 'vc-git-log-edit-mode-abbrev-table '())
 
 (define-abbrev-table 'vc-git-log-view-mode-abbrev-table '())
+
+(define-abbrev-table 'verilog-mode-abbrev-table '())
 
 (define-abbrev-table 'yatex-mode-abbrev-table '())
 

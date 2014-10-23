@@ -2,16 +2,67 @@
 # name: NewFileTemplete
 # key: NewFile
 # --
-\documentclass[a4j,12pt]{jsarticle}
-\usepackage{amsmath}
+\documentclass[a4j,12pt]{jarticle}
 
+\usepackage[dvipdfmx]{graphicx}
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{listings,jlisting}
+
+\makeatletter
 \title{$1}
 \author{201311357 黒川佑郁}
 \date{}
 
-\begin{document}
-\maketitle
+\pagestyle{fancy}
 
+% headers & footers
+\lhead{\@title}
+\chead{}
+\rhead{\@author}
+\lfoot{}
+\cfoot{\thepage /\pageref{LastPage}}
+\rfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+\makeatother
+
+% colors
+\definecolor{hellgelb}{rgb}{1,1,0.8}
+\definecolor{colKeys}{rgb}{0,0,1}
+\definecolor{colIdentifier}{rgb}{0,0,0}
+\definecolor{colComments}{rgb}{1,0,0}
+\definecolor{colString}{rgb}{0,0.5,0}
+
+% setting listing
+\lstset{%
+    language=Java,%
+    float=hbp,%
+    basicstyle=\ttfamily\small, %
+    identifierstyle=\color{colIdentifier}, %
+    keywordstyle=\color{colKeys}, %
+    stringstyle=\color{colString}, %
+    commentstyle=\color{colComments}, %
+    columns=flexible, %
+    tabsize=2, %
+    frame=single, %
+    extendedchars=true, %
+    showspaces=false, %
+    showstringspaces=false, %
+    numbers=left, %
+    numberstyle=\tiny, %
+    breaklines=true, %
+    backgroundcolor=\color{hellgelb}, %
+    breakautoindent=true, %
+    captionpos=b%
+}
+
+
+\begin{document}
+
+\section*{課題1}
 $0
 
 \end{document}

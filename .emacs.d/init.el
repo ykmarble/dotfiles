@@ -128,7 +128,7 @@
 ;;; font setting
 (set-face-attribute 'default nil
 		    :family "Ricty" ;;font
-		    :height 115) ;;font-size
+		    :height 105) ;;font-size
 (set-fontset-font
  nil 'japanese-jisx0208
  (font-spec :family "Ricty")) ;; font
@@ -149,10 +149,10 @@
 
 ;;; change bg-color
 (set-face-background 'default "#2C2717")
-(set-face-background 'hl-line "#3E361B")
-
+(set-face-background 'hl-line nil)
+(set-face-underline-p 'hl-line t)
 ;;; use transparent frame
-(set-frame-parameter nil 'alpha 70)
+(set-frame-parameter nil 'alpha 75)
 
 ;; mode line
 (set-face-font 'mode-line "Ricty")
@@ -247,12 +247,12 @@
 (set-face-attribute 'mode-line-read-only-face nil
     :inherit 'mode-line-face
     :foreground "#4271ae"
-    :height 110
+    :height 108
     :box '(:line-width 2 :color "grey20" :style nil))
 (set-face-attribute 'mode-line-modified-face nil
     :inherit 'mode-line-face
     :foreground "#c82829"
-    :height 110
+    :height 108
     :box '(:line-width 2 :color "grey20" :style nil))
 (set-face-attribute 'mode-line-folder-face nil
     :inherit 'mode-line-face
@@ -270,7 +270,7 @@
 (set-face-attribute 'mode-line-minor-mode-face nil
     :inherit 'mode-line-mode-face
     :foreground "grey80"
-    :height 110)
+    :height 108)
 (set-face-attribute 'mode-line-process-face nil
     :inherit 'mode-line-face
     :foreground "SkyBlue1")
@@ -307,7 +307,7 @@
 ;  (define-key map (kbd "C-c") 'zlc-reset))
 
 ;;; enable anzu
-(global-anzu-mode +1)
+;(global-anzu-mode +1)
 
 ;;; ediff settings
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -323,7 +323,7 @@
 (require 'smooth-scroll)
 (smooth-scroll-mode t)
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
+;(setq mouse-wheel-progressive-speed nil) ;; don't accelerate scrolling
 (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
 ;;; ido-mode
@@ -346,8 +346,9 @@
   (setq migemo-coding-system 'utf-8-unix)
   (load-library "migemo")
   (migemo-init)
-  (require 'helm-migemo)
-  (setq helm-use-migemo t))
+;  (require 'helm-migemo)
+;  (setq helm-use-migemo t)
+  )
 
 ;;; kogiku -- use migemo in find-file
 (require 'kogiku)
@@ -357,6 +358,7 @@
 (require 'smartparens-config)
 (smartparens-global-mode)
 (setq sp-autoescape-string-quote nil)
+
 
 ;;; enable undo tree
 (global-undo-tree-mode t)
@@ -420,16 +422,18 @@
 ;;; ==============
 
 ;;; Markdown
-(autoload 'markdown-mode "markdown-mode.el"
-  "Major mode for editing Markdonw files" t)
 (setq auto-mode-alist
-      (cons '("\\.md$" . markdown-mode) auto-mode-alist))
+      (cons '("\\.md$" . gfm-mode) auto-mode-alist))
 (setq markdown-command-needs-filename t)
 (add-hook 'markdown-mode-hook '(lambda ()
    (progn
      (define-key markdown-mode-map (kbd "M-SPC") 'markdown-preview)
      (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line))))
+(setq markdown-command "mbl.markdown")
 
+;;; HTML
+(add-hook 'html-mode-hook '(lambda ()
+  (define-key html-mode-map (kbd "C-c C-c v") 'browse-url-of-file)))
 
 ;;; Scala
 (require 'scala-mode2)
@@ -480,6 +484,9 @@
     (YaTeX-typeset-menu nil ?p)
   ))
 ))
+(add-hook ' yatex-mode-hook '(lambda ()
+  (auto-fill-mode -1))
+)
 
 ;;; Arduino
 (setq auto-mode-alist (cons '("\\.\\(pde\\|ino\\)$" . arduino-mode) auto-mode-alist))
@@ -491,7 +498,7 @@
 (autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
 (autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
 (if window-system (require 'caml-font))
-(setq inferior-caml-program "/usr/local/bin/ocaml")
+(setq inferior-caml-program "/usr/bin/ocaml")
 
 ;;; Octave
 (autoload 'octave-mode "octave-mod" nil t)
@@ -553,7 +560,15 @@
         (let ((n (position selected names :test 'equal)))
           (nth n choices))
       (signal 'quit "user quit!"))))
-(custom-set-variables '(yas/prompt-functions '(my-yas/prompt)))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
+ '(yas-prompt-functions (quote (my-yas/prompt))))
 (require 'clojure-snippets)
 (clojure-snippets-initialize)
 
@@ -605,6 +620,8 @@
 (push '("*dvi-peview*") popwin:special-display-config)
 (push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
 (push '("*quickrun*") popwin:special-display-config)
+(push '(direx:direx-mode :position left :width 25 :dedicated t)
+      popwin:special-display-config)
 
 ;;; ==============
 ;;;  key bindings
@@ -628,6 +645,14 @@
 (global-set-key (kbd "C-x f") 'helm-recentf)
 (global-set-key (kbd "C-.") 'evil-numbers/inc-at-pt)
 (global-set-key (kbd "C-,") 'evil-numbers/dec-at-pt)
-(global-set-key (kbd "M-SPC") 'quickrun)
+(global-set-key (kbd "M-SPC") 'quickrun-with-arg)
 (global-set-key (kbd "C-x C-x") nil)
 (global-set-key (kbd "C-c m") 'magit-status)
+(global-set-key (kbd "M-,") 'pop-tag-mark)
+(global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ )

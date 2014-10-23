@@ -9,5 +9,5 @@ export GTK_IM_MODULE=fcitx
 export QT_IM_MODULE=fcitx
 export KCODE=u
 export JAVA_TOOL_OPTIONS=-Dfile.encoding=UTF-8
-
-
+export GOPATH=$HOME/Sources/Go
+export PATH=$PATH:$GOPATH/bin
