@@ -104,6 +104,12 @@
 ;;; PATH setting
 (exec-path-from-shell-initialize)
 
+;;; auto reload file which modified by other editor
+;(auto-revert-mode t)
+
+;;; disable auto indent
+(electric-indent-mode -1)
+
 ;;; ======
 ;;;  face
 ;;; ======
@@ -126,12 +132,22 @@
 (global-hl-line-mode)
 
 ;;; font setting
-(set-face-attribute 'default nil
-		    :family "Ricty" ;;font
-		    :height 105) ;;font-size
-(set-fontset-font
- nil 'japanese-jisx0208
- (font-spec :family "Ricty")) ;; font
+;(set-face-attribute 'default nil
+;                    :family "Ricty" ;;font
+;                    :height 105) ;;font-size
+;(set-fontset-font
+; nil 'japanese-jisx0208
+; (font-spec :family "Ricty")) ;; font
+
+(create-fontset-from-ascii-font "Ricty-10.5:weight=bold:slant=normal"
+                                nil "ricty")
+(set-fontset-font "fontset-ricty"
+                  'unicode
+                  (font-spec :family "Ricty" :size 10.5)
+                  nil
+                  'append)
+
+(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
 
 ;;; enable full screen mode with startup
 ;(custom-set-variables
@@ -365,57 +381,60 @@
 (global-set-key (kbd "M-/") 'undo-tree-redo)
 
 ;;; flymake
-(require 'flymake)
-(require 'flymake-cursor)
-(setq flymake-allowed-file-name-masks '())
-;(add-hook 'find-file-hook 'flymake-find-file-hook)
-;(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
-;  (setq flymake-check-was-interrupted t))
-;(ad-activate 'flymake-post-syntax-check)
-;; function to do flymake without Makefile easily
-(defun flymake-simple-generic-init (cmd &optional opts)
-  (let* ((temp-file  (flymake-init-create-temp-buffer-copy
-                      'flymake-create-temp-inplace))
-         (local-file (file-relative-name
-                      temp-file
-                      (file-name-directory buffer-file-name))))
-    (list cmd (append opts (list local-file)))))
-;; C/C++
-(defun flymake-c-init ()
- (flymake-simple-generic-init
-  "gcc" '("-Wall" "-Wextra" "-pedantic" "-fsyntax-only")))
-(defun flymake-cc-init ()
- (flymake-simple-generic-init
-  "g++" '("-Wall" "-Wextra" "-fsyntax-only")))
-(push '("\\.c\\'" flymake-c-init) flymake-allowed-file-name-masks)
-(push '("\\.\\(cc\\|h\\|cpp\\|C\\|CPP\\|hpp\\)\\'" flymake-cc-init)
-      flymake-allowed-file-name-masks)
+;(require 'flymake)
+;(require 'flymake-cursor)
+;(setq flymake-allowed-file-name-masks '())
+;;(add-hook 'find-file-hook 'flymake-find-file-hook)
+;;(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
+;;  (setq flymake-check-was-interrupted t))
+;;(ad-activate 'flymake-post-syntax-check)
+;;; function to do flymake without Makefile easily
+;(defun flymake-simple-generic-init (cmd &optional opts)
+;  (let* ((temp-file  (flymake-init-create-temp-buffer-copy
+;                      'flymake-create-temp-inplace))
+;         (local-file (file-relative-name
+;                      temp-file
+;                      (file-name-directory buffer-file-name))))
+;    (list cmd (append opts (list local-file)))))
+;;; C/C++
+;(defun flymake-c-init ()
+; (flymake-simple-generic-init
+;  "gcc" '("-Wall" "-Wextra" "-pedantic" "-fsyntax-only")))
+;(defun flymake-cc-init ()
+; (flymake-simple-generic-init
+;  "g++" '("-Wall" "-Wextra" "-fsyntax-only")))
+;(push '("\\.c\\'" flymake-c-init) flymake-allowed-file-name-masks)
+;(push '("\\.\\(cc\\|h\\|cpp\\|C\\|CPP\\|hpp\\)\\'" flymake-cc-init)
+;      flymake-allowed-file-name-masks)
+;
+;;; Java
+;(defun flymake-java-init ()
+;  (flymake-simple-make-init-impl
+;   'flymake-create-temp-with-folder-structure nil nil
+;   buffer-file-name
+;   'flymake-get-java-cmdline))
+;(defun flymake-get-java-cmdline (source ase-dir)
+;  (list "javac" (list "-J-Dfile.encoding=utf-8" "-encoding" "utf-8"
+;              source)))
+;(push '("\\.java\\'" flymake-java-init) flymake-allowed-file-name-masks)
+;;; Python
+;(defun flymake-python-init ()
+;  (flymake-simple-generic-init
+;   "pyflakes-python2" '()))
+;(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
+;(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
+;;; Arduino
+;(defun flymake-ino-init ()
+; (flymake-simple-generic-init
+;  "/usr/bin/avr-g++"
+;  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "~/Sources/arduino/include")
+;    "-include" "Arduino.h" "-Wall" "-Wextra" "-fsyntax-only")))
+;(push '("\\.ino\\'" flymake-ino-init) flymake-allowed-file-name-masks)
+;(add-hook 'ruby-mode-hook 'flymake-ruby-load)
+;(setq flymake-gui-warnings-enabled nil) ;; disable error dialog
 
-;; Java
-(defun flymake-java-init ()
-  (flymake-simple-make-init-impl
-   'flymake-create-temp-with-folder-structure nil nil
-   buffer-file-name
-   'flymake-get-java-cmdline))
-(defun flymake-get-java-cmdline (source ase-dir)
-  (list "javac" (list "-J-Dfile.encoding=utf-8" "-encoding" "utf-8"
-              source)))
-(push '("\\.java\\'" flymake-java-init) flymake-allowed-file-name-masks)
-;; Python
-(defun flymake-python-init ()
-  (flymake-simple-generic-init
-   "pyflakes-python2" '()))
-(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
-(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
-;; Arduino
-(defun flymake-ino-init ()
- (flymake-simple-generic-init
-  "/usr/bin/avr-g++"
-  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "~/Sources/arduino/include")
-    "-include" "Arduino.h" "-Wall" "-Wextra" "-fsyntax-only")))
-(push '("\\.ino\\'" flymake-ino-init) flymake-allowed-file-name-masks)
-(add-hook 'ruby-mode-hook 'flymake-ruby-load)
-(setq flymake-gui-warnings-enabled nil) ;; disable error dialog
+;;; flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;;; ==============
 ;;;  global modes
@@ -567,7 +586,7 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
-    ("21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
+    ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
  '(yas-prompt-functions (quote (my-yas/prompt))))
 (require 'clojure-snippets)
 (clojure-snippets-initialize)
@@ -594,7 +613,7 @@
 (add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'arduino-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
-;(require 'ac-python)
+(require 'ac-python)
 (require 'ac-octave)
 (defun ac-octave-mode-setup ()
   (setq ac-sources '(ac-source-octave)))
@@ -650,9 +669,6 @@
 (global-set-key (kbd "C-c m") 'magit-status)
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
-(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- )
+(require 'helm)
+(define-key helm-map (kbd "C-h") 'delete-backward-char)
+(define-key helm-map (kbd "M-h") 'backward-kill-word)
