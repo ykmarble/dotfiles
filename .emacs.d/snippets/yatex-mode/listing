@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: listing
+# key: listing
+# type: command
+# --
+\lstinputlisting[caption=$1,label=$2]{$3}$0

@@ -17,6 +17,7 @@ alias lla='ls -Al'
 alias sshe='cocot -t UTF-8 -p EUC-JP -- ssh'
 alias lv='lv -Ou8'
 alias python='python2'
+alias uplatex='uplatex -interaction nonstopmode -halt-on-error -file-line-error'
 alias -g G='|grep --color=auto'
 alias -g L='|lv -c'
 alias -g P='|peco'
@@ -55,6 +56,7 @@ n        source $HOME/.zsh.d/mac
         ;;
 esac
 
+export PATH=$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin
 
 #histry settings
 HISTFILE=~/.histfile

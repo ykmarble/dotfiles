@@ -27,6 +27,10 @@
     '("melpa" . "http://melpa.milkbox.net/packages/") t)
 (package-initialize)
 
+;;; cask
+(require 'cask)
+(cask-initialize)
+
 ;;; change history length
 (setq history-length 10000)
 
@@ -36,8 +40,11 @@
 ;;; disable dialog box
 (setq use-dialog-box nil)
 
+;;; kill beep sound
+(setq ring-bell-function 'ignore)
+
 ;;; stop cursor blinking
-(blink-cursor-mode)
+(blink-cursor-mode nil)
 
 ;;; kill whole line when cursor is head of line and C-k is pressed
 (setq kill-whole-line t)
@@ -56,11 +63,14 @@
 ;;; auto rescan imenu list
 (setq imenu-auto-rescan t)
 
-;;; don't make backup file
-(setq backup-inhibited t)
-
-;;; delete auto save files
-(setq delete-auto-save-files t)
+;; create backup file in ~/.emacs.d/backup
+(setq make-backup-files t)
+(setq backup-directory-alist
+  (cons (cons "\\.*$" (expand-file-name "~/.emacs.d/backup"))
+    backup-directory-alist))
+;; create auto-save file in ~/.emacs.d/backup
+(setq auto-save-file-name-transforms
+      `((".*" ,(expand-file-name "~/.emacs.d/backup/") t)))
 
 ;;; visible tab and spaces
 (require 'whitespace)
@@ -109,6 +119,10 @@
 
 ;;; disable auto indent
 (electric-indent-mode -1)
+
+;;; tramp hangs up when using zsh
+(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+
 
 ;;; ======
 ;;;  face
@@ -164,11 +178,11 @@
 (load-theme 'tsdh-dark t)
 
 ;;; change bg-color
-(set-face-background 'default "#2C2717")
+(set-face-background 'default "#000000")
 (set-face-background 'hl-line nil)
 (set-face-underline-p 'hl-line t)
 ;;; use transparent frame
-(set-frame-parameter nil 'alpha 75)
+(set-frame-parameter nil 'alpha 80)
 
 ;; mode line
 (set-face-font 'mode-line "Ricty")
@@ -253,23 +267,23 @@
 (make-face 'mode-line-process-face)
 (make-face 'mode-line-80col-face)
 (set-face-attribute 'mode-line nil
-    :foreground "SkyBlue1" :background "grey20"
+    :foreground "SkyBlue1" :background "grey10"
     :inverse-video nil
-    :box '(:line-width 2 :color "grey20" :style nil))
+    :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-inactive nil
-    :foreground "SkyBlue1" :background "grey20"
+    :foreground "SkyBlue1" :background "grey10"
     :inverse-video nil
-    :box '(:line-width 2 :color "grey20" :style nil))
+    :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-read-only-face nil
     :inherit 'mode-line-face
     :foreground "#4271ae"
     :height 108
-    :box '(:line-width 2 :color "grey20" :style nil))
+    :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-modified-face nil
     :inherit 'mode-line-face
     :foreground "#c82829"
     :height 108
-    :box '(:line-width 2 :color "grey20" :style nil))
+    :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-folder-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00" :height 110)
@@ -294,6 +308,16 @@
     :inherit 'mode-line-position-face
     :foreground "black" :background "#eab700")
 
+;;; rainbow delimiters
+(require 'rainbow-delimiters)
+(add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode t)))
+(require 'cl-lib)
+(require 'color)
+(cl-loop
+ for index from 1 to rainbow-delimiters-max-face-count
+ do
+ (let ((face (intern (format "rainbow-delimiters-depth-%d-face" index))))
+   (cl-callf color-saturate-name (face-foreground face) 30)))
 
 ;;; =======
 ;;;  utils
@@ -310,24 +334,29 @@
 ;(add-hook 'yatex-mode-hook 'flyspell-mode)
 ;(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
 
-;;; zsh like completion
-;(require 'zlc)
-;(zlc-mode t)
-;(let ((map minibuffer-local-map))
-;  ;;; like menu select
-;  (define-key map (kbd "<down>")  'zlc-select-next-vertical)
-;  (define-key map (kbd "<up>")    'zlc-select-previous-vertical)
-;  (define-key map (kbd "<right>") 'zlc-select-next)
-;  (define-key map (kbd "<left>")  'zlc-select-previous)
-;  ;;; reset selection
-;  (define-key map (kbd "C-c") 'zlc-reset))
-
 ;;; enable anzu
-;(global-anzu-mode +1)
+(global-anzu-mode +1)
+
+;;; highlight same symbol
+(add-hook 'prog-mode-hook (lambda () (highlight-symbol-mode t)))
+
+;;; expand region
+(require 'expand-region)
+(global-set-key (kbd "C-SPC") 'er/expand-region)
+(global-set-key (kbd "C-M-SPC") 'er/contract-region)
+(transient-mark-mode t)
 
 ;;; ediff settings
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq ediff-split-window-function 'split-window-horizontally)
+
+;;; recentf
+(when (require 'recentf-ext nil t)
+  (setq recentf-max-saved-items 2000)
+  (setq recentf-exclude '(".recentf"))
+  (setq recentf-auto-cleanup 10)
+  (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
+  (recentf-mode 1)) ;; auto-save
 
 ;;; magit
 (require 'magit)
@@ -350,6 +379,10 @@
   (setq confirm-nonexistent-file-or-buffer nil))
 (setq ido-ignore-buffers (append ido-ignore-buffers '("\\`\\*.*\\*")))
 
+;;; junk file
+(require 'open-junk-file)
+(setq open-junk-file-format "~/Scraps/%Y-%m-%d-%H%M%S.")
+
 ;;; quickrun
 (require 'quickrun)
 
@@ -366,10 +399,6 @@
 ;  (setq helm-use-migemo t)
   )
 
-;;; kogiku -- use migemo in find-file
-(require 'kogiku)
-(setq kogiku-enable-once nil)
-
 ;;; display set of parens in each colors
 (require 'smartparens-config)
 (smartparens-global-mode)
@@ -380,65 +409,27 @@
 (global-undo-tree-mode t)
 (global-set-key (kbd "M-/") 'undo-tree-redo)
 
-;;; flymake
-;(require 'flymake)
-;(require 'flymake-cursor)
-;(setq flymake-allowed-file-name-masks '())
-;;(add-hook 'find-file-hook 'flymake-find-file-hook)
-;;(defadvice flymake-post-syntax-check (before flymake-force-check-was-interrupted)
-;;  (setq flymake-check-was-interrupted t))
-;;(ad-activate 'flymake-post-syntax-check)
-;;; function to do flymake without Makefile easily
-;(defun flymake-simple-generic-init (cmd &optional opts)
-;  (let* ((temp-file  (flymake-init-create-temp-buffer-copy
-;                      'flymake-create-temp-inplace))
-;         (local-file (file-relative-name
-;                      temp-file
-;                      (file-name-directory buffer-file-name))))
-;    (list cmd (append opts (list local-file)))))
-;;; C/C++
-;(defun flymake-c-init ()
-; (flymake-simple-generic-init
-;  "gcc" '("-Wall" "-Wextra" "-pedantic" "-fsyntax-only")))
-;(defun flymake-cc-init ()
-; (flymake-simple-generic-init
-;  "g++" '("-Wall" "-Wextra" "-fsyntax-only")))
-;(push '("\\.c\\'" flymake-c-init) flymake-allowed-file-name-masks)
-;(push '("\\.\\(cc\\|h\\|cpp\\|C\\|CPP\\|hpp\\)\\'" flymake-cc-init)
-;      flymake-allowed-file-name-masks)
-;
-;;; Java
-;(defun flymake-java-init ()
-;  (flymake-simple-make-init-impl
-;   'flymake-create-temp-with-folder-structure nil nil
-;   buffer-file-name
-;   'flymake-get-java-cmdline))
-;(defun flymake-get-java-cmdline (source ase-dir)
-;  (list "javac" (list "-J-Dfile.encoding=utf-8" "-encoding" "utf-8"
-;              source)))
-;(push '("\\.java\\'" flymake-java-init) flymake-allowed-file-name-masks)
-;;; Python
-;(defun flymake-python-init ()
-;  (flymake-simple-generic-init
-;   "pyflakes-python2" '()))
-;(push '("\\.py\\'" flymake-python-init) flymake-allowed-file-name-masks)
-;(add-hook 'python-mode-hook 'flymake-python-pyflakes-load)
-;;; Arduino
-;(defun flymake-ino-init ()
-; (flymake-simple-generic-init
-;  "/usr/bin/avr-g++"
-;  '("-x" "c++" "-mmcu=atmega328p" "-I" (expand-file-name "~/Sources/arduino/include")
-;    "-include" "Arduino.h" "-Wall" "-Wextra" "-fsyntax-only")))
-;(push '("\\.ino\\'" flymake-ino-init) flymake-allowed-file-name-masks)
-;(add-hook 'ruby-mode-hook 'flymake-ruby-load)
-;(setq flymake-gui-warnings-enabled nil) ;; disable error dialog
-
 ;;; flycheck
 (add-hook 'after-init-hook #'global-flycheck-mode)
 
 ;;; ==============
 ;;;  global modes
 ;;; ==============
+
+;;; Python
+(require 'python-mode)
+(add-hook 'python-mode-hook '(lambda ()
+    (global-unset-key (kbd "C-c !"))
+    (define-key python-mode-map (kbd "C-c !") 'ipython-switch))
+    (define-key python-mode-map (kbd "C-c C-c") 'py-execute-buffer-ipython))
+
+; switch to the interpreter after executing code
+;(setq py-shell-switch-buffers-on-execute-p t)
+;(setq py-switch-buffers-on-execute-p t)
+; don't split windows
+(setq py-split-windows-on-execute-p nil)
+; try to automagically figure out indentation
+(setq py-smart-indentation t)
 
 ;;; Markdown
 (setq auto-mode-alist
@@ -489,9 +480,9 @@
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
 (setq YaTeX-no-begend-shortcut t)
 (setq YaTeX-kanji-code 4)
-(setq tex-command "platex")
+(setq tex-command "uplatex")
 (setq dviprint-command-format "dvipdfmx %s")
-(setq dvi2-command "evince")
+(setq dvi2-command "atril")
 (setq YaTeX-use-AMS-LaTeX t)
 (setq bibtex-command "pbibtex")
 (setq YaTeX-close-paren-always nil)
@@ -613,7 +604,13 @@
 (add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'arduino-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
-(require 'ac-python)
+;(require 'ac-python)
+(require 'epc)
+(require 'auto-complete-config)
+(setenv "PYTHONPATH" "/usr/local/lib/python2.7/site-packages")
+(require 'jedi)
+(add-hook 'python-mode-hook 'jedi:setup)
+(setq jedi:complete-on-dot t)
 (require 'ac-octave)
 (defun ac-octave-mode-setup ()
   (setq ac-sources '(ac-source-octave)))
@@ -646,13 +643,17 @@
 ;;;  key bindings
 ;;; ==============
 
+;; C-hをBackSpaceキーに変更
+(keyboard-translate ?\C-h ?\C-?)
+(global-set-key "\C-h" nil)
+
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
 (global-set-key (kbd "C-c <up>")    'windmove-up)
 (global-set-key (kbd "C-c <down>")  'windmove-down)
-(global-set-key (kbd "C-h") 'backward-delete-char-untabify)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
+(global-set-key (kbd "C-x j") 'open-junk-file)
 (global-set-key (kbd "C-o") 'moccur)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
@@ -670,5 +671,4 @@
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 (require 'helm)
-(define-key helm-map (kbd "C-h") 'delete-backward-char)
 (define-key helm-map (kbd "M-h") 'backward-kill-word)

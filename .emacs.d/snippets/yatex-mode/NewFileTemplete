@@ -1,8 +1,9 @@
 # -*- mode: snippet -*-
 # name: NewFileTemplete
 # key: NewFile
+# expand-env: ((yas/indent-line 'fixed) (yas/wrap-around-region 'nil))
 # --
-\documentclass[a4j,12pt]{jarticle}
+\documentclass[a4j,12pt,uplatex]{jsarticle}
 
 \usepackage[dvipdfmx]{graphicx}
 \usepackage{lastpage}
@@ -12,7 +13,7 @@
 \usepackage{listings,jlisting}
 
 \makeatletter
-\title{$1}
+\title{}
 \author{201311357 黒川佑郁}
 \date{}
 
@@ -38,7 +39,7 @@
 
 % setting listing
 \lstset{%
-    language=Java,%
+    language=C,%
     float=hbp,%
     basicstyle=\ttfamily\small, %
     identifierstyle=\color{colIdentifier}, %
@@ -51,14 +52,13 @@
     extendedchars=true, %
     showspaces=false, %
     showstringspaces=false, %
-    numbers=left, %
+    numbers=none, %
     numberstyle=\tiny, %
     breaklines=true, %
     backgroundcolor=\color{hellgelb}, %
     breakautoindent=true, %
     captionpos=b%
 }
-
 
 \begin{document}
 
