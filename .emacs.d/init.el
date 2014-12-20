@@ -324,7 +324,21 @@
 
 ;;; use advanced occur
 (require 'color-moccur)
-(require 'moccur-edit)
+;(require 'moccur-edit)
+
+;;; ag: The silver searcher
+(require 'ag)
+(setq ag-highlight-search t)  ; 検索キーワードをハイライト
+(setq ag-reuse-buffers t)     ; 検索用バッファを使い回す (検索ごとに新バッファを作らない)
+
+;;; wgrep
+(require 'wgrep)
+(add-hook 'ag-mode-hook '(lambda ()
+                           (require 'wgrep-ag)
+                           (setq wgrep-auto-save-buffer t)  ; 編集完了と同時に保存
+                           (setq wgrep-enable-key "r")      ; "r" キーで編集モードに
+                           (wgrep-ag-setup)))
+
 
 ;;; enable spell checker
 (require 'ispell)
@@ -341,8 +355,7 @@
 
 ;;; expand region
 (require 'expand-region)
-(global-set-key (kbd "C-SPC") 'er/expand-region)
-(global-set-key (kbd "C-M-SPC") 'er/contract-region)
+(global-set-key (kbd "C-M-SPC") 'er/expand-region)
 (transient-mark-mode t)
 
 ;;; ediff settings
@@ -402,6 +415,7 @@
 (require 'smartparens-config)
 (smartparens-global-mode)
 (setq sp-autoescape-string-quote nil)
+(setq sp-highlight-pair-overlay nil)
 
 
 ;;; enable undo tree
@@ -653,7 +667,7 @@
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
 (global-set-key (kbd "C-x j") 'open-junk-file)
-(global-set-key (kbd "C-o") 'moccur)
+(global-set-key (kbd "C-o") 'ag)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
 (global-set-key (kbd "M-o") 'helm-occur)
