@@ -556,6 +556,24 @@
 ;;; mikutter
 (require 'mikutter)
 
+;;; Org mode
+(require 'org)
+(require 'org-capture)
+(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
+(setq org-directory "~/Dropbox/org/")
+(setq org-default-notes-file (concat org-directory "memo.org"))
+(setq org-return-follows-link t)
+(setq org-display-custom-times "<%Y-%m-%d(%a) %H:%M:%S>")
+(setq org-time-stamp-custom-formats "<%Y-%m-%d(%a) %H:%M:%S>")
+(setq org-capture-templates
+ '(("m" "Memo" entry (file+headline nil "Memo") "* %? %U\n %i")
+   ("t" "TODO" entry (file+headline nil "TODO") "* TODO %? %i")))
+(setq org-startup-folded t)
+(setq org-startup-truncated nil)
+;(setq org-agenda-files
+;      '("~/Dropbox/org/memo.org"))
+
+
 ;;; =============
 ;;;  completions
 ;;; =============
@@ -667,6 +685,8 @@
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
 (global-set-key (kbd "C-c j") 'open-junk-file)
+(global-set-key (kbd "C-c c") 'org-capture)
+(global-set-key (kbd "C-c a") 'org-agenda)
 (global-set-key (kbd "C-o") 'ag)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
