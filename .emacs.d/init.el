@@ -666,7 +666,7 @@
 (global-set-key (kbd "C-c <down>")  'windmove-down)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
-(global-set-key (kbd "C-x j") 'open-junk-file)
+(global-set-key (kbd "C-c j") 'open-junk-file)
 (global-set-key (kbd "C-o") 'ag)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
