@@ -326,6 +326,7 @@
 (defun insert-current-time()
   (interactive)
   (insert (format-time-string "[%Y-%m-%d]" (current-time))))
+
 ;;; use advanced occur
 (require 'color-moccur)
 ;(require 'moccur-edit)
@@ -456,7 +457,6 @@
    (progn
      (define-key markdown-mode-map (kbd "M-SPC") 'markdown-preview)
      (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line))))
-(setq markdown-command "mbl.markdown")
 (setq markdown-command "pandoc -s -f markdown_github+tex_math_dollars+tex_math_double_backslash --mathjax")
 
 ;;; HTML
@@ -561,6 +561,17 @@
 ;;; mikutter
 (require 'mikutter)
 
+;;; howm mode
+(defvar howm-view-title-header "##")
+(setq howm-directory "~/Dropbox/memo/")
+(setq howm-history-file "~/Dropbox/memo/.howm-history")
+(setq howm-keyword-file "~/Dropbox/memo/.howm-keys")
+(setq howm-file-name-format "memo.md")
+(setq howm-menu-file "~/Dropbox/memo/.howm-menu")
+(setq howm-menu-lang 'ja)
+(setq howm-view-use-grep t)
+(require 'howm-mode)
+
 ;;; Org mode
 (require 'org)
 (require 'org-capture)
@@ -571,9 +582,11 @@
 (setq org-display-custom-times "<%Y-%m-%d(%a) %H:%M:%S>")
 (setq org-time-stamp-custom-formats "<%Y-%m-%d(%a) %H:%M:%S>")
 (setq org-capture-templates
- '(("m" "Memo" entry (file+headline nil "Memo") "* %? %U\n %i")
-   ("t" "TODO" entry (file+headline nil "TODO") "* TODO %? %i")))
-(setq org-startup-folded t)
+ '(("m" "Memo" entry (file+headline nil "Memo") "* %? %U\n")
+   ("t" "TODO" entry (file+headline nil "TODO") "* TODO %?")
+   ("b" "Book" entry (file+headline (concat org-directory "lifelog.org") "Book") "* %? %U\n")
+   ("l" "Log" entry (file+headline (concat org-directory "lifelog.org") "Log") "* %? %U\n")))
+;(setq org-startup-folded t)
 (setq org-startup-truncated nil)
 ;(setq org-agenda-files
 ;      '("~/Dropbox/org/memo.org"))
@@ -693,6 +706,7 @@
 (global-set-key (kbd "C-c j") 'open-junk-file)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c a") 'org-agenda)
+(global-set-key (kbd "C-c h") 'howm-menu)
 (global-set-key (kbd "C-o") 'ag)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
