@@ -457,6 +457,7 @@
      (define-key markdown-mode-map (kbd "M-SPC") 'markdown-preview)
      (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line))))
 (setq markdown-command "mbl.markdown")
+(setq markdown-command "pandoc -s -f markdown_github+tex_math_dollars+tex_math_double_backslash --mathjax")
 
 ;;; HTML
 (add-hook 'html-mode-hook '(lambda ()
