@@ -322,6 +322,10 @@
 ;;;  utils
 ;;; =======
 
+;;; insert current time
+(defun insert-current-time()
+  (interactive)
+  (insert (format-time-string "[%Y-%m-%d]" (current-time))))
 ;;; use advanced occur
 (require 'color-moccur)
 ;(require 'moccur-edit)
@@ -684,6 +688,7 @@
 (global-set-key (kbd "C-c <down>")  'windmove-down)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
+(global-set-key (kbd "C-c d") `insert-current-time)
 (global-set-key (kbd "C-c j") 'open-junk-file)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c a") 'org-agenda)
