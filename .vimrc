@@ -24,6 +24,7 @@ set showcmd
 set showmode
 set notitle
 set cursorline
+highlight CursorLine cterm=underline ctermfg=NONE ctermbg=NONE
 set showmatch
 set number
 set ruler
