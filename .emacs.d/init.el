@@ -26,6 +26,7 @@
 
 ;;; cask
 (require 'cask)
+(require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
 (pallet-mode t)
@@ -558,19 +559,6 @@
 (eval-after-load "emmet-mode"
   (define-key emmet-mode-keymap (kbd "C-j") nil))
 
-;;; mikutter
-(require 'mikutter)
-
-;;; howm mode
-(defvar howm-view-title-header "##")
-(setq howm-directory "~/Dropbox/memo/")
-(setq howm-history-file "~/Dropbox/memo/.howm-history")
-(setq howm-keyword-file "~/Dropbox/memo/.howm-keys")
-(setq howm-file-name-format "memo.md")
-(setq howm-menu-file "~/Dropbox/memo/.howm-menu")
-(setq howm-menu-lang 'ja)
-(setq howm-view-use-grep t)
-(require 'howm-mode)
 
 ;;; Org mode
 (require 'org)
@@ -674,7 +662,6 @@
 ;;; ========
 
 (require 'popwin)
-(require 'popwin-yatex)
 (popwin-mode 1)
 (setq display-buffer-function 'popwin:display-buffer)
 (setq popwin:popup-window-height 20)
