@@ -34,5 +34,6 @@ nnoremap : ;
 imap { {}<LEFT>
 imap [ []<LEFT>
 imap ( ()<LEFT>
+imap <c-j> <esc>
 set laststatus=2
 
