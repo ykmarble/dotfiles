@@ -621,7 +621,7 @@
 
 ;;; Auto complete
 (require 'auto-complete-config)
-(require 'auto-complete-clang)
+;(require 'auto-complete-clang)
 (global-auto-complete-mode t)
 (setq-default ac-ignore-case 'smart)
 (setq ac-delay 0)
@@ -634,7 +634,7 @@
 (setq-default ac-sources
   '(ac-source-yasnippet ac-source-dictionary ac-source-imenu ac-source-words-in-same-mode-buffers))
 (defun my-ac-cc-mode-setup ()
-  (setq ac-sources (append '(ac-source-clang ac-source-semantic ac-source-semantic-raw) ac-sources)))
+  (setq ac-sources (append '(ac-source-semantic ac-source-semantic-raw) ac-sources)))
 (defun my-ac-elisp-mode-setup ()
   (setq ac-sources (append '(ac-source-features ac-source-functions ac-source-symbols ac-source-variables) ac-sources)))
 (add-hook 'c-mode-hook 'my-ac-cc-mode-setup)
@@ -662,6 +662,7 @@
 ;;; ========
 
 (require 'popwin)
+(require 'popwin-yatex)
 (popwin-mode 1)
 (setq display-buffer-function 'popwin:display-buffer)
 (setq popwin:popup-window-height 20)

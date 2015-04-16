@@ -57,7 +57,7 @@ n        source $HOME/.zsh.d/mac
         ;;
 esac
 
-export PATH=$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin
+export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/node_modules/.bin"
 
 #histry settings
 HISTFILE=~/.histfile
