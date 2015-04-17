@@ -1,3 +1,4 @@
 alias ls='ls -hvFG'
 alias emacs='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n'
+alias emacsclient='/Applications/Emacs.app/Contents/MacOS/bin/emacsclient -n'
 alias top='top -o cpu'

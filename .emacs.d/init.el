@@ -1,5 +1,5 @@
 ;;; ======
-;;;  base
+;;;  Base
 ;;; ======
 
 ;;; change frequency of garbage collection
@@ -25,7 +25,6 @@
       "http://marmalade-repo.org/packages/"))
 
 ;;; cask
-(require 'cask)
 (require 'cask "~/.cask/cask.el")
 (cask-initialize)
 (require 'pallet)
@@ -44,7 +43,7 @@
 (setq ring-bell-function 'ignore)
 
 ;;; stop cursor blinking
-(blink-cursor-mode nil)
+;(blink-cursor-mode nil)
 
 ;;; kill whole line when cursor is head of line and C-k is pressed
 (setq kill-whole-line t)
@@ -121,7 +120,9 @@
 (electric-indent-mode -1)
 
 ;;; tramp hangs up when using zsh
+(require 'tramp)
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
+(setq tramp-default-method "scp")
 
 
 ;;; ======
@@ -146,26 +147,17 @@
 (global-hl-line-mode)
 
 ;;; font setting
-;(set-face-attribute 'default nil
-;                    :family "Ricty" ;;font
-;                    :height 105) ;;font-size
-;(set-fontset-font
-; nil 'japanese-jisx0208
-; (font-spec :family "Ricty")) ;; font
+(set-face-attribute 'default nil
+                    :family "Ricty" ;;font
+                    :height 135) ;;font-size
+(set-fontset-font
+ nil 'japanese-jisx0208
+ (font-spec :family "Ricty")) ;; font
 
-(create-fontset-from-ascii-font "Ricty-10.5:weight=bold:slant=normal"
-                                nil "ricty")
-(set-fontset-font "fontset-ricty"
-                  'unicode
-                  (font-spec :family "Ricty" :size 10.5)
-                  nil
-                  'append)
-
-(add-to-list 'default-frame-alist '(font . "fontset-ricty"))
 
 ;;; enable full screen mode with startup
-;(custom-set-variables
-; '(initial-frame-alist (quote ((fullscreen . maximized)))))
+(custom-set-variables
+ '(initial-frame-alist (quote ((fullscreen . maximized)))))
 
 ;;; show line number
 (add-hook 'find-file-hook (lambda () (linum-mode 1)))
@@ -421,8 +413,7 @@
 (require 'smartparens-config)
 (smartparens-global-mode)
 (setq sp-autoescape-string-quote nil)
-(setq sp-highlight-pair-overlay nil)
-
+(setq sp-highlight-pair-overlay t)
 
 ;;; enable undo tree
 (global-undo-tree-mode t)
@@ -720,3 +711,4 @@
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 (require 'helm)
 (define-key helm-map (kbd "M-h") 'backward-kill-word)
+(put 'scroll-left 'disabled nil)
