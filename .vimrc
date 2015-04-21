@@ -31,9 +31,19 @@ set ruler
 set laststatus
 nnoremap ; :
 nnoremap : ;
-imap { {}<LEFT>
-imap [ []<LEFT>
-imap ( ()<LEFT>
+inoremap () ()<Left>
+inoremap {} {}<Left>
+inoremap [] []<Left>
+inoremap <> <><Left>
+inoremap "" ""<Left>
+inoremap '' ''<Left>
+inoremap `' `'<Left>
+inoremap <C-A> <Home>
+inoremap <C-E> <End>
+inoremap <C-F> <Right>
+inoremap <C-B> <Left>
+inoremap <C-D> <Del>
+inoremap <C-N> <Down>
+inoremap <C-P> <Up>
 imap <c-j> <esc>
 set laststatus=2
-
