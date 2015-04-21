@@ -124,6 +124,11 @@
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 (setq tramp-default-method "scp")
 
+;; change C-h to Backspace
+(keyboard-translate ?\C-h ?\C-?)
+(global-set-key "\C-h" nil)
+
+
 ;;; move cursor backword when insert pair of parens
 (defun my-insert-bracket-general (lbrackets rbracket)
   (insert rbracket)
@@ -706,9 +711,6 @@
 ;;;  key bindings
 ;;; ==============
 
-;; C-hをBackSpaceキーに変更
-(keyboard-translate ?\C-h ?\C-?)
-(global-set-key "\C-h" nil)
 
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
