@@ -368,22 +368,14 @@
 
 
 ;;; enable spell checker
-(require 'ispell)
-(setq-default ispell-program-name "aspell")
-;(add-hook 'text-mode-hook 'flyspell-mode)
-;(add-hook 'yatex-mode-hook 'flyspell-mode)
-;(add-hook 'sgml-mode-hook '(lambda () (flyspell-mode -1)))
+(autoload 'ispell "ispell" nil t)
+(eval-after-load 'ispell '(setq-default ispell-program-name "aspell"))
 
 ;;; enable anzu
 (global-anzu-mode +1)
 
 ;;; highlight same symbol
 (add-hook 'prog-mode-hook (lambda () (highlight-symbol-mode t)))
-
-;;; expand region
-(require 'expand-region)
-(global-set-key (kbd "C-M-SPC") 'er/expand-region)
-(transient-mark-mode t)
 
 ;;; ediff settings
 (setq ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -437,16 +429,6 @@
 ;  (require 'helm-migemo)
 ;  (setq helm-use-migemo t)
   )
-
-;;; display set of parens in each colors
-(require 'smartparens-config)
-(smartparens-global-mode)
-(setq sp-autoescape-string-quote nil)
-(setq sp-highlight-pair-overlay t)
-;(require 'smartparens-config)
-;(smartparens-global-mode)
-;(setq sp-autoescape-string-quote nil)
-;(setq sp-highlight-pair-overlay t)
 
 ;;; enable undo tree
 (global-undo-tree-mode t)
@@ -541,9 +523,6 @@
     (YaTeX-typeset-menu nil ?p)
   ))
 ))
-(add-hook ' yatex-mode-hook '(lambda ()
-  (auto-fill-mode -1))
-)
 
 ;;; Arduino
 (setq auto-mode-alist (cons '("\\.\\(pde\\|ino\\)$" . arduino-mode) auto-mode-alist))
@@ -625,7 +604,7 @@
    (quote
     ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
  '(yas-prompt-functions (quote (my-yas/prompt))))
-(require 'clojure-snippets)
+(autoload 'clojure-snippets "clojure-snipeets" nil t)
 (clojure-snippets-initialize)
 
 ;;; Auto complete
