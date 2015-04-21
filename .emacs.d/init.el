@@ -460,11 +460,12 @@
 ;;; ==============
 
 ;;; Python
-(require 'python-mode)
-(add-hook 'python-mode-hook '(lambda ()
+(autoload 'python-mode "python-mode" nil t)
+(eval-after-load 'python-mode
+  '(prgn
     (global-unset-key (kbd "C-c !"))
-    (define-key python-mode-map (kbd "C-c !") 'ipython-switch))
-    (define-key python-mode-map (kbd "C-c C-c") 'py-execute-buffer-ipython))
+    (define-key python-mode-map (kbd "C-c !") 'ipython-switch)
+    (define-key python-mode-map (kbd "C-c C-c") 'py-execute-buffer-ipython)))
 
 ; switch to the interpreter after executing code
 ;(setq py-shell-switch-buffers-on-execute-p t)
@@ -478,32 +479,34 @@
 (setq auto-mode-alist
       (cons '("\\.md$" . gfm-mode) auto-mode-alist))
 (setq markdown-command-needs-filename t)
-(add-hook 'markdown-mode-hook '(lambda ()
-   (progn
+(eval-after-load 'markdown-mode
+   '(progn
      (define-key markdown-mode-map (kbd "M-SPC") 'markdown-preview)
-     (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line))))
-(setq markdown-command "pandoc -s -f markdown_github+tex_math_dollars+tex_math_double_backslash --mathjax")
+     (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line)
+     (setq markdown-command "pandoc -s -f markdown_github+tex_math_dollars+tex_math_double_backslash --mathjax")))
 
 ;;; HTML
-(add-hook 'html-mode-hook '(lambda ()
-  (define-key html-mode-map (kbd "C-c C-c v") 'browse-url-of-file)))
+(eval-after-load 'html-mode
+  '(progn
+     (define-key html-mode-map (kbd "C-c C-c v") 'browse-url-of-file)))
 
 ;;; Scala
-(require 'scala-mode2)
-(add-hook 'scala-mode-hook '(lambda ()
-  (setq imenu-generic-expression
-    '(
-      ("var" "\\(var +\\)\\([^(): ]+\\)" 2)
-      ("val" "\\(val +\\)\\([^(): ]+\\)" 2)
-      ("override def" "^[ \\t]*\\(override\\) +\\(def +\\)\\([^(): ]+\\)" 3)
-      ("implicit def" "^[ \\t]*\\(implicit\\) +\\(def +\\)\\([^(): ]+\\)" 3)
-      ("def" "^[ \\t]*\\(def +\\)\\([^(): ]+\\)" 2)
-      ("trait" "\\(trait +\\)\\([^(): ]+\\)" 2)
-      ("class" "^[ \\t]*\\(class +\\)\\([^(): ]+\\)" 2)
-      ("case class" "^[ \\t]*\\(case class +\\)\\([^(): ]+\\)" 2)
-      ("object" "\\(object +\\)\\([^(): ]+\\)" 2)
-  ))
-))
+(autoload 'scala-mode2 "scala-mode2" nil t)
+(eval-after-load 'scala-mode
+  '(progn
+     (setq imenu-generic-expression
+           '(
+             ("var" "\\(var +\\)\\([^(): ]+\\)" 2)
+             ("val" "\\(val +\\)\\([^(): ]+\\)" 2)
+             ("override def" "^[ \\t]*\\(override\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+             ("implicit def" "^[ \\t]*\\(implicit\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+             ("def" "^[ \\t]*\\(def +\\)\\([^(): ]+\\)" 2)
+             ("trait" "\\(trait +\\)\\([^(): ]+\\)" 2)
+             ("class" "^[ \\t]*\\(class +\\)\\([^(): ]+\\)" 2)
+             ("case class" "^[ \\t]*\\(case class +\\)\\([^(): ]+\\)" 2)
+             ("object" "\\(object +\\)\\([^(): ]+\\)" 2)
+             ))
+     ))
 
 ;;; Clojure
 (add-hook 'clojure-mode-hook 'cider-mode)
@@ -521,15 +524,16 @@
 (setq auto-mode-alist
       (append '(("\\.tex$" . yatex-mode)) auto-mode-alist))
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
-(setq YaTeX-no-begend-shortcut t)
-(setq YaTeX-kanji-code 4)
-(setq tex-command "uplatex")
-(setq dviprint-command-format "dvipdfmx %s")
-(setq dvi2-command "atril")
-(setq YaTeX-use-AMS-LaTeX t)
-(setq bibtex-command "pbibtex")
-(setq YaTeX-close-paren-always nil)
 (add-hook 'yatex-mode-hook '(lambda ()
+  (setq YaTeX-no-begend-shortcut t)
+  (setq YaTeX-kanji-code 4)
+  (setq tex-command "uplatex")
+  (setq dviprint-command-format "dvipdfmx %s")
+  (setq dvi2-command "atril")
+  (setq YaTeX-use-AMS-LaTeX t)
+  (setq bibtex-command "pbibtex")
+  (setq YaTeX-close-paren-always nil)
+  (auto-fill-mode -1)
   (define-key YaTeX-mode-map (kbd "M-SPC") '(lambda ()
     (interactive)
     (YaTeX-typeset-menu nil ?j)
@@ -550,21 +554,21 @@
       (cons '("\\.ml[iylp]?\$" . caml-mode) auto-mode-alist))
 (autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
 (autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
-(if window-system (require 'caml-font))
-(setq inferior-caml-program "/usr/bin/ocaml")
+(add-hook 'caml-mode-hook '(lambda ()
+    (if window-system (require 'caml-font))))
+(add-hook 'inferior-caml-mode-hook '(lambda ()
+    (setq inferior-caml-program "/usr/bin/ocaml")))
 
 ;;; Octave
-(autoload 'octave-mode "octave-mod" nil t)
+(autoload 'octave-mode "octave-mode" nil t)
 (setq auto-mode-alist
       (cons '("\\.m$" . octave-mode) auto-mode-alist))
 (autoload 'run-octave "octave-inf" nil t)
-(add-hook 'inferior-octave-mode-hook
-    '(lambda ()
-        (setq inferior-octave-program "/usr/bin/octave")))
+(eval-after-load 'inferior-octave-mode '(setq inferior-octave-program "/usr/bin/octave"))
 
 ;;; Haskell
-(autoload 'haskell-mode "haskell-mode")
-(autoload 'haskell-cabal "haskell-cabal")
+(autoload 'haskell-mode "haskell-mode" nil t)
+(autoload 'haskell-cabal "haskell-cabal" nil t)
 (add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
 (add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
 (add-to-list 'interpreter-mode-alist '("runhaskell" . haskell-mode))
@@ -575,33 +579,14 @@
 (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
 
 ;;; SGML + Zen-coding
-(require 'emmet-mode)
+(autoload 'emmet-mode "emmet-mode" nil t)
 (add-hook 'sgml-mode-hook 'emmet-mode)
 (add-hook 'css-mode-hook 'emmet-mode)
 (add-hook 'emmet-mode-hook '(lambda () (setq emmet-indentation 2)))
-(define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
-(eval-after-load "emmet-mode"
-  (define-key emmet-mode-keymap (kbd "C-j") nil))
-
-
-;;; Org mode
-(require 'org)
-(require 'org-capture)
-(add-to-list 'auto-mode-alist '("\\.org$" . org-mode))
-(setq org-directory "~/Dropbox/org/")
-(setq org-default-notes-file (concat org-directory "memo.org"))
-(setq org-return-follows-link t)
-(setq org-display-custom-times "<%Y-%m-%d(%a) %H:%M:%S>")
-(setq org-time-stamp-custom-formats "<%Y-%m-%d(%a) %H:%M:%S>")
-(setq org-capture-templates
- '(("m" "Memo" entry (file+headline nil "Memo") "* %? %U\n")
-   ("t" "TODO" entry (file+headline nil "TODO") "* TODO %?")
-   ("b" "Book" entry (file+headline (concat org-directory "lifelog.org") "Book") "* %? %U\n")
-   ("l" "Log" entry (file+headline (concat org-directory "lifelog.org") "Log") "* %? %U\n")))
-;(setq org-startup-folded t)
-(setq org-startup-truncated nil)
-;(setq org-agenda-files
-;      '("~/Dropbox/org/memo.org"))
+(eval-after-load 'emmet-mode
+  '(progn
+     (define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
+     (define-key emmet-mode-keymap (kbd "C-j") nil)))
 
 
 ;;; =============
