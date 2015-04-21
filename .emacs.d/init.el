@@ -124,6 +124,30 @@
 (eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
 (setq tramp-default-method "scp")
 
+;;; move cursor backword when insert pair of parens
+(defun my-insert-bracket-general (lbrackets rbracket)
+  (insert rbracket)
+  (when (memq (char-before (1- (point))) lbrackets)
+    (backward-char)))
+(defun my-insert-paren ()
+  (interactive) (my-insert-bracket-general '(?\() ?\)))
+(defun my-insert-brace ()
+  (interactive) (my-insert-bracket-general '(?{) ?}))
+(defun my-insert-bracket ()
+  (interactive) (my-insert-bracket-general '(?\[) ?\]))
+(defun my-insert-angle ()
+  (interactive) (my-insert-bracket-general '(?<) ?>))
+(defun my-insert-dquote ()
+  (interactive) (my-insert-bracket-general '(?\") ?\"))
+(defun my-insert-squote ()
+  (interactive) (my-insert-bracket-general '(?' ?`) ?'))
+(global-set-key "\)" 'my-insert-paren)
+(global-set-key "}"  'my-insert-brace)
+(global-set-key "\]" 'my-insert-bracket)
+(global-set-key ">"  'my-insert-angle)
+(global-set-key "\"" 'my-insert-dquote)
+(global-set-key "'"  'my-insert-squote)
+
 
 ;;; ======
 ;;;  face
@@ -414,6 +438,10 @@
 (smartparens-global-mode)
 (setq sp-autoescape-string-quote nil)
 (setq sp-highlight-pair-overlay t)
+;(require 'smartparens-config)
+;(smartparens-global-mode)
+;(setq sp-autoescape-string-quote nil)
+;(setq sp-highlight-pair-overlay t)
 
 ;;; enable undo tree
 (global-undo-tree-mode t)
