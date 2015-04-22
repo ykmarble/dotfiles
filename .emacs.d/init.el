@@ -444,7 +444,7 @@
 ;;; Python
 (autoload 'python-mode "python-mode" nil t)
 (eval-after-load 'python-mode
-  '(prgn
+  '(progn
     (global-unset-key (kbd "C-c !"))
     (define-key python-mode-map (kbd "C-c !") 'ipython-switch)
     (define-key python-mode-map (kbd "C-c C-c") 'py-execute-buffer-ipython)))
