@@ -23,6 +23,7 @@
 (add-to-list 'package-archives
     '("marmalade" .
       "http://marmalade-repo.org/packages/"))
+(package-initialize)
 
 ;;; cask
 (require 'cask "~/.cask/cask.el")
@@ -43,7 +44,7 @@
 (setq ring-bell-function 'ignore)
 
 ;;; stop cursor blinking
-;(blink-cursor-mode nil)
+(blink-cursor-mode 0)
 
 ;;; kill whole line when cursor is head of line and C-k is pressed
 (setq kill-whole-line t)
@@ -474,7 +475,7 @@
 
 ;;; Scala
 (autoload 'scala-mode2 "scala-mode2" nil t)
-(eval-after-load 'scala-mode
+(eval-after-load 'scala-mode2
   '(progn
      (setq imenu-generic-expression
            '(
@@ -488,6 +489,10 @@
              ("case class" "^[ \\t]*\\(case class +\\)\\([^(): ]+\\)" 2)
              ("object" "\\(object +\\)\\([^(): ]+\\)" 2)
              ))
+     (require 'ensime)
+     (ensime-scala-mode-hook)
+     (setq scala-indent:step 4)
+     (setq ensime-completion-style 'auto-complete)
      ))
 
 ;;; Clojure
@@ -556,6 +561,9 @@
 (add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
 (add-hook 'haskell-mode-hook 'font-lock-mode)
 (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
+
+;;; Coq
+(load-file "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
 
 ;;; SGML + Zen-coding
 (autoload 'emmet-mode "emmet-mode" nil t)
@@ -641,7 +649,7 @@
 (require 'popwin-yatex)
 (popwin-mode 1)
 (setq display-buffer-function 'popwin:display-buffer)
-(setq popwin:popup-window-height 20)
+(setq popwin:popup-window-height 10)
 (push '("*Completions*") popwin:special-display-config)
 (push '("*Backtrace*") popwin:special-display-config)
 (push '("*Warnings*") popwin:special-display-config)
@@ -664,6 +672,7 @@
 ;;; ==============
 
 
+(global-set-key (kbd "C-x C-b") nil)
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
 (global-set-key (kbd "C-c <up>")    'windmove-up)
