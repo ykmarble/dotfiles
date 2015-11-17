@@ -57,7 +57,7 @@ case "${OSTYPE}" in
         ;;
 esac
 
-export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/node_modules/.bin"
+export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.2.0/bin "
 
 #histry settings
 HISTFILE=~/.histfile
@@ -168,12 +168,13 @@ precmd () {
 }
 
 #prompt settings
+PROMPT='%F{cyan}✲ﾟ｡.(✿╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 if [ $SSH_CONNECTION ];then
-PROMPT='[%F{red}%n@%m%f]%# '
+RPROMPT='%F{green}[%f%F{red}%m%f:%F{green}%d%f%1(v|%F{cyan}%1v%f|)%F{green}]%f'
 else
-PROMPT='[%F{cyan}%n@%m%f]%# '
+RPROMPT='%F{green}[%f%F{green}%m%f:%F{green}%d%f%1(v|%F{cyan}%1v%f|)%F{green}]%f'
 fi
-RPROMPT='%F{green}[%d%f%1(v|%F{cyan}%1v%f|)%F{green}]%f'
+
 
 #do ls after cd
 function chpwd(){
@@ -192,10 +193,10 @@ function dict(){
 stty stop undef
 
 # zaw -- zsh anything.el-like widget
-source ${HOME}/.zsh.d/zaw/zaw.zsh
-zstyle ':filter-select' case-insensitive yes # 絞り込みをcase-insensitiveに
-bindkey '^xb' zaw-tmux-window
-bindkey '^xh' zaw-history
-bindkey '^x^f' zaw-cdr
-bindkey '^xr' zaw-ssh-hosts
-bindkey '^xi' zaw-open-file
+#source ${HOME}/.zsh.d/zaw/zaw.zsh
+#zstyle ':filter-select' case-insensitive yes # 絞り込みをcase-insensitiveに
+#bindkey '^xb' zaw-tmux-window
+#bindkey '^xh' zaw-history
+#bindkey '^x^f' zaw-cdr
+#bindkey '^xr' zaw-ssh-hosts
+#bindkey '^xi' zaw-open-file

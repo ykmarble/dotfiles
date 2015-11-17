@@ -178,16 +178,25 @@
 
 ;;; font setting
 (set-face-attribute 'default nil
-                    :family "Ricty" ;;font
-                    :height 135) ;;font-size
+                    :family "Source Han Code JP" ;;font
+                    :height 90
+                    :weight 'bold) ;;font-size
 (set-fontset-font
  nil 'japanese-jisx0208
- (font-spec :family "Ricty")) ;; font
+ (font-spec :family "Source Han Code JP")) ;; font
 
 
 ;;; enable full screen mode with startup
 (custom-set-variables
- '(initial-frame-alist (quote ((fullscreen . maximized)))))
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(custom-safe-themes
+   (quote
+    ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
+ '(initial-frame-alist (quote ((fullscreen . maximized))))
+ '(yas-prompt-functions (quote (my-yas/prompt))))
 
 ;;; show line number
 (add-hook 'find-file-hook (lambda () (linum-mode 1)))
@@ -199,17 +208,32 @@
 ;;; set color theme
 (load-theme 'tsdh-dark t)
 
+;;; change region color
+(set-face-background 'region "SlateBlue3")
+
 ;;; change bg-color
 (set-face-background 'default "#000000")
 (set-face-background 'hl-line nil)
 (set-face-underline-p 'hl-line t)
 ;;; use transparent frame
-(set-frame-parameter nil 'alpha 80)
+(set-frame-parameter nil 'alpha 68)
+
+;;; helm hilight line
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(helm-selection ((t (:background "SlateBlue3" :distant-foreground "black"))))
+ '(helm-selection-line ((t (:background "SlateBlue3" :distant-foreground "black"))))
+ '(highlight ((t (:background "SlateBlue3" :distant-foreground "black"))))
+)
+
 
 ;; mode line
-(set-face-font 'mode-line "Ricty")
-(set-face-font 'mode-line-inactive "Ricty")
-(set-face-font 'mode-line-buffer-id "Ricty")
+(set-face-font 'mode-line "Source Han Code JP")
+(set-face-font 'mode-line-inactive "Source Han Code JP")
+(set-face-font 'mode-line-buffer-id "Source Han Code JP")
 
 ;;; change color settings of diff-mode
 (require 'diff-mode)
@@ -299,30 +323,31 @@
 (set-face-attribute 'mode-line-read-only-face nil
     :inherit 'mode-line-face
     :foreground "#4271ae"
-    :height 108
+    :height 60
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-modified-face nil
     :inherit 'mode-line-face
     :foreground "#c82829"
-    :height 108
+    :height 60
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-folder-face nil
     :inherit 'mode-line-face
-    :foreground "#7fff00" :height 110)
+    :foreground "#7fff00"
+    :height 75)
 (set-face-attribute 'mode-line-filename-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00"
     :weight 'bold)
 (set-face-attribute 'mode-line-position-face nil
     :inherit 'mode-line-face
-    :height 90)
+    :height 60)
 (set-face-attribute 'mode-line-mode-face nil
     :inherit 'mode-line-face
     :foreground "white")
 (set-face-attribute 'mode-line-minor-mode-face nil
     :inherit 'mode-line-mode-face
     :foreground "grey80"
-    :height 108)
+    :height 60)
 (set-face-attribute 'mode-line-process-face nil
     :inherit 'mode-line-face
     :foreground "SkyBlue1")
@@ -392,9 +417,9 @@
 
 ;;; magit
 (require 'magit)
-(setq magit-diff-refine-hunk nil)
-(set-face-background 'magit-item-highlight nil) ; disable highlight
-(set-face-attribute 'magit-item-highlight nil :inherit nil)
+;(setq magit-diff-refine-hunk nil)
+;(set-face-background 'magit-item-highlight nil) ; disable highlight
+;(set-face-attribute 'magit-item-highlight nil :inherit nil)
 
 ;;; smooth scroll
 (require 'smooth-scroll)
@@ -417,6 +442,11 @@
 
 ;;; quickrun
 (require 'quickrun)
+
+;;; speedbar
+(require 'sr-speedbar)
+(setq sr-speedbar-right-side nil)
+
 
 ;;; migemo
 (when (and (executable-find "cmigemo")
@@ -603,15 +633,7 @@
         (let ((n (position selected names :test 'equal)))
           (nth n choices))
       (signal 'quit "user quit!"))))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
- '(yas-prompt-functions (quote (my-yas/prompt))))
+
 (autoload 'clojure-snippets "clojure-snipeets" nil t)
 (clojure-snippets-initialize)
 
@@ -620,9 +642,9 @@
 (autoload 'auto-complete-clang "auto-complete-clang" nil t)
 (global-auto-complete-mode t)
 (setq-default ac-ignore-case 'smart)
-(setq ac-delay 0.2)
-(setq ac-quick-help nil)
-(setq ac-candidate-limit 10)
+(setq ac-delay 0.1)
+;;(global-set-key (kbd ".") (lambda () (interactive) (insert ".") (auto-complete)))
+(setq ac-candidate-limit 15)
 (setq ac-auto-start 5)
 (setq-default ac-sources
   '(ac-source-yasnippet ac-source-imenu ac-source-words-in-same-mode-buffers))
@@ -636,7 +658,7 @@
 (add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
 (autoload 'jedi "jedi" nil t)
 (add-hook 'python-mode-hook 'jedi:setup)
-(eval-after-load 'jedi '(setq jedi:complete-on-dot t))
+(setq jedi:complete-on-dot t)
 (autoload 'ac-nrepl "ac-nrepl" nil t)
 (add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
 (add-hook 'cider-mode-hook 'ac-nrepl-setup)
@@ -649,13 +671,14 @@
 (require 'popwin-yatex)
 (popwin-mode 1)
 (setq display-buffer-function 'popwin:display-buffer)
-(setq popwin:popup-window-height 10)
+(setq popwin:popup-window-height 15)
+(setq popwin:adjust-other-windows t)
 (push '("*Completions*") popwin:special-display-config)
 (push '("*Backtrace*") popwin:special-display-config)
 (push '("*Warnings*") popwin:special-display-config)
 (push '("*YaTeX-typesetting*") popwin:special-display-config)
 (push '("*dvi-peview*") popwin:special-display-config)
-(push '("^\*helm .+\*$" :regexp t) popwin:special-display-config)
+(push '("^\\*helm" :regexp t :position right :width 0.5) popwin:special-display-config)
 (push '("*quickrun*") popwin:special-display-config)
 (push '(direx:direx-mode :position left :width 25 :dedicated t)
       popwin:special-display-config)
@@ -679,6 +702,7 @@
 (global-set-key (kbd "C-c <down>")  'windmove-down)
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
+(global-set-key (kbd "M-q") 'anzu-query-replace-regexp)
 (global-set-key (kbd "C-c d") `insert-current-time)
 (global-set-key (kbd "C-c j") 'open-junk-file)
 (global-set-key (kbd "C-c c") 'org-capture)
@@ -688,7 +712,7 @@
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
 (global-set-key (kbd "M-o") 'helm-occur)
-(global-set-key (kbd "M-i") 'helm-imenu)
+(global-set-key (kbd "M-i") 'helm-imenu-anywhere)
 (global-set-key (kbd "M-x") 'helm-M-x)
 (global-set-key (kbd "M-s") 'helm-regexp)
 (global-set-key (kbd "M-y") 'helm-show-kill-ring)

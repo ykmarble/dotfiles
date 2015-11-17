@@ -28,7 +28,7 @@ highlight CursorLine cterm=underline ctermfg=NONE ctermbg=NONE
 set showmatch
 set number
 set ruler
-set laststatus
+set laststatus=2
 nnoremap ; :
 nnoremap : ;
 inoremap () ()<Left>
