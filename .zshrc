@@ -168,10 +168,11 @@ precmd () {
 }
 
 #prompt settings
-PROMPT='%F{cyan}✲ﾟ｡.(✿╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 if [ $SSH_CONNECTION ];then
+PROMPT='%F{cyan}✲ﾟ｡.(%f%F{red}✿%f%F{cyan}╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 RPROMPT='%F{green}[%f%F{red}%m%f:%F{green}%d%f%1(v|%F{cyan}%1v%f|)%F{green}]%f'
 else
+PROMPT='%F{cyan}✲ﾟ｡.(✿╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 RPROMPT='%F{green}[%f%F{green}%m%f:%F{green}%d%f%1(v|%F{cyan}%1v%f|)%F{green}]%f'
 fi
 
