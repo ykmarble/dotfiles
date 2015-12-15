@@ -140,9 +140,6 @@ zstyle ':completion:*:descriptions' format '%F{yellow}%U%d%u%f'$DEFAULT
 #use completion after "="
 setopt magic_equal_subst
 
-#complete dot-file without typeing "."
-setopt globdots
-
 #complete PSID after "jobs"
 setopt long_list_jobs
 
@@ -169,10 +166,12 @@ precmd () {
 
 #prompt settings
 if [ $SSH_CONNECTION ];then
-PROMPT='%F{magenta}@%m%F{white} > %F{green}%d%f%1(v|%F{blue}%1v%f|)%F{magenta}%f
+PROMPT='
+%F{magenta}@%F{red}%m%F{white} > %F{green}%d%f%1(v|%F{blue}%1v%f|)%F{magenta}%f
 %F{magenta}✲ﾟ｡.(%F{red}✿%F{magenta}╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 else
-PROMPT='%F{magenta}@%F{red}%m%F{white} > %F{green}%d%f%1(v|%F{blue}%1v%f|)%F{magenta}%f
+PROMPT='
+%F{magenta}@%m%F{white} > %F{green}%d%f%1(v|%F{blue}%1v%f|)%F{magenta}%f
 %F{magenta}✲ﾟ｡.(✿╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 fi
 
@@ -180,10 +179,6 @@ fi
 #do ls after cd
 function chpwd(){
     ls;
-}
-
-function mkdir(){
-    /bin/mkdir $@ && cd $@;
 }
 
 function dict(){

@@ -2,8 +2,8 @@
     name = yk_marble
     email = milkcocoapple@gmail.com
 [core]
-    pager = lv -Ou8 -c
-    editor = emacsclient -n
+    pager = less
+    editor = vim
     excludesfile = ~/.gitignore
 [alias]
     a = add
