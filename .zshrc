@@ -57,7 +57,7 @@ case "${OSTYPE}" in
         ;;
 esac
 
-export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.2.0/bin "
+export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.2.0/bin"
 
 #histry settings
 HISTFILE=~/.histfile
@@ -169,11 +169,11 @@ precmd () {
 
 #prompt settings
 if [ $SSH_CONNECTION ];then
-PROMPT='%F{cyan}✲ﾟ｡.(%f%F{red}✿%f%F{cyan}╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
-RPROMPT='%F{green}[%f%F{red}%m%f:%F{green}%d%f%1(v|%F{cyan}%1v%f|)%F{green}]%f'
+PROMPT='%F{magenta}@%m%F{white} > %F{green}%d%f%1(v|%F{blue}%1v%f|)%F{magenta}%f
+%F{magenta}✲ﾟ｡.(%F{red}✿%F{magenta}╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 else
-PROMPT='%F{cyan}✲ﾟ｡.(✿╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
-RPROMPT='%F{green}[%f%F{green}%m%f:%F{green}%d%f%1(v|%F{cyan}%1v%f|)%F{green}]%f'
+PROMPT='%F{magenta}@%m%F{white} > %F{green}%d%f%1(v|%F{blue}%1v%f|)%F{magenta}%f
+%F{magenta}✲ﾟ｡.(✿╹◡╹)ﾉ☆.｡₀:*ﾟ✲ﾟ*:₀｡%f%# '
 fi
 
 
