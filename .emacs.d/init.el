@@ -2,8 +2,10 @@
 ;;;  Base
 ;;; ======
 
+(require 'cl-lib)
+
 ;;; change frequency of garbage collection
-(setq gc-cons-threshold 33554432)  ;; 32MB
+(setq gc-cons-threshold 33554432)  ; 32MB
 
 ;;; language setting
 (set-language-environment "Japanese")
@@ -61,6 +63,7 @@
 (setq uniquify-buffer-name-style 'post-forward-angle-brackets)
 
 ;;; auto rescan imenu list
+(require 'imenu)
 (setq imenu-auto-rescan t)
 
 ;; create backup file in ~/.emacs.d/backup
@@ -89,17 +92,17 @@
 (set-face-background 'whitespace-empty nil)
 
 ;;; change tab width and indent width
-(setq default-tab-width 4)
+(setq-default indent-tabs-mode nil)
+(setq tab-width 4)
 (setq c-basic-offset 4)
 (setq c-default-style '((java-mode . "java") (other . "linux")))
-(setq-default indent-tabs-mode)
 
 ;;; dired configuration
-(require 'dired)
-(put 'dired-find-alternate-file 'disabled nil)
-(define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
-(define-key dired-mode-map (kbd "a") 'dired-find-file)
-(define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode)
+(with-eval-after-load 'dired
+  (put 'dired-find-alternate-file 'disabled nil)
+  (define-key dired-mode-map (kbd "RET") 'dired-find-alternate-file)
+  (define-key dired-mode-map (kbd "a") 'dired-find-file)
+  (define-key dired-mode-map (kbd "r") 'wdired-change-to-wdired-mode))
 
 ;;; emacs server
 (require 'server)
@@ -110,25 +113,20 @@
 (cua-mode t)
 (setq cua-enable-cua-keys nil)
 
-
 ;;; PATH setting
 (exec-path-from-shell-initialize)
-
-;;; auto reload file which modified by other editor
-;(auto-revert-mode t)
 
 ;;; disable auto indent
 (electric-indent-mode -1)
 
 ;;; tramp hangs up when using zsh
-(require 'tramp)
-(eval-after-load 'tramp '(setenv "SHELL" "/bin/bash"))
-(setq tramp-default-method "scp")
+(with-eval-after-load 'tramp
+  (setenv "SHELL" "/bin/bash")
+  (setq tramp-default-method "scp"))
 
 ;; change C-h to Backspace
 (keyboard-translate ?\C-h ?\C-?)
 (global-set-key "\C-h" nil)
-
 
 ;;; move cursor backword when insert pair of parens
 (defun my-insert-bracket-general (lbrackets rbracket)
@@ -177,26 +175,18 @@
 (global-hl-line-mode)
 
 ;;; font setting
+(defvar my-font-family "Source Han Code JP")
 (set-face-attribute 'default nil
-                    :family "Source Han Code JP" ;;font
+                    :family my-font-family ;;font
                     :height 90
                     :weight 'bold) ;;font-size
 (set-fontset-font
  nil 'japanese-jisx0208
- (font-spec :family "Source Han Code JP")) ;; font
+ (font-spec :family my-font-family)) ;; font
 
 
 ;;; enable full screen mode with startup
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(custom-safe-themes
-   (quote
-    ("fc5fcb6f1f1c1bc01305694c59a1a861b008c534cae8d0e48e4d5e81ad718bc6" "21d9280256d9d3cf79cbcf62c3e7f3f243209e6251b215aede5026e0c5ad853f" default)))
- '(initial-frame-alist (quote ((fullscreen . maximized))))
- '(yas-prompt-functions (quote (my-yas/prompt))))
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;;; show line number
 (add-hook 'find-file-hook (lambda () (linum-mode 1)))
@@ -214,40 +204,35 @@
 ;;; change bg-color
 (set-face-background 'default "#000000")
 (set-face-background 'hl-line nil)
-(set-face-underline-p 'hl-line t)
+(set-face-underline 'hl-line t)
+
 ;;; use transparent frame
 (set-frame-parameter nil 'alpha 68)
 
 ;;; helm hilight line
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(helm-selection ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(helm-selection-line ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(highlight ((t (:background "SlateBlue3" :distant-foreground "black"))))
 )
 
-
 ;; mode line
-(set-face-font 'mode-line "Source Han Code JP")
-(set-face-font 'mode-line-inactive "Source Han Code JP")
-(set-face-font 'mode-line-buffer-id "Source Han Code JP")
+(set-face-font 'mode-line my-font-family)
+(set-face-font 'mode-line-inactive my-font-family)
+(set-face-font 'mode-line-buffer-id my-font-family)
 
 ;;; change color settings of diff-mode
-(require 'diff-mode)
-(set-face-attribute 'diff-added-face nil
-                    :foreground "green")
-(set-face-attribute 'diff-removed-face nil
-                    :foreground "firebrick1")
-(set-face-background 'diff-added-face nil)
-(set-face-background 'diff-removed-face nil)
-(set-face-background 'diff-changed-face nil)
-(set-face-background 'diff-function-face nil)
-(set-face-background 'diff-file-header-face nil)
-(set-face-background 'diff-refine-change nil)
-
+(with-eval-after-load 'diff-mode
+  (set-face-attribute 'diff-added-face nil
+                      :foreground "green")
+  (set-face-attribute 'diff-removed-face nil
+                      :foreground "firebrick1")
+  (set-face-background 'diff-added-face nil)
+  (set-face-background 'diff-removed-face nil)
+  (set-face-background 'diff-changed-face nil)
+  (set-face-background 'diff-function-face nil)
+  (set-face-background 'diff-file-header-face nil)
+  (set-face-background 'diff-refine-change nil))
 
 ;;; emacs powerline: change the face of footer
 (setq-default
@@ -358,7 +343,6 @@
 ;;; rainbow delimiters
 (require 'rainbow-delimiters)
 (add-hook 'prog-mode-hook (lambda () (rainbow-delimiters-mode t)))
-(require 'cl-lib)
 (require 'color)
 (cl-loop
  for index from 1 to rainbow-delimiters-max-face-count
@@ -371,7 +355,7 @@
 ;;; =======
 
 ;;; insert current time
-(defun insert-current-time()
+(defun my/insert-current-time()
   (interactive)
   (insert (format-time-string "[%Y-%m-%d]" (current-time))))
 
@@ -386,16 +370,17 @@
 
 ;;; wgrep
 (require 'wgrep)
-(add-hook 'ag-mode-hook '(lambda ()
-                           (require 'wgrep-ag)
-                           (setq wgrep-auto-save-buffer t)  ; 編集完了と同時に保存
-                           (setq wgrep-enable-key "r")      ; "r" キーで編集モードに
-                           (wgrep-ag-setup)))
+(require 'wgrep-ag)
+(add-hook 'ag-mode-hook
+          (lambda ()
+            (setq wgrep-auto-save-buffer t)  ; 編集完了と同時に保存
+            (setq wgrep-enable-key "r")      ; "r" キーで編集モードに
+            (wgrep-ag-setup)))
 
 
 ;;; enable spell checker
-(autoload 'ispell "ispell" nil t)
-(eval-after-load 'ispell '(setq-default ispell-program-name "aspell"))
+(with-eval-after-load 'ispell
+  (setq-default ispell-program-name "aspell"))
 
 ;;; enable anzu
 (global-anzu-mode +1)
@@ -404,22 +389,17 @@
 (add-hook 'prog-mode-hook (lambda () (highlight-symbol-mode t)))
 
 ;;; ediff settings
-(setq ediff-window-setup-function 'ediff-setup-windows-plain)
-(setq ediff-split-window-function 'split-window-horizontally)
+(with-eval-after-load 'ediff
+  (setq ediff-window-setup-function 'ediff-setup-windows-plain)
+  (setq ediff-split-window-function 'split-window-horizontally))
 
 ;;; recentf
-(when (require 'recentf-ext nil t)
-  (setq recentf-max-saved-items 2000)
-  (setq recentf-exclude '(".recentf"))
-  (setq recentf-auto-cleanup 10)
-  (setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
-  (recentf-mode 1)) ;; auto-save
-
-;;; magit
-(require 'magit)
-;(setq magit-diff-refine-hunk nil)
-;(set-face-background 'magit-item-highlight nil) ; disable highlight
-;(set-face-attribute 'magit-item-highlight nil :inherit nil)
+(require 'recentf-ext)
+(setq recentf-max-saved-items 2000)
+(setq recentf-exclude '(".recentf"))
+(setq recentf-auto-cleanup 10)
+(setq recentf-auto-save-timer (run-with-idle-timer 30 t 'recentf-save-list))
+(recentf-mode 1) ;; auto-save
 
 ;;; smooth scroll
 (require 'smooth-scroll)
@@ -437,111 +417,133 @@
 (setq ido-ignore-buffers (append ido-ignore-buffers '("\\`\\*.*\\*")))
 
 ;;; junk file
-(require 'open-junk-file)
-(setq open-junk-file-format "~/Scraps/%Y-%m-%d-%H%M%S.")
-
-;;; quickrun
-(require 'quickrun)
+(autoload 'open-junk-file "open-junk-file" nil t)
+(with-eval-after-load 'open-junk-file
+  (setq open-junk-file-format "~/Scraps/%Y-%m-%d-%H%M%S."))
 
 ;;; speedbar
-(require 'sr-speedbar)
-(setq sr-speedbar-right-side nil)
-
+(with-eval-after-load 'sr-speedbar
+  (setq sr-speedbar-right-side nil))
 
 ;;; migemo
-(when (and (executable-find "cmigemo")
-       (require 'migemo nil t))
+(when (executable-find "cmigemo")
+  (require 'migemo)
   (setq migemo-options '("-q" "--emacs"))
   (setq migemo-command "cmigemo")
   (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
   (setq migemo-coding-system 'utf-8-unix)
   (load-library "migemo")
-  (migemo-init)
-;  (require 'helm-migemo)
-;  (setq helm-use-migemo t)
-  )
+  (migemo-init))
 
 ;;; enable undo tree
 (global-undo-tree-mode t)
 (global-set-key (kbd "M-/") 'undo-tree-redo)
 
 ;;; flycheck
-(add-hook 'after-init-hook #'global-flycheck-mode)
+(add-hook 'after-init-hook 'global-flycheck-mode)
 
 ;;; ==============
 ;;;  global modes
 ;;; ==============
 
 ;;; Python
-(autoload 'python-mode "python-mode" nil t)
-(eval-after-load 'python-mode
-  '(progn
-    (global-unset-key (kbd "C-c !"))
-    (define-key python-mode-map (kbd "C-c !") 'ipython-switch)
-    (define-key python-mode-map (kbd "C-c C-c") 'py-execute-buffer-ipython)))
-
-; switch to the interpreter after executing code
-;(setq py-shell-switch-buffers-on-execute-p t)
-;(setq py-switch-buffers-on-execute-p t)
-; don't split windows
-(setq py-split-windows-on-execute-p nil)
-; try to automagically figure out indentation
-(setq py-smart-indentation t)
+(with-eval-after-load 'python-mode
+  (global-unset-key (kbd "C-c !"))
+  (define-key python-mode-map (kbd "C-c !") 'ipython-switch)
+  (define-key python-mode-map (kbd "C-c C-c") 'py-execute-buffer-ipython)
+  ; try to automagically figure out indentation
+  (setq py-smart-indentation t))
 
 ;;; Markdown
-(setq auto-mode-alist
-      (cons '("\\.md$" . gfm-mode) auto-mode-alist))
-(setq markdown-command-needs-filename t)
-(eval-after-load 'markdown-mode
-   '(progn
-     (define-key markdown-mode-map (kbd "M-SPC") 'markdown-preview)
-     (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line)
-     (setq markdown-command "pandoc -s -f markdown_github+tex_math_dollars+tex_math_double_backslash --mathjax")))
+(add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
+(with-eval-after-load 'markdown-mode
+  (define-key markdown-mode-map (kbd "M-SPC") 'markdown-preview)
+  (define-key markdown-mode-map (kbd "TAB") 'markdown-indent-line)
+  (setq markdown-command-needs-filename t)
+  (setq markdown-command "pandoc -s -f markdown_github+tex_math_dollars+tex_math_double_backslash --mathjax"))
 
 ;;; HTML
-(eval-after-load 'html-mode
-  '(progn
-     (define-key html-mode-map (kbd "C-c C-c v") 'browse-url-of-file)))
+(with-eval-after-load 'html-mode
+  (define-key html-mode-map (kbd "C-c C-c v") 'browse-url-of-file))
 
 ;;; Scala
-(autoload 'scala-mode2 "scala-mode2" nil t)
-(eval-after-load 'scala-mode2
-  '(progn
-     (setq imenu-generic-expression
-           '(
-             ("var" "\\(var +\\)\\([^(): ]+\\)" 2)
-             ("val" "\\(val +\\)\\([^(): ]+\\)" 2)
-             ("override def" "^[ \\t]*\\(override\\) +\\(def +\\)\\([^(): ]+\\)" 3)
-             ("implicit def" "^[ \\t]*\\(implicit\\) +\\(def +\\)\\([^(): ]+\\)" 3)
-             ("def" "^[ \\t]*\\(def +\\)\\([^(): ]+\\)" 2)
-             ("trait" "\\(trait +\\)\\([^(): ]+\\)" 2)
-             ("class" "^[ \\t]*\\(class +\\)\\([^(): ]+\\)" 2)
-             ("case class" "^[ \\t]*\\(case class +\\)\\([^(): ]+\\)" 2)
-             ("object" "\\(object +\\)\\([^(): ]+\\)" 2)
-             ))
-     (require 'ensime)
-     (ensime-scala-mode-hook)
-     (setq scala-indent:step 4)
-     (setq ensime-completion-style 'auto-complete)
-     ))
+(defun scala/enable-eldoc ()
+  "Show error message or type name at point by Eldoc."
+  (setq-local eldoc-documentation-function
+              '(lambda ()
+                 (when (ensime-connected-p)
+                   (ensime-type-at-point nil))))
+  (eldoc-mode +1))
+(defun scala/completing-dot-company ()
+  (cond (company-backend
+         (company-complete-selection)
+         (scala/completing-dot))
+        (t
+         (insert ".")
+         (company-complete))))
+(defun scala/completing-dot-ac ()
+  (insert ".")
+  (ac-trigger-key-command t))
+(defun scala/completing-dot ()
+  "Insert a period and show company completions."
+  (interactive "*")
+  (eval-and-compile (require 'ensime))
+  (eval-and-compile (require 's))
+  (when (s-matches? (rx (+ (not space)))
+                    (buffer-substring (line-beginning-position) (point)))
+    (delete-horizontal-space t))
+  (cond ((not (and (ensime-connected-p) ensime-completion-style))
+         (insert "."))
+        ((eq ensime-completion-style 'company)
+         (scala/completing-dot-company))
+        ((eq ensime-completion-style 'auto-complete)
+         (scala/completing-dot-ac))))
+(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+(add-hook 'ensime-mode-hook 'scala/enable-eldoc)
+(with-eval-after-load 'scala-mode2
+  (setq imenu-generic-expression
+        '(
+          ("var" "\\(var +\\)\\([^(): ]+\\)" 2)
+          ("val" "\\(val +\\)\\([^(): ]+\\)" 2)
+          ("override def" "^[ \\t]*\\(override\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+          ("implicit def" "^[ \\t]*\\(implicit\\) +\\(def +\\)\\([^(): ]+\\)" 3)
+          ("def" "^[ \\t]*\\(def +\\)\\([^(): ]+\\)" 2)
+          ("trait" "\\(trait +\\)\\([^(): ]+\\)" 2)
+          ("class" "^[ \\t]*\\(class +\\)\\([^(): ]+\\)" 2)
+          ("case class" "^[ \\t]*\\(case class +\\)\\([^(): ]+\\)" 2)
+          ("object" "\\(object +\\)\\([^(): ]+\\)" 2)
+          ))
+  (setq scala-indent:step 4)
+  (setq ensime-completion-style 'auto-complete)
+  (define-key scala-mode-map (kbd ".") 'scala/completing-dot))
+
+
+;;; Emacs Lisp
+(add-hook 'emacs-lisp-mode 'eldoc-mode)
+(add-hook 'lisp-interaction-mode-hook 'eldoc-mode)
+
+;;; CommonLisp
+(with-eval-after-load 'slime
+  (setq inferior-lisp-program "sbcl")
+  (slime-setup '(slime-repl slime-fancy slime-banner)))
 
 ;;; Clojure
 (add-hook 'clojure-mode-hook 'cider-mode)
 ;; mini bufferに関数の引数を表示させる
 (add-hook 'cider-mode-hook 'cider-turn-on-eldoc-mode)
-;; 'C-x b' した時に *nrepl-connection* と *nrepl-server* のbufferを一覧に表示しない
-(setq nrepl-hide-special-buffers t)
-;; RELPのbuffer名を 'project名:nREPLのport番号' と表示する
-;; project名は project.clj で defproject した名前
-(setq nrepl-buffer-name-show-port t)
-;; buffer listにnrepl関係のものを表示しない
-(setq nrepl-hide-special-buffers t)
+(with-eval-after-load 'cider-mode
+  ;; 'C-x b' した時に *nrepl-connection* と *nrepl-server* のbufferを一覧に表示しない
+  (setq nrepl-hide-special-buffers t)
+  ;; RELPのbuffer名を 'project名:nREPLのport番号' と表示する
+  ;; project名は project.clj で defproject した名前
+  (setq nrepl-buffer-name-show-port t)
+  ;; buffer listにnrepl関係のものを表示しない
+  (setq nrepl-hide-special-buffers t))
 
 ;;; YaTeX
-(setq auto-mode-alist
-      (append '(("\\.tex$" . yatex-mode)) auto-mode-alist))
+(add-to-list 'auto-mode-alist '("\\.tex\\'" . yatex-mode))
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
-(add-hook 'yatex-mode-hook '(lambda ()
+(with-eval-after-load 'yatex-mode
   (setq YaTeX-no-begend-shortcut t)
   (setq YaTeX-kanji-code 4)
   (setq tex-command "uplatex")
@@ -549,62 +551,35 @@
   (setq dvi2-command "atril")
   (setq YaTeX-use-AMS-LaTeX t)
   (setq bibtex-command "pbibtex")
-  (setq YaTeX-close-paren-always nil)
-  (auto-fill-mode -1)
-  (define-key YaTeX-mode-map (kbd "M-SPC") '(lambda ()
-    (interactive)
-    (YaTeX-typeset-menu nil ?j)
-    (YaTeX-typeset-menu nil ?d)
-    (YaTeX-typeset-menu nil ?p)
-  ))
-))
-
-;;; Arduino
-(setq auto-mode-alist (cons '("\\.\\(pde\\|ino\\)$" . arduino-mode) auto-mode-alist))
-(autoload 'arduino-mode "arduino-mode" "Arduino editing mode." t)
+  (setq YaTeX-close-paren-always 'never)
+  (auto-fill-mode -1))
 
 ;;; OCaml
-(setq auto-mode-alist
-      (cons '("\\.ml[iylp]?\$" . caml-mode) auto-mode-alist))
-(autoload 'caml-mode "caml" "Major mode for editing Caml code." t)
-(autoload 'run-caml "inf-caml" "Run an inferior Caml process." t)
-(add-hook 'caml-mode-hook '(lambda ()
-    (if window-system (require 'caml-font))))
-(add-hook 'inferior-caml-mode-hook '(lambda ()
-    (setq inferior-caml-program "/usr/bin/ocaml")))
-
-;;; Octave
-(autoload 'octave-mode "octave-mode" nil t)
-(setq auto-mode-alist
-      (cons '("\\.m$" . octave-mode) auto-mode-alist))
-(autoload 'run-octave "octave-inf" nil t)
-(eval-after-load 'inferior-octave-mode '(setq inferior-octave-program "/usr/bin/octave"))
+(with-eval-after-load 'caml-mode
+  (if window-system (require 'caml-font)))
+(with-eval-after-load 'inferior-caml-mode
+    (setq inferior-caml-program "/usr/bin/ocaml"))
 
 ;;; Haskell
-(autoload 'haskell-mode "haskell-mode" nil t)
-(autoload 'haskell-cabal "haskell-cabal" nil t)
-(add-to-list 'auto-mode-alist '("\\.hs$" . haskell-mode))
-(add-to-list 'interpreter-mode-alist '("runghc" . haskell-mode))
-(add-to-list 'interpreter-mode-alist '("runhaskell" . haskell-mode))
-(setq haskell-program-name "/usr/bin/ghci")
 (add-hook 'haskell-mode-hook 'turn-on-haskell-doc-mode)
-(add-hook 'haskell-mode-hook 'turn-on-haskell-indent)
-(add-hook 'haskell-mode-hook 'font-lock-mode)
+(add-hook 'haskell-mode-hook 'interactive-haskell-mode)
+(add-hook 'haskell-mode-hook 'ghc-init)
 (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
-
-;;; Coq
-(load-file "/usr/share/emacs/site-lisp/ProofGeneral/generic/proof-site.el")
+(with-eval-after-load 'haskell-mode
+  (require 'haskell-interactive-mode)
+  (require 'haskell-process)
+  (custom-set-variables
+    '(haskell-process-suggest-remove-import-lines t)
+    '(haskell-process-auto-import-loaded-modules t)
+    '(haskell-process-log t)))
 
 ;;; SGML + Zen-coding
-(autoload 'emmet-mode "emmet-mode" nil t)
 (add-hook 'sgml-mode-hook 'emmet-mode)
 (add-hook 'css-mode-hook 'emmet-mode)
-(add-hook 'emmet-mode-hook '(lambda () (setq emmet-indentation 2)))
-(eval-after-load 'emmet-mode
-  '(progn
-     (define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
-     (define-key emmet-mode-keymap (kbd "C-j") nil)))
-
+(with-eval-after-load 'emmet-mode
+  (setq emmet-indentation 2)
+  (define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
+  (define-key emmet-mode-keymap (kbd "C-j") nil))
 
 ;;; =============
 ;;;  completions
@@ -613,8 +588,7 @@
 ;;; yasnippet
 (yas-global-mode 1)
 ;; add my snippet directory
-(setq yas-snippet-dirs
-      (append yas-snippet-dirs '("~/.emacs.d/elisp/yasnippet/snippets")))
+(add-to-list 'yas-snippet-dirs "~/.emacs.d/elisp/yasnippet/snippets")
 ;; insert snippet
 (define-key yas-minor-mode-map (kbd "C-x y i") 'yas-insert-snippet)
 ;; open make new snippet window
@@ -633,35 +607,36 @@
         (let ((n (position selected names :test 'equal)))
           (nth n choices))
       (signal 'quit "user quit!"))))
-
-(autoload 'clojure-snippets "clojure-snipeets" nil t)
-(clojure-snippets-initialize)
+(with-eval-after-load 'clojure-mode
+  (clojure-snippets-initialize))
 
 ;;; Auto complete
 (require 'auto-complete-config)
-(autoload 'auto-complete-clang "auto-complete-clang" nil t)
 (global-auto-complete-mode t)
 (setq-default ac-ignore-case 'smart)
 (setq ac-delay 0.1)
-;;(global-set-key (kbd ".") (lambda () (interactive) (insert ".") (auto-complete)))
 (setq ac-candidate-limit 15)
 (setq ac-auto-start 5)
 (setq-default ac-sources
   '(ac-source-yasnippet ac-source-imenu ac-source-words-in-same-mode-buffers))
 (defun my-ac-cc-mode-setup ()
-  (setq ac-sources (append '(ac-source-semantic ac-source-semantic-raw) ac-sources)))
+  (setq ac-sources (append ac-sources '(ac-source-semantic ac-source-semantic-raw))))
 (defun my-ac-elisp-mode-setup ()
-  (setq ac-sources (append '(ac-source-features ac-source-functions ac-source-symbols ac-source-variables) ac-sources)))
+  (setq ac-sources (append ac-sources '(ac-source-features ac-source-functions ac-source-symbols ac-source-variables))))
 (add-hook 'c-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'arduino-mode-hook 'my-ac-cc-mode-setup)
 (add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
-(autoload 'jedi "jedi" nil t)
 (add-hook 'python-mode-hook 'jedi:setup)
-(setq jedi:complete-on-dot t)
-(autoload 'ac-nrepl "ac-nrepl" nil t)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(with-eval-after-load 'jedi
+  (setq jedi:complete-on-dot t))
 (add-hook 'cider-mode-hook 'ac-nrepl-setup)
+(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+(add-hook 'slime-mode-hook 'set-up-slime-ac)
+(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+(add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
+(add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
+(add-to-list 'ac-modes 'haskell-interactive-mode)
 
 ;;; ========
 ;;;  popwin
@@ -688,12 +663,19 @@
                            :default-config-keywords `(:noselect ,(not select))
                            :if-config-not-found (lambda (buffer) ad-do-it)))
 (push '("*YaTeX-typesetting*") popwin:special-display-config)
-
+(push '("*ensime-update*") popwin:special-display-config)
+(push '("*slime-apropos*") popwin:special-display-config)
+(push '("*slime-macroexpansion*") popwin:special-display-config)
+(push '("*slime-description*") popwin:special-display-config)
+(push '("*slime-compilation*" :noselect t) popwin:special-display-config)
+(push '("*slime-xref*") popwin:special-display-config)
+(push '(sldb-mode :stick t) popwin:special-display-config)
+(push '(slime-repl-mode) popwin:special-display-config)
+(push '(slime-connection-list-mode) popwin:special-display-config)
 
 ;;; ==============
 ;;;  key bindings
 ;;; ==============
-
 
 (global-set-key (kbd "C-x C-b") nil)
 (global-set-key (kbd "C-c <left>")  'windmove-left)
@@ -703,7 +685,7 @@
 (global-set-key (kbd "M-h") 'backward-kill-word)
 (global-set-key (kbd "C-q") 'anzu-query-replace)
 (global-set-key (kbd "M-q") 'anzu-query-replace-regexp)
-(global-set-key (kbd "C-c d") `insert-current-time)
+(global-set-key (kbd "C-c d") 'my/insert-current-time)
 (global-set-key (kbd "C-c j") 'open-junk-file)
 (global-set-key (kbd "C-c c") 'org-capture)
 (global-set-key (kbd "C-c a") 'org-agenda)
@@ -724,6 +706,5 @@
 (global-set-key (kbd "C-c m") 'magit-status)
 (global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
-(require 'helm)
-(define-key helm-map (kbd "M-h") 'backward-kill-word)
-(put 'scroll-left 'disabled nil)
+(with-eval-after-load 'helm
+  (define-key helm-map (kbd "M-h") 'backward-kill-word))
