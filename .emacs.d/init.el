@@ -354,6 +354,9 @@
 ;;;  utils
 ;;; =======
 
+;;; disable electric indent-mode
+(electric-indent-mode -1)
+
 ;;; insert current time
 (defun my/insert-current-time()
   (interactive)
@@ -543,16 +546,17 @@
 ;;; YaTeX
 (add-to-list 'auto-mode-alist '("\\.tex\\'" . yatex-mode))
 (autoload 'yatex-mode "yatex" "Yet Another LaTeX mode" t)
-(with-eval-after-load 'yatex-mode
-  (setq YaTeX-no-begend-shortcut t)
-  (setq YaTeX-kanji-code 4)
-  (setq tex-command "uplatex")
-  (setq dviprint-command-format "dvipdfmx %s")
-  (setq dvi2-command "atril")
-  (setq YaTeX-use-AMS-LaTeX t)
-  (setq bibtex-command "pbibtex")
-  (setq YaTeX-close-paren-always 'never)
-  (auto-fill-mode -1))
+(add-hook 'yatex-mode-hook
+          '(lambda ()
+             (setq YaTeX-no-begend-shortcut t)
+             (setq YaTeX-kanji-code 4)
+             (setq tex-command "uplatex")
+             (setq dviprint-command-format "dvipdfmx %s")
+             (setq dvi2-command "atril")
+             (setq YaTeX-use-AMS-LaTeX t)
+             (setq bibtex-command "pbibtex")
+             (setq YaTeX-close-paren-always 'never)
+             (auto-fill-mode -1)))
 
 ;;; OCaml
 (with-eval-after-load 'caml-mode
@@ -590,23 +594,23 @@
 ;; add my snippet directory
 (add-to-list 'yas-snippet-dirs "~/.emacs.d/elisp/yasnippet/snippets")
 ;; insert snippet
-(define-key yas-minor-mode-map (kbd "C-x y i") 'yas-insert-snippet)
+(define-key yas-minor-mode-map (kbd "C-x y i") 'helm-yas-complete)
 ;; open make new snippet window
 (define-key yas-minor-mode-map (kbd "C-x y n") 'yas-new-snippet)
 ;; use helm interface
-(defun my-yas/prompt (prompt choices &optional display-fn)
-  (let* ((names (loop for choice in choices
-                      collect (or (and display-fn (funcall display-fn choice))
-                                  coice)))
-         (selected (helm-other-buffer
-                    `(((name . ,(format "%s" prompt))
-                       (candidates . names)
-                       (action . (("Insert snippet" . (lambda (arg) arg))))))
-                    "*helm yas/prompt*")))
-    (if selected
-        (let ((n (position selected names :test 'equal)))
-          (nth n choices))
-      (signal 'quit "user quit!"))))
+;(defun my-yas/prompt (prompt choices &optional display-fn)
+;  (let* ((names (loop for choice in choices
+;                      collect (or (and display-fn (funcall display-fn choice))
+;                                  choice)))
+;         (selected (helm-other-buffer
+;                    `(((name . ,(format "%s" prompt))
+;                       (candidates . names)
+;                       (action . (("Insert snippet" . (lambda (arg) arg))))))
+;                    "*helm yas/prompt*")))
+;    (if selected
+;        (let ((n (position selected names :test 'equal)))
+;          (nth n choices))
+;      (signal 'quit "user quit!"))))
 (with-eval-after-load 'clojure-mode
   (clojure-snippets-initialize))
 

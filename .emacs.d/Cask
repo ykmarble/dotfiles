@@ -64,6 +64,7 @@
 (depends-on "google-translate")
 (depends-on "haskell-mode")
 (depends-on "helm")
+(depends-on "helm-c-yasnippet")
 (depends-on "helm-core")
 (depends-on "helm-flycheck")
 (depends-on "helm-migemo")
