@@ -18,6 +18,7 @@ alias sshe='cocot -t UTF-8 -p EUC-JP -- ssh'
 alias lv='lv -Ou8'
 alias python='python2'
 alias uplatex='uplatex -interaction nonstopmode -halt-on-error -file-line-error'
+alias unzip='unzip -O utf8'
 alias scala='scala -Xlint'
 alias -g G='|grep --color=auto'
 alias -g L='|lv -c'
@@ -84,7 +85,6 @@ setopt hist_ignore_space
 #update history instantly
 setopt inc_append_history
 
-setopt prompt_subst
 unsetopt beep
 
 #push directry stack after cd
@@ -106,6 +106,9 @@ bindkey -e
 
 #expand environment variant in prompt
 setopt prompt_subst
+
+# complete immediately
+setopt menucomplete
 
 #initialize completion
 autoload -Uz compinit
@@ -187,6 +190,9 @@ function dict(){
 
 # disable screen lock of Ctrl+S
 stty stop undef
+
+# bind M-h to backward word
+bindkey '^[h' backward-kill-word
 
 # zaw -- zsh anything.el-like widget
 #source ${HOME}/.zsh.d/zaw/zaw.zsh
