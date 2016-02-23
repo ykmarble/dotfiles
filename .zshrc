@@ -1,5 +1,6 @@
 # alias
 alias あのあの='ping -c 3 www.google.co.jp'
+alias wtr='curl wttr.in/Tsukuba'
 alias ping='ping -c 3'
 alias percol='percol --match-method migemo'
 alias a='cd ..'
@@ -25,7 +26,7 @@ alias -g L='|lv -c'
 alias -g P='|peco'
 alias -g C='|column'
 alias strace='strace -s 2000 -f -tt'
-alias -s tex=platex
+alias -s tex=uplatex
 alias -s pdf=open
 alias -s java=javac
 function doclass() {
@@ -59,6 +60,8 @@ case "${OSTYPE}" in
 esac
 
 export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.2.0/bin"
+export LC_MESSAGES="C"
+export LC_TIME="C"
 
 #histry settings
 HISTFILE=~/.histfile
@@ -85,11 +88,16 @@ setopt hist_ignore_space
 #update history instantly
 setopt inc_append_history
 
+#enable globs when searching history
+bindkey "^R" history-incremental-pattern-search-backward
+bindkey "^S" history-incremental-pattern-search-forward
+
 unsetopt beep
 
 #push directry stack after cd
 setopt auto_pushd
 setopt pushd_ignore_dups
+setopt pushd_minus
 
 #change current directory without "cd" command
 setopt autocd
@@ -109,6 +117,9 @@ setopt prompt_subst
 
 # complete immediately
 setopt menucomplete
+
+# completetion ignoring suffix
+setopt complete_in_word
 
 #initialize completion
 autoload -Uz compinit
@@ -152,7 +163,7 @@ WORDCHARS=${WORDCHARS:s,/,,}
 # cdr
 autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 add-zsh-hook chpwd chpwd_recent_dirs
-zstyle ':chpwd:*' recent-dirs-max 5000
+zstyle ':chpwd:*' recent-dirs-max 100
 zstyle ':chpwd:*' recent-dirs-default yes
 zstyle ':completion:*' recent-dirs-insert both
 
