@@ -189,11 +189,11 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 ;;; show line number
-(add-hook 'find-file-hook (lambda () (linum-mode 1)))
-(setq linum-format "%4d: ")
-(setq linum-delay t)
-(defadvice linum-schedule (around my-linum-schedule () activate)
-  (run-with-idle-timer 0.2 nil #'linum-update-current))
+;(add-hook 'find-file-hook (lambda () (linum-mode 1)))
+;(setq linum-format "%4d: ")
+;(setq linum-delay t)
+;(defadvice linum-schedule (around my-linum-schedule () activate)
+;  (run-with-idle-timer 0.2 nil #'linum-update-current))
 
 ;;; set color theme
 (load-theme 'tsdh-dark t)
@@ -444,6 +444,13 @@
 
 ;;; flycheck
 (add-hook 'after-init-hook 'global-flycheck-mode)
+
+;;; move cursor to previous point
+(require 'point-undo)
+
+;;; display diff between current buffer and HEAD of git
+(require 'git-gutter)
+(global-git-gutter-mode 1)
 
 ;;; ==============
 ;;;  global modes
@@ -708,7 +715,8 @@
 (global-set-key (kbd "M-SPC") 'quickrun-with-arg)
 (global-set-key (kbd "C-x C-x") nil)
 (global-set-key (kbd "C-c m") 'magit-status)
-(global-set-key (kbd "M-,") 'pop-tag-mark)
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
+(global-set-key (kbd "M-,") 'point-undo)
+(global-set-key (kbd "M-.") 'point-redo)
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "M-h") 'backward-kill-word))
