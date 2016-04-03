@@ -59,7 +59,7 @@ case "${OSTYPE}" in
         ;;
 esac
 
-export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.gem/ruby/2.2.0/bin"
+export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.rbenv/bin"
 export LC_MESSAGES="C"
 export LC_TIME="C"
 
@@ -204,6 +204,9 @@ stty stop undef
 
 # bind M-h to backward word
 bindkey '^[h' backward-kill-word
+
+# rbenv
+which rbenv >/dev/null && eval "$(rbenv init -)"
 
 # zaw -- zsh anything.el-like widget
 #source ${HOME}/.zsh.d/zaw/zaw.zsh

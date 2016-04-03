@@ -129,28 +129,28 @@
 (global-set-key "\C-h" nil)
 
 ;;; move cursor backword when insert pair of parens
-(defun my-insert-bracket-general (lbrackets rbracket)
-  (insert rbracket)
-  (when (memq (char-before (1- (point))) lbrackets)
-    (backward-char)))
-(defun my-insert-paren ()
-  (interactive) (my-insert-bracket-general '(?\() ?\)))
-(defun my-insert-brace ()
-  (interactive) (my-insert-bracket-general '(?{) ?}))
-(defun my-insert-bracket ()
-  (interactive) (my-insert-bracket-general '(?\[) ?\]))
-(defun my-insert-angle ()
-  (interactive) (my-insert-bracket-general '(?<) ?>))
-(defun my-insert-dquote ()
-  (interactive) (my-insert-bracket-general '(?\") ?\"))
-(defun my-insert-squote ()
-  (interactive) (my-insert-bracket-general '(?' ?`) ?'))
-(global-set-key "\)" 'my-insert-paren)
-(global-set-key "}"  'my-insert-brace)
-(global-set-key "\]" 'my-insert-bracket)
-(global-set-key ">"  'my-insert-angle)
-(global-set-key "\"" 'my-insert-dquote)
-(global-set-key "'"  'my-insert-squote)
+;(defun my-insert-bracket-general (lbrackets rbracket)
+;  (insert rbracket)
+;  (when (memq (char-before (1- (point))) lbrackets)
+;    (backward-char)))
+;(defun my-insert-paren ()
+;  (interactive) (my-insert-bracket-general '(?\() ?\)))
+;(defun my-insert-brace ()
+;  (interactive) (my-insert-bracket-general '(?{) ?}))
+;(defun my-insert-bracket ()
+;  (interactive) (my-insert-bracket-general '(?\[) ?\]))
+;(defun my-insert-angle ()
+;  (interactive) (my-insert-bracket-general '(?<) ?>))
+;(defun my-insert-dquote ()
+;  (interactive) (my-insert-bracket-general '(?\") ?\"))
+;(defun my-insert-squote ()
+;  (interactive) (my-insert-bracket-general '(?' ?`) ?'))
+;(global-set-key "\)" 'my-insert-paren)
+;(global-set-key "}"  'my-insert-brace)
+;(global-set-key "\]" 'my-insert-bracket)
+;(global-set-key ">"  'my-insert-angle)
+;(global-set-key "\"" 'my-insert-dquote)
+;(global-set-key "'"  'my-insert-squote)
 
 
 ;;; ======
@@ -211,10 +211,14 @@
 
 ;;; helm hilight line
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(helm-selection ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(helm-selection-line ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(highlight ((t (:background "SlateBlue3" :distant-foreground "black"))))
-)
+ '(sp-pair-overlay-face ((t (:inherit default)))))
 
 ;; mode line
 (set-face-font 'mode-line my-font-family)
@@ -422,6 +426,7 @@
 ;;; junk file
 (autoload 'open-junk-file "open-junk-file" nil t)
 (with-eval-after-load 'open-junk-file
+  (setq open-junk-file-find-file-function 'find-file)
   (setq open-junk-file-format "~/Scraps/%Y-%m-%d-%H%M%S."))
 
 ;;; speedbar
@@ -452,6 +457,12 @@
 (require 'git-gutter)
 (global-git-gutter-mode 1)
 
+;;; make insert pairs smarter
+(require 'smartparens-config)
+(set-face-foreground 'sp-pair-overlay-face nil)
+(set-face-background 'sp-pair-overlay-face nil)
+(smartparens-global-mode)
+
 ;;; ==============
 ;;;  global modes
 ;;; ==============
@@ -463,6 +474,12 @@
   (define-key python-mode-map (kbd "C-c C-c") 'py-execute-buffer-ipython)
   ; try to automagically figure out indentation
   (setq py-smart-indentation t))
+
+;;; Ruby
+(with-eval-after-load 'ruby-mode
+  (require 'ruby-end))
+(add-hook 'ruby-mode-hook 'robe-mode)
+(add-hook 'robe-mode-hook 'ac-robe-setup)
 
 ;;; Markdown
 (add-to-list 'auto-mode-alist '("\\.md\\'" . gfm-mode))
