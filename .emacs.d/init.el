@@ -541,7 +541,6 @@
           ("object" "\\(object +\\)\\([^(): ]+\\)" 2)
           ))
   (setq scala-indent:step 4)
-  (setq ensime-completion-style 'auto-complete)
   (define-key scala-mode-map (kbd ".") 'scala/completing-dot))
 
 
@@ -593,13 +592,13 @@
 (add-hook 'haskell-mode-hook 'interactive-haskell-mode)
 (add-hook 'haskell-mode-hook 'ghc-init)
 (add-hook 'haskell-mode-hook 'imenu-add-menubar-index)
-(with-eval-after-load 'haskell-mode
-  (require 'haskell-interactive-mode)
-  (require 'haskell-process)
-  (custom-set-variables
-    '(haskell-process-suggest-remove-import-lines t)
-    '(haskell-process-auto-import-loaded-modules t)
-    '(haskell-process-log t)))
+;(with-eval-after-load 'haskell-mode
+;  (require 'haskell-interactive-mode)
+;  (require 'haskell-process)
+;  (custom-set-variables
+;    '(haskell-process-suggest-remove-import-lines t)
+;    '(haskell-process-auto-import-loaded-modules t)
+;    '(haskell-process-log t)))
 
 ;;; SGML + Zen-coding
 (add-hook 'sgml-mode-hook 'emmet-mode)
@@ -639,32 +638,64 @@
   (clojure-snippets-initialize))
 
 ;;; Auto complete
-(require 'auto-complete-config)
-(global-auto-complete-mode t)
-(setq-default ac-ignore-case 'smart)
-(setq ac-delay 0.1)
-(setq ac-candidate-limit 15)
-(setq ac-auto-start 5)
-(setq-default ac-sources
-  '(ac-source-yasnippet ac-source-imenu ac-source-words-in-same-mode-buffers))
-(defun my-ac-cc-mode-setup ()
-  (setq ac-sources (append ac-sources '(ac-source-semantic ac-source-semantic-raw))))
-(defun my-ac-elisp-mode-setup ()
-  (setq ac-sources (append ac-sources '(ac-source-features ac-source-functions ac-source-symbols ac-source-variables))))
-(add-hook 'c-mode-hook 'my-ac-cc-mode-setup)
-(add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
-(add-hook 'arduino-mode-hook 'my-ac-cc-mode-setup)
-(add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
+;(require 'auto-complete-config)
+;(global-auto-complete-mode t)
+;(setq-default ac-ignore-case 'smart)
+;(setq ac-delay 0.1)
+;(setq ac-candidate-limit 15)
+;(setq ac-auto-start 5)
+;(setq-default ac-sources
+;  '(ac-source-yasnippet ac-source-imenu ac-source-words-in-same-mode-buffers))
+;(defun my-ac-cc-mode-setup ()
+;  (setq ac-sources (append ac-sources '(ac-source-semantic ac-source-semantic-raw))))
+;(defun my-ac-elisp-mode-setup ()
+;  (setq ac-sources (append ac-sources '(ac-source-features ac-source-functions ac-source-symbols ac-source-variables))))
+;(add-hook 'c-mode-hook 'my-ac-cc-mode-setup)
+;(add-hook 'c++-mode-hook 'my-ac-cc-mode-setup)
+;(add-hook 'arduino-mode-hook 'my-ac-cc-mode-setup)
+;(add-hook 'python-mode-hook 'jedi:setup)
+;(with-eval-after-load 'jedi
+;  (setq jedi:complete-on-dot t))
+;(add-hook 'emacs-lisp-mode-hook 'my-ac-elisp-mode-setup)
+;(add-hook 'cider-mode-hook 'ac-nrepl-setup)
+;(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
+;(add-hook 'slime-mode-hook 'set-up-slime-ac)
+;(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+;(add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
+;(add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
+;(add-to-list 'ac-modes 'haskell-interactive-mode)
+
+;;; Company mode
+(global-company-mode 1)
+(setq company-idle-delay 0)
+(setq company-selection-wrap-around t)
+(set-face-attribute 'company-tooltip nil
+                    :foreground "black" :background "lightgrey")
+(set-face-attribute 'company-tooltip-common nil
+                    :foreground "black" :background "lightgrey")
+(set-face-attribute 'company-tooltip-common-selection nil
+                    :foreground "white" :background "steelblue")
+(set-face-attribute 'company-tooltip-selection nil
+                    :foreground "black" :background "steelblue")
+(set-face-attribute 'company-preview-common nil
+                    :background nil :foreground "lightgrey" :underline t)
+(set-face-attribute 'company-scrollbar-fg nil
+                    :background "orange")
+(set-face-attribute 'company-scrollbar-bg nil
+                    :background "gray40")
+(add-hook 'c-mode-common-hook 'irony-mode)
+(with-eval-after-load 'irony
+  (custom-set-variables '(irony-additional-clang-options '("-std=c++11")))
+  (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
+  (add-hook 'irony-mode-hook 'irony-eldoc))
+
 (add-hook 'python-mode-hook 'jedi:setup)
 (with-eval-after-load 'jedi
   (setq jedi:complete-on-dot t))
-(add-hook 'cider-mode-hook 'ac-nrepl-setup)
-(add-hook 'cider-repl-mode-hook 'ac-nrepl-setup)
-(add-hook 'slime-mode-hook 'set-up-slime-ac)
-(add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-(add-hook 'interactive-haskell-mode-hook 'ac-haskell-process-setup)
-(add-hook 'haskell-interactive-mode-hook 'ac-haskell-process-setup)
-(add-to-list 'ac-modes 'haskell-interactive-mode)
+(add-to-list 'company-backends 'company-jedi)
+(add-to-list 'company-backends 'company-ghc)
+(add-to-list 'company-backends 'company-irony)
+
 
 ;;; ========
 ;;;  popwin
