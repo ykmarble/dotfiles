@@ -215,6 +215,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(cursor ((t (:background "white"))))
  '(helm-selection ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(helm-selection-line ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(highlight ((t (:background "SlateBlue3" :distant-foreground "black"))))
@@ -466,6 +467,9 @@
 ;;; ==============
 ;;;  global modes
 ;;; ==============
+
+(with-eval-after-load 'cc-mode
+  (define-key c-mode-map (kbd "C-c C-c") 'compile))
 
 ;;; Python
 (with-eval-after-load 'python-mode
@@ -766,5 +770,12 @@
 (global-set-key (kbd "C-x C-j") 'direx:jump-to-directory-other-window)
 (global-set-key (kbd "M-,") 'point-undo)
 (global-set-key (kbd "M-.") 'point-redo)
+(global-set-key (kbd "C-c SPC") 'gud-break)
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "M-h") 'backward-kill-word))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(irony-additional-clang-options (quote ("-std=c++11"))))
