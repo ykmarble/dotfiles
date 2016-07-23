@@ -208,6 +208,9 @@ bindkey '^[h' backward-kill-word
 # rbenv
 which rbenv >/dev/null && eval "$(rbenv init -)"
 
+# tpm
+[ -e "~/.tmux/plugins/tpm/tpm" ] && ~/.tmux/plugins/tpm/tpm
+
 # zaw -- zsh anything.el-like widget
 #source ${HOME}/.zsh.d/zaw/zaw.zsh
 #zstyle ':filter-select' case-insensitive yes # 絞り込みをcase-insensitiveに

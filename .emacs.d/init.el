@@ -670,7 +670,8 @@
 ;(add-to-list 'ac-modes 'haskell-interactive-mode)
 
 ;;; Company mode
-(global-company-mode 1)
+(require 'company)
+(add-hook 'prog-mode-hook 'company-mode-on)
 (setq company-idle-delay 0)
 (setq company-selection-wrap-around t)
 (set-face-attribute 'company-tooltip nil
