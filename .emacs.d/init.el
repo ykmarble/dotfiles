@@ -128,31 +128,6 @@
 (keyboard-translate ?\C-h ?\C-?)
 (global-set-key "\C-h" nil)
 
-;;; move cursor backword when insert pair of parens
-;(defun my-insert-bracket-general (lbrackets rbracket)
-;  (insert rbracket)
-;  (when (memq (char-before (1- (point))) lbrackets)
-;    (backward-char)))
-;(defun my-insert-paren ()
-;  (interactive) (my-insert-bracket-general '(?\() ?\)))
-;(defun my-insert-brace ()
-;  (interactive) (my-insert-bracket-general '(?{) ?}))
-;(defun my-insert-bracket ()
-;  (interactive) (my-insert-bracket-general '(?\[) ?\]))
-;(defun my-insert-angle ()
-;  (interactive) (my-insert-bracket-general '(?<) ?>))
-;(defun my-insert-dquote ()
-;  (interactive) (my-insert-bracket-general '(?\") ?\"))
-;(defun my-insert-squote ()
-;  (interactive) (my-insert-bracket-general '(?' ?`) ?'))
-;(global-set-key "\)" 'my-insert-paren)
-;(global-set-key "}"  'my-insert-brace)
-;(global-set-key "\]" 'my-insert-bracket)
-;(global-set-key ">"  'my-insert-angle)
-;(global-set-key "\"" 'my-insert-dquote)
-;(global-set-key "'"  'my-insert-squote)
-
-
 ;;; ======
 ;;;  face
 ;;; ======
@@ -188,13 +163,6 @@
 ;;; enable full screen mode with startup
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
-;;; show line number
-;(add-hook 'find-file-hook (lambda () (linum-mode 1)))
-;(setq linum-format "%4d: ")
-;(setq linum-delay t)
-;(defadvice linum-schedule (around my-linum-schedule () activate)
-;  (run-with-idle-timer 0.2 nil #'linum-update-current))
-
 ;;; set color theme
 (load-theme 'tsdh-dark t)
 
@@ -211,10 +179,6 @@
 
 ;;; helm hilight line
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(cursor ((t (:background "white"))))
  '(helm-selection ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(helm-selection-line ((t (:background "SlateBlue3" :distant-foreground "black"))))
@@ -467,9 +431,12 @@
 ;;; ==============
 ;;;  global modes
 ;;; ==============
-
+;;; C/C++
+(with-eval-after-load 'gdb
+  (setq gdb-many-windows t))
 (with-eval-after-load 'cc-mode
-  (define-key c-mode-map (kbd "C-c C-c") 'compile))
+  (define-key c-mode-map (kbd "C-c C-c") 'compile)
+  (define-key c++-mode-map (kbd "C-c C-c") 'compile))
 
 ;;; Python
 (with-eval-after-load 'python-mode
@@ -670,23 +637,24 @@
 ;(add-to-list 'ac-modes 'haskell-interactive-mode)
 
 ;;; Company mode
-(global-company-mode 1)
+(require 'company)
+(add-hook 'prog-mode-hook (lambda () (company-mode t)))
 (setq company-idle-delay 0)
 (setq company-selection-wrap-around t)
-(set-face-attribute 'company-tooltip nil
-                    :foreground "black" :background "lightgrey")
-(set-face-attribute 'company-tooltip-common nil
-                    :foreground "black" :background "lightgrey")
-(set-face-attribute 'company-tooltip-common-selection nil
-                    :foreground "white" :background "steelblue")
-(set-face-attribute 'company-tooltip-selection nil
-                    :foreground "black" :background "steelblue")
-(set-face-attribute 'company-preview-common nil
-                    :background nil :foreground "lightgrey" :underline t)
-(set-face-attribute 'company-scrollbar-fg nil
-                    :background "orange")
-(set-face-attribute 'company-scrollbar-bg nil
-                    :background "gray40")
+;(set-face-attribute 'company-tooltip nil
+;                    :foreground "black" :background "lightgrey")
+;(set-face-attribute 'company-tooltip-common nil
+;                    :foreground "black" :background "lightgrey")
+;(set-face-attribute 'company-tooltip-common-selection nil
+;                    :foreground "white" :background "steelblue")
+;(set-face-attribute 'company-tooltip-selection nil
+;                    :foreground "black" :background "steelblue")
+;(set-face-attribute 'company-preview-common nil
+;                    :background nil :foreground "lightgrey" :underline t)
+;(set-face-attribute 'company-scrollbar-fg nil
+;                    :background "orange")
+;(set-face-attribute 'company-scrollbar-bg nil
+;                    :background "gray40")
 (add-hook 'c-mode-common-hook 'irony-mode)
 (with-eval-after-load 'irony
   (custom-set-variables '(irony-additional-clang-options '("-std=c++11")))
@@ -750,9 +718,6 @@
 (global-set-key (kbd "M-q") 'anzu-query-replace-regexp)
 (global-set-key (kbd "C-c d") 'my/insert-current-time)
 (global-set-key (kbd "C-c j") 'open-junk-file)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c h") 'howm-menu)
 (global-set-key (kbd "C-o") 'ag)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
@@ -773,9 +738,3 @@
 (global-set-key (kbd "C-c SPC") 'gud-break)
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "M-h") 'backward-kill-word))
-(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(irony-additional-clang-options (quote ("-std=c++11"))))
