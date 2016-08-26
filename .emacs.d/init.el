@@ -157,6 +157,12 @@
 ;;;  face
 ;;; ======
 
+(require 'nyan-mode)
+(setq nyan-bar-length 10)
+(setq nyan-wavy-trail t)
+(setq nyan-animate-nyancat t)
+(nyan-start-animation)
+
 ;;; disable startup screen
 (setq inhibit-startup-screen t)
 
@@ -178,8 +184,7 @@
 (defvar my-font-family "Source Han Code JP")
 (set-face-attribute 'default nil
                     :family my-font-family ;;font
-                    :height 90
-                    :weight 'bold) ;;font-size
+                    :height 105 ) ;;font-size
 (set-fontset-font
  nil 'japanese-jisx0208
  (font-spec :family my-font-family)) ;; font
@@ -242,42 +247,35 @@
 ;;; emacs powerline: change the face of footer
 (setq-default
  mode-line-format
- '(; Position, including warning for 80 columns
-   (:propertize "%4l:" face mode-line-position-face)
-   (:eval (propertize "%3c" 'face
-                      (if (>= (current-column) 80)
-                          'mode-line-80col-face
-                        'mode-line-position-face)))
-   ; emacsclient [default -- keep?]
-   mode-line-client
-   "  "
+ '(
    ; read-only or modified status
    (:eval
     (cond (buffer-read-only
            (propertize " RO " 'face 'mode-line-read-only-face))
           ((buffer-modified-p)
            (propertize " ** " 'face 'mode-line-modified-face))
-          (t "      ")))
-   "    "
+          (t (propertize "    " 'face 'mode-line-modified-face))))
+   ; Position, including warning for 80 columns
+   (:propertize "%4l," face mode-line-position-face)
+   (:eval (propertize "%3c " 'face
+                      (if (>= (current-column) 80)
+                          'mode-line-80col-face
+                        'mode-line-position-face)))
    ; directory and buffer/file name
    (:propertize (:eval (shorten-directory default-directory 30))
                 face mode-line-folder-face)
    (:propertize "%b"
                 face mode-line-filename-face)
-   ; narrow [default -- keep?]
-   " %n "
-   ; mode indicators: vc, recursive edit, major mode, minor modes, process, global
+   " "
+   (:eval (list (nyan-create)))
+   ; mode indicators: vc, recursive edit, major mode, minor modes
    (vc-mode vc-mode)
-   "  %["
+   " %["
    (:propertize mode-name
                 face mode-line-mode-face)
    "%] "
    (:eval (propertize (format-mode-line minor-mode-alist)
                       'face 'mode-line-minor-mode-face))
-   (:propertize mode-line-process
-                face mode-line-process-face)
-   (global-mode-string global-mode-string)
-   "    "
    ))
 ;; Helper function
 (defun shorten-directory (dir max-length)
@@ -313,31 +311,31 @@
 (set-face-attribute 'mode-line-read-only-face nil
     :inherit 'mode-line-face
     :foreground "#4271ae"
-    :height 60
+    :height 80
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-modified-face nil
     :inherit 'mode-line-face
     :foreground "#c82829"
-    :height 60
+    :height 80
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-folder-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00"
-    :height 75)
+    :height 80)
 (set-face-attribute 'mode-line-filename-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00"
     :weight 'bold)
 (set-face-attribute 'mode-line-position-face nil
     :inherit 'mode-line-face
-    :height 60)
+    :height 90)
 (set-face-attribute 'mode-line-mode-face nil
     :inherit 'mode-line-face
     :foreground "white")
 (set-face-attribute 'mode-line-minor-mode-face nil
     :inherit 'mode-line-mode-face
     :foreground "grey80"
-    :height 60)
+    :height 80)
 (set-face-attribute 'mode-line-process-face nil
     :inherit 'mode-line-face
     :foreground "SkyBlue1")
@@ -468,8 +466,14 @@
 ;;;  global modes
 ;;; ==============
 
+;;; C/C++
+(cmake-ide-setup)
 (with-eval-after-load 'cc-mode
   (define-key c-mode-map (kbd "C-c C-c") 'compile))
+
+(with-eval-after-load 'gdb
+  (setq gdb-many-windows t)
+  (setq gdb-show-main t))
 
 ;;; Python
 (with-eval-after-load 'python-mode
@@ -697,10 +701,11 @@
 (add-hook 'python-mode-hook 'jedi:setup)
 (with-eval-after-load 'jedi
   (setq jedi:complete-on-dot t))
+(setq company-backends (delete 'company-semantic company-backends))
 (add-to-list 'company-backends 'company-jedi)
 (add-to-list 'company-backends 'company-ghc)
 (add-to-list 'company-backends 'company-irony)
-
+(add-to-list 'company-backends 'company-c-headers)
 
 ;;; ========
 ;;;  popwin
@@ -772,6 +777,7 @@
 (global-set-key (kbd "M-,") 'point-undo)
 (global-set-key (kbd "M-.") 'point-redo)
 (global-set-key (kbd "C-c SPC") 'gud-break)
+(global-set-key (kbd "C-c .") 'company-complete)
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "M-h") 'backward-kill-word))
 (custom-set-variables
