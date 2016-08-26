@@ -59,7 +59,7 @@ case "${OSTYPE}" in
         ;;
 esac
 
-export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.rbenv/bin"
+export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.rbenv/bin:/usr/local/texlive/2016/bin"
 export LC_MESSAGES="C"
 export LC_TIME="C"
 
