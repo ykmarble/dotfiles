@@ -156,10 +156,13 @@
 (global-hl-line-mode)
 
 ;;; font setting
+(defvar my-font-height-normal 90) ; buffer
+(defvar my-font-height-small 80)  ; larger text of modeline
+(defvar my-font-height-foot 70)   ; smaller text of modeline
 (defvar my-font-family "Source Han Code JP")
 (set-face-attribute 'default nil
                     :family my-font-family ;;font
-                    :height 105 ) ;;font-size
+                    :height my-font-height-normal ) ;;font-size
 (set-fontset-font
  nil 'japanese-jisx0208
  (font-spec :family my-font-family)) ;; font
@@ -262,47 +265,44 @@
 (make-face 'mode-line-position-face)
 (make-face 'mode-line-mode-face)
 (make-face 'mode-line-minor-mode-face)
-(make-face 'mode-line-process-face)
 (make-face 'mode-line-80col-face)
 (set-face-attribute 'mode-line nil
     :foreground "SkyBlue1" :background "grey10"
     :inverse-video nil
+    :height my-font-height-small
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-inactive nil
     :foreground "SkyBlue1" :background "grey10"
     :inverse-video nil
+    :height my-font-height-small
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-read-only-face nil
     :inherit 'mode-line-face
     :foreground "#4271ae"
-    :height 80
+    :height my-font-height-foot
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-modified-face nil
     :inherit 'mode-line-face
     :foreground "#c82829"
-    :height 80
+    :height my-font-height-foot
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-folder-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00"
-    :height 80)
+    :height my-font-height-foot)
 (set-face-attribute 'mode-line-filename-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00"
     :weight 'bold)
 (set-face-attribute 'mode-line-position-face nil
-    :inherit 'mode-line-face
-    :height 90)
+    :inherit 'mode-line-face)
 (set-face-attribute 'mode-line-mode-face nil
     :inherit 'mode-line-face
     :foreground "white")
 (set-face-attribute 'mode-line-minor-mode-face nil
     :inherit 'mode-line-mode-face
     :foreground "grey80"
-    :height 80)
-(set-face-attribute 'mode-line-process-face nil
-    :inherit 'mode-line-face
-    :foreground "SkyBlue1")
+    :height my-font-height-foot)
 (set-face-attribute 'mode-line-80col-face nil
     :inherit 'mode-line-position-face
     :foreground "black" :background "#eab700")
