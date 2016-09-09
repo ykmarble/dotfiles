@@ -431,6 +431,8 @@
 ;;; ==============
 ;;; C/C++
 (cmake-ide-setup)
+(with-eval-after-load 'company-c-headers
+  (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.8/"))
 (with-eval-after-load 'cc-mode
   (define-key c-mode-map (kbd "C-c C-c") 'compile)
   (define-key c++-mode-map (kbd "C-c C-c") 'compile))
@@ -661,7 +663,8 @@
   (custom-set-variables '(irony-additional-clang-options '("-std=c++11")))
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'irony-eldoc))
-
+(with-eval-after-load 'flycheck
+  (flycheck-irony-setup))
 (add-hook 'python-mode-hook 'jedi:setup)
 (with-eval-after-load 'jedi
   (setq jedi:complete-on-dot t))
