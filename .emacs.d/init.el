@@ -24,7 +24,7 @@
 (require 'package)
 (add-to-list 'package-archives
     '("marmalade" .
-      "http://marmalade-repo.org/packages/"))
+      "https://marmalade-repo.org/packages/"))
 (package-initialize)
 
 ;;; cask
@@ -187,6 +187,10 @@
 
 ;;; helm hilight line
 (custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(cursor ((t (:background "white"))))
  '(helm-selection ((t (:background "SlateBlue3" :distant-foreground "black"))))
  '(helm-selection-line ((t (:background "SlateBlue3" :distant-foreground "black"))))
@@ -397,14 +401,14 @@
   (setq sr-speedbar-right-side nil))
 
 ;;; migemo
-(when (executable-find "cmigemo")
-  (require 'migemo)
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-command "cmigemo")
-  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
-  (setq migemo-coding-system 'utf-8-unix)
-  (load-library "migemo")
-  (migemo-init))
+;;/(when (executable-find "cmigemo")
+;;  (require 'migemo)
+;;  (setq migemo-options '("-q" "--emacs"))
+;;  (setq migemo-command "cmigemo")
+;;  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
+;;  (setq migemo-coding-system 'utf-8-unix)
+;;  (load-library "migemo")
+;;  (migemo-init))
 
 ;;; enable undo tree
 (global-undo-tree-mode t)
@@ -744,3 +748,12 @@
 (global-set-key (kbd "C-c .") 'company-complete)
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "M-h") 'backward-kill-word))
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(irony-additional-clang-options (quote ("-std=c++11")))
+ '(package-selected-packages
+   (quote
+    (clj-mode ipython pyflakes pymacs tbemail zencoding-mode yaml-mode wgrep-ag virtualenv undo-tree twittering-mode tango-2-theme swiper sr-speedbar smooth-scroll smartparens slime slamhound ruby-end ruby-block robe recentf-ext rbenv rainbow-mode rainbow-delimiters quickrun qml-mode python-mode powerline popwin point-undo paredit pallet open-junk-file oauth nyan-mode nose multiple-cursors multi-term matlab-mode markdown-mode+ main-line magit lua-mode jedi irony-eldoc imenus imenu-anywhere iedit idomenu highlight-symbol helm-migemo helm-flycheck helm-c-yasnippet google-translate git-gutter-fringe fuzzy flymake-ruby flymake-python-pyflakes flycheck-irony flycheck-ghcmod expand-region exec-path-from-shell evil-numbers esup ensime emmet-mode elpy direx company-jedi company-irony company-ghc company-c-headers color-theme-solarized color-moccur coffee-mode cmake-mode cmake-ide clojure-snippets clojure-cheatsheet caml auto-compile auctex arduino-mode anzu ag ac-haskell-process ac-cider))))

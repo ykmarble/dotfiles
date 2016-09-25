@@ -118,7 +118,6 @@
 (depends-on "ruby-end")
 (depends-on "s")
 (depends-on "sbt-mode")
-(depends-on "scala-mode2")
 (depends-on "shut-up")
 (depends-on "slamhound")
 (depends-on "slime")
