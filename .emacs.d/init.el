@@ -586,6 +586,12 @@
   (define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
   (define-key emmet-mode-keymap (kbd "C-j") nil))
 
+;;; Verilog
+(with-eval-after-load 'flycheck
+  (setq flycheck-verilog-verilator-executable "verilator_bin"))
+(with-eval-after-load 'verilog-mode
+  (setq verilog-auto-newline nil))
+
 ;;; =============
 ;;;  completions
 ;;; =============
