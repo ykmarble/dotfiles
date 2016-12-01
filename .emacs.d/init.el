@@ -389,6 +389,7 @@
 (when (boundp 'confirm-nonexistent-file-or-buffer)
   (setq confirm-nonexistent-file-or-buffer nil))
 (setq ido-ignore-buffers (append ido-ignore-buffers '("\\`\\*.*\\*")))
+(setq ido-enable-flex-matching t)
 
 ;;; junk file
 (autoload 'open-junk-file "open-junk-file" nil t)
