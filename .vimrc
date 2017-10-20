@@ -1,5 +1,5 @@
 syntax on
-colorscheme peachpuff
+colorscheme jellybeans
 set encoding=utf-8
 set fileencodings=utf-8,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
@@ -31,7 +31,7 @@ set ruler
 set laststatus=2
 nnoremap ; :
 nnoremap : ;
-inoremap <C-A> <Home>
+noremap <C-A> <Home>
 inoremap <C-E> <End>
 inoremap <C-F> <Right>
 inoremap <C-B> <Left>
@@ -62,4 +62,14 @@ nnoremap sv :<C-u>vs<CR>
 nnoremap sq :<C-u>q<CR>
 nnoremap sQ :<C-u>bd<CR>
 imap <c-j> <esc>
-set laststatus=2
+
+if !has('gui_running')
+    augroup mytransp
+        autocmd!
+        autocmd VimEnter,ColorScheme * highlight Normal ctermbg=none
+        autocmd VimEnter,ColorScheme * highlight LineNr ctermbg=none
+        autocmd VimEnter,ColorScheme * highlight SignColumn ctermbg=none
+        autocmd VimEnter,ColorScheme * highlight VertSplit ctermbg=none
+        autocmd VimEnter,ColorScheme * highlight NonText ctermbg=none
+    augroup END
+endif

@@ -211,6 +211,11 @@ which rbenv >/dev/null && eval "$(rbenv init -)"
 # tpm
 [ -e "~/.tmux/plugins/tpm/tpm" ] && ~/.tmux/plugins/tpm/tpm
 
+# zsh highlight
+zsh_highlight_path='/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+[ -e $zsh_hightlight_path ] && source $zsh_highlight_path
+unset zsh_highlight_path
+
 # zaw -- zsh anything.el-like widget
 #source ${HOME}/.zsh.d/zaw/zaw.zsh
 #zstyle ':filter-select' case-insensitive yes # 絞り込みをcase-insensitiveに
