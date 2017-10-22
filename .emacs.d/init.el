@@ -24,7 +24,7 @@
 (require 'package)
 (add-to-list 'package-archives
     '("marmalade" .
-      "http://marmalade-repo.org/packages/"))
+      "https://marmalade-repo.org/packages/"))
 (package-initialize)
 
 ;;; cask
@@ -128,31 +128,6 @@
 (keyboard-translate ?\C-h ?\C-?)
 (global-set-key "\C-h" nil)
 
-;;; move cursor backword when insert pair of parens
-;(defun my-insert-bracket-general (lbrackets rbracket)
-;  (insert rbracket)
-;  (when (memq (char-before (1- (point))) lbrackets)
-;    (backward-char)))
-;(defun my-insert-paren ()
-;  (interactive) (my-insert-bracket-general '(?\() ?\)))
-;(defun my-insert-brace ()
-;  (interactive) (my-insert-bracket-general '(?{) ?}))
-;(defun my-insert-bracket ()
-;  (interactive) (my-insert-bracket-general '(?\[) ?\]))
-;(defun my-insert-angle ()
-;  (interactive) (my-insert-bracket-general '(?<) ?>))
-;(defun my-insert-dquote ()
-;  (interactive) (my-insert-bracket-general '(?\") ?\"))
-;(defun my-insert-squote ()
-;  (interactive) (my-insert-bracket-general '(?' ?`) ?'))
-;(global-set-key "\)" 'my-insert-paren)
-;(global-set-key "}"  'my-insert-brace)
-;(global-set-key "\]" 'my-insert-bracket)
-;(global-set-key ">"  'my-insert-angle)
-;(global-set-key "\"" 'my-insert-dquote)
-;(global-set-key "'"  'my-insert-squote)
-
-
 ;;; ======
 ;;;  face
 ;;; ======
@@ -181,10 +156,13 @@
 (global-hl-line-mode)
 
 ;;; font setting
+(defvar my-font-height-normal 90) ; buffer
+(defvar my-font-height-small 80)  ; larger text of modeline
+(defvar my-font-height-foot 70)   ; smaller text of modeline
 (defvar my-font-family "Source Han Code JP")
 (set-face-attribute 'default nil
                     :family my-font-family ;;font
-                    :height 105 ) ;;font-size
+                    :height my-font-height-normal ) ;;font-size
 (set-fontset-font
  nil 'japanese-jisx0208
  (font-spec :family my-font-family)) ;; font
@@ -192,13 +170,6 @@
 
 ;;; enable full screen mode with startup
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
-
-;;; show line number
-;(add-hook 'find-file-hook (lambda () (linum-mode 1)))
-;(setq linum-format "%4d: ")
-;(setq linum-delay t)
-;(defadvice linum-schedule (around my-linum-schedule () activate)
-;  (run-with-idle-timer 0.2 nil #'linum-update-current))
 
 ;;; set color theme
 (load-theme 'tsdh-dark t)
@@ -298,47 +269,44 @@
 (make-face 'mode-line-position-face)
 (make-face 'mode-line-mode-face)
 (make-face 'mode-line-minor-mode-face)
-(make-face 'mode-line-process-face)
 (make-face 'mode-line-80col-face)
 (set-face-attribute 'mode-line nil
     :foreground "SkyBlue1" :background "grey10"
     :inverse-video nil
+    :height my-font-height-small
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-inactive nil
     :foreground "SkyBlue1" :background "grey10"
     :inverse-video nil
+    :height my-font-height-small
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-read-only-face nil
     :inherit 'mode-line-face
     :foreground "#4271ae"
-    :height 80
+    :height my-font-height-foot
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-modified-face nil
     :inherit 'mode-line-face
     :foreground "#c82829"
-    :height 80
+    :height my-font-height-foot
     :box '(:line-width 2 :color "grey10" :style nil))
 (set-face-attribute 'mode-line-folder-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00"
-    :height 80)
+    :height my-font-height-foot)
 (set-face-attribute 'mode-line-filename-face nil
     :inherit 'mode-line-face
     :foreground "#7fff00"
     :weight 'bold)
 (set-face-attribute 'mode-line-position-face nil
-    :inherit 'mode-line-face
-    :height 90)
+    :inherit 'mode-line-face)
 (set-face-attribute 'mode-line-mode-face nil
     :inherit 'mode-line-face
     :foreground "white")
 (set-face-attribute 'mode-line-minor-mode-face nil
     :inherit 'mode-line-mode-face
     :foreground "grey80"
-    :height 80)
-(set-face-attribute 'mode-line-process-face nil
-    :inherit 'mode-line-face
-    :foreground "SkyBlue1")
+    :height my-font-height-foot)
 (set-face-attribute 'mode-line-80col-face nil
     :inherit 'mode-line-position-face
     :foreground "black" :background "#eab700")
@@ -421,6 +389,7 @@
 (when (boundp 'confirm-nonexistent-file-or-buffer)
   (setq confirm-nonexistent-file-or-buffer nil))
 (setq ido-ignore-buffers (append ido-ignore-buffers '("\\`\\*.*\\*")))
+(setq ido-enable-flex-matching t)
 
 ;;; junk file
 (autoload 'open-junk-file "open-junk-file" nil t)
@@ -433,14 +402,14 @@
   (setq sr-speedbar-right-side nil))
 
 ;;; migemo
-(when (executable-find "cmigemo")
-  (require 'migemo)
-  (setq migemo-options '("-q" "--emacs"))
-  (setq migemo-command "cmigemo")
-  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
-  (setq migemo-coding-system 'utf-8-unix)
-  (load-library "migemo")
-  (migemo-init))
+;;/(when (executable-find "cmigemo")
+;;  (require 'migemo)
+;;  (setq migemo-options '("-q" "--emacs"))
+;;  (setq migemo-command "cmigemo")
+;;  (setq migemo-dictionary "/usr/share/migemo/utf-8/migemo-dict")
+;;  (setq migemo-coding-system 'utf-8-unix)
+;;  (load-library "migemo")
+;;  (migemo-init))
 
 ;;; enable undo tree
 (global-undo-tree-mode t)
@@ -465,11 +434,13 @@
 ;;; ==============
 ;;;  global modes
 ;;; ==============
-
 ;;; C/C++
 (cmake-ide-setup)
+(with-eval-after-load 'company-c-headers
+  (add-to-list 'company-c-headers-path-system "/usr/include/c++/4.8/"))
 (with-eval-after-load 'cc-mode
-  (define-key c-mode-map (kbd "C-c C-c") 'compile))
+  (define-key c-mode-map (kbd "C-c C-c") 'compile)
+  (define-key c++-mode-map (kbd "C-c C-c") 'compile))
 
 (with-eval-after-load 'gdb
   (setq gdb-many-windows t)
@@ -616,6 +587,12 @@
   (define-key emmet-mode-keymap (kbd "M-j") 'emmet-expand-line)
   (define-key emmet-mode-keymap (kbd "C-j") nil))
 
+;;; Verilog
+(with-eval-after-load 'flycheck
+  (setq flycheck-verilog-verilator-executable "verilator_bin"))
+(with-eval-after-load 'verilog-mode
+  (setq verilog-auto-newline nil))
+
 ;;; =============
 ;;;  completions
 ;;; =============
@@ -697,7 +674,8 @@
   (custom-set-variables '(irony-additional-clang-options '("-std=c++11")))
   (add-hook 'irony-mode-hook 'irony-cdb-autosetup-compile-options)
   (add-hook 'irony-mode-hook 'irony-eldoc))
-
+(with-eval-after-load 'flycheck
+  (flycheck-irony-setup))
 (add-hook 'python-mode-hook 'jedi:setup)
 (with-eval-after-load 'jedi
   (setq jedi:complete-on-dot t))
@@ -756,9 +734,6 @@
 (global-set-key (kbd "M-q") 'anzu-query-replace-regexp)
 (global-set-key (kbd "C-c d") 'my/insert-current-time)
 (global-set-key (kbd "C-c j") 'open-junk-file)
-(global-set-key (kbd "C-c c") 'org-capture)
-(global-set-key (kbd "C-c a") 'org-agenda)
-(global-set-key (kbd "C-c h") 'howm-menu)
 (global-set-key (kbd "C-o") 'ag)
 (global-set-key (kbd "M-g") 'goto-line)
 (global-set-key (kbd "C-t") 'helm-etags-select)
@@ -785,4 +760,7 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(irony-additional-clang-options (quote ("-std=c++11"))))
+ '(irony-additional-clang-options (quote ("-std=c++11")))
+ '(package-selected-packages
+   (quote
+    (clj-mode ipython pyflakes pymacs tbemail zencoding-mode yaml-mode wgrep-ag virtualenv undo-tree twittering-mode tango-2-theme swiper sr-speedbar smooth-scroll smartparens slime slamhound ruby-end ruby-block robe recentf-ext rbenv rainbow-mode rainbow-delimiters quickrun qml-mode python-mode powerline popwin point-undo paredit pallet open-junk-file oauth nyan-mode nose multiple-cursors multi-term matlab-mode markdown-mode+ main-line magit lua-mode jedi irony-eldoc imenus imenu-anywhere iedit idomenu highlight-symbol helm-migemo helm-flycheck helm-c-yasnippet google-translate git-gutter-fringe fuzzy flymake-ruby flymake-python-pyflakes flycheck-irony flycheck-ghcmod expand-region exec-path-from-shell evil-numbers esup ensime emmet-mode elpy direx company-jedi company-irony company-ghc company-c-headers color-theme-solarized color-moccur coffee-mode cmake-mode cmake-ide clojure-snippets clojure-cheatsheet caml auto-compile auctex arduino-mode anzu ag ac-haskell-process ac-cider))))
