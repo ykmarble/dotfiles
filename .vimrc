@@ -1,5 +1,6 @@
-syntax on
-colorscheme jellybeans
+syntax enable
+set background=dark
+colorscheme peachpuff
 set encoding=utf-8
 set fileencodings=utf-8,iso-2022-jp,euc-jp,sjis
 set fileformats=unix,dos,mac
@@ -29,15 +30,13 @@ set showmatch
 set number
 set ruler
 set laststatus=2
-nnoremap ; :
-nnoremap : ;
-noremap <C-A> <Home>
-inoremap <C-E> <End>
-inoremap <C-F> <Right>
-inoremap <C-B> <Left>
-inoremap <C-D> <Del>
-inoremap <C-N> <Down>
-inoremap <C-P> <Up>
+inoremap <C-a> <Home>
+inoremap <C-e> <End>
+inoremap <C-f> <Right>
+inoremap <C-b> <Left>
+inoremap <C-d> <Del>
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
 nnoremap s <Nop>
 nnoremap sj <C-w>j
 nnoremap sk <C-w>k
@@ -61,7 +60,13 @@ nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap sq :<C-u>q<CR>
 nnoremap sQ :<C-u>bd<CR>
-imap <c-j> <esc>
+
+inoremap <C-j> <esc>
+nnoremap <C-j> <esc>
+vnoremap <C-j> <esc>
+inoremap <C-c> <esc>
+nnoremap <C-c> <esc>
+vnoremap <C-c> <esc>
 
 if !has('gui_running')
     augroup mytransp

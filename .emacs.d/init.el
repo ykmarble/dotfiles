@@ -156,9 +156,9 @@
 (global-hl-line-mode)
 
 ;;; font setting
-(defvar my-font-height-normal 90) ; buffer
-(defvar my-font-height-small 80)  ; larger text of modeline
-(defvar my-font-height-foot 70)   ; smaller text of modeline
+(defvar my-font-height-normal 105) ; buffer
+(defvar my-font-height-small 90)  ; larger text of modeline
+(defvar my-font-height-foot 80)   ; smaller text of modeline
 (defvar my-font-family "Source Han Code JP")
 (set-face-attribute 'default nil
                     :family my-font-family ;;font
@@ -753,6 +753,7 @@
 (global-set-key (kbd "M-.") 'point-redo)
 (global-set-key (kbd "C-c SPC") 'gud-break)
 (global-set-key (kbd "C-c .") 'company-complete)
+(global-set-key (kbd "C-c w") 'count-words)
 (with-eval-after-load 'helm
   (define-key helm-map (kbd "M-h") 'backward-kill-word))
 (custom-set-variables
