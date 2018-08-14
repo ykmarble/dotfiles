@@ -11,7 +11,7 @@ alias z='cd'
 alias l='ls'
 alias e='emacs'
 alias o='open'
-alias ls='gls -hF --color=auto'
+alias ls='ls -hF --color=auto'
 alias la='ls -A'
 alias ll='ls -l'
 alias lla='ls -Al'
@@ -116,7 +116,7 @@ bindkey -e
 setopt prompt_subst
 
 # complete immediately
-setopt menucomplete
+#setopt menucomplete
 
 # completetion ignoring suffix
 setopt complete_in_word
@@ -212,15 +212,6 @@ which rbenv >/dev/null && eval "$(rbenv init -)"
 [ -e "~/.tmux/plugins/tpm/tpm" ] && ~/.tmux/plugins/tpm/tpm
 
 # zsh highlight
-zsh_highlight_path='/usr/local/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+zsh_highlight_path='/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
 [ -e $zsh_hightlight_path ] && source $zsh_highlight_path
 unset zsh_highlight_path
-
-# zaw -- zsh anything.el-like widget
-#source ${HOME}/.zsh.d/zaw/zaw.zsh
-#zstyle ':filter-select' case-insensitive yes # 絞り込みをcase-insensitiveに
-#bindkey '^xb' zaw-tmux-window
-#bindkey '^xh' zaw-history
-#bindkey '^x^f' zaw-cdr
-#bindkey '^xr' zaw-ssh-hosts
-#bindkey '^xi' zaw-open-file

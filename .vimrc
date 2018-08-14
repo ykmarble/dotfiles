@@ -18,7 +18,6 @@ set wrapscan
 set wildmenu
 set smartcase
 set ignorecase
-set hlsearch
 set expandtab
 set incsearch
 set showcmd
@@ -60,7 +59,6 @@ nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap sq :<C-u>q<CR>
 nnoremap sQ :<C-u>bd<CR>
-
 inoremap <C-j> <esc>
 nnoremap <C-j> <esc>
 vnoremap <C-j> <esc>
