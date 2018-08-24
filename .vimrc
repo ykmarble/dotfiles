@@ -45,16 +45,9 @@ nnoremap sJ <C-w>J
 nnoremap sK <C-w>K
 nnoremap sL <C-w>L
 nnoremap sH <C-w>H
-nnoremap sn gt
-nnoremap sp gT
-nnoremap sr <C-w>r
-nnoremap s= <C-w>=
-nnoremap sw <C-w>w
-nnoremap so <C-w>_<C-w>|
-nnoremap sO <C-w>=
-nnoremap sN :<C-u>bn<CR>
-nnoremap sP :<C-u>bp<CR>
-nnoremap st :<C-u>tabnew<CR>
+nnoremap tt :<C-u>tabnew<CR>
+nnoremap tn gt
+nnoremap tp gT
 nnoremap ss :<C-u>sp<CR>
 nnoremap sv :<C-u>vs<CR>
 nnoremap sq :<C-u>q<CR>
@@ -76,3 +69,11 @@ if !has('gui_running')
         autocmd VimEnter,ColorScheme * highlight NonText ctermbg=none
     augroup END
 endif
+
+function! Fcitx2en()
+    let s:input_status = system("fcitx-remote")
+    if s:input_status == 2
+        call system("fcitx-remote -c")
+    endif
+endfunction
+autocmd InsertLeave * call Fcitx2en()
