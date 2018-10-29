@@ -29,6 +29,8 @@ set showmatch
 set number
 set ruler
 set laststatus=2
+set clipboard&
+set clipboard^=unnamedplus
 inoremap <C-a> <Home>
 inoremap <C-e> <End>
 inoremap <C-f> <Right>
@@ -70,10 +72,9 @@ if !has('gui_running')
     augroup END
 endif
 
-function! Fcitx2en()
-    let s:input_status = system("fcitx-remote")
-    if s:input_status == 2
+function! DisableIME()
+    if executable("fcitx-remote")
         call system("fcitx-remote -c")
     endif
 endfunction
-autocmd InsertLeave * call Fcitx2en()
+autocmd InsertLeave * call DisableIME()
