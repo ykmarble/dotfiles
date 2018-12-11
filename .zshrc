@@ -17,7 +17,6 @@ alias ll='ls -l'
 alias lla='ls -Al'
 alias sshe='cocot -t UTF-8 -p EUC-JP -- ssh'
 alias lv='lv -Ou8'
-alias python='python2'
 alias uplatex='uplatex -interaction nonstopmode -halt-on-error -file-line-error'
 alias scala='scala -Xlint'
 alias -g G='|grep --color=auto'
@@ -32,22 +31,7 @@ function doclass() {
     java $(basename $1 .class);
 }
 alias -s class=doclass
-function extract() {
-  case $1 in
-    *.tar.gz|*.tgz) tar xzvf $1;;
-    *.tar.xz) tar Jxvf $1;;
-    *.zip) unzip $1;;
-    *.lzh) lha e $1;;
-    *.tar.bz2|*.tbz) tar xjvf $1;;
-    *.tar.Z) tar zxvf $1;;
-    *.gz) gzip -dc $1;;
-    *.bz2) bzip2 -dc $1;;
-    *.Z) uncompress $1;;
-    *.tar) tar xvf $1;;
-    *.arj) unarj $1;;
-  esac
-}
-alias -s {gz,tgz,zip,lzh,bz2,tbz,Z,tar,arj,xz}=extract
+alias -s {gz,tgz,bz,tbz,bz2,tbz2,Z,tZ,lzo,tzo,lz,tlz,xz,txz,7z,t7z,tar,zip,rar,lha,lzh}=aunpack
 
 case "${OSTYPE}" in
     darwin*)
@@ -242,3 +226,9 @@ which rbenv >/dev/null && eval "$(rbenv init -)"
 zsh_highlight_path='/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
 [ -e $zsh_hightlight_path ] && source $zsh_highlight_path
 unset zsh_highlight_path
+
+
+# ROS
+ros_setup_path='/opt/ros/melodic/setup.zsh'
+[ -e "${ros_setup_path}" ] && source "${ros_setup_path}" 
+unset ros_setup_path
