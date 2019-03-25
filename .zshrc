@@ -1,7 +1,5 @@
 # alias
-alias あのあの='ping -c 3 www.google.co.jp'
 alias wtr='curl wttr.in/Tsukuba'
-alias ping='ping -c 3'
 alias percol='percol --match-method migemo'
 alias a='cd ..'
 alias g='cd $(ls -A | peco)'
@@ -46,6 +44,7 @@ esac
 export PATH="$PATH:$HOME/bin:$HOME/.cabal/bin:$HOME/.local/bin:$HOME/.rbenv/bin:/usr/local/texlive/2016/bin"
 export LC_MESSAGES="C"
 export LC_TIME="C"
+export LESS="-R"
 
 #histry settings
 HISTFILE=~/.histfile
@@ -116,7 +115,7 @@ zstyle ':completion:*:default' menu select=2
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 
 #ignore char difference which is lowercase or uppercase
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
+zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 
 #allow completion to use cache
 zstyle ':completion:*' use-cache yes
@@ -128,7 +127,7 @@ zstyle ':completion:*:manuals' separate-sections true
 #change apperance of completion
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*' verbose yes
-zstyle ':completion:*' completer _expand _complete _match _prefix _list
+zstyle ':completion:*' completer _expand _complete _match _prefix _approximate _list _history
 zstyle ':completion:*:messages' format '%F{yellow}%d%f'$DEFAULT
 zstyle ':completion:*:warnings' format '%F{red}No matches.%f'$DEFAULT
 zstyle ':completion:*:options' description 'yes'
@@ -196,12 +195,20 @@ which rbenv >/dev/null && eval "$(rbenv init -)"
 [ -e "~/.tmux/plugins/tpm/tpm" ] && ~/.tmux/plugins/tpm/tpm
 
 # zsh highlight
-zsh_highlight_path='/usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
+zsh_highlight_path='/usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh'
 [ -e $zsh_hightlight_path ] && source $zsh_highlight_path
 unset zsh_highlight_path
 
 
 # ROS
-ros_setup_path='/opt/ros/melodic/setup.zsh'
+ros_setup_path='/opt/ros/kinetic/setup.zsh'
 [ -e "${ros_setup_path}" ] && source "${ros_setup_path}" 
 unset ros_setup_path
+
+ros_ws_setup_path="$HOME/Projects/Cyberdyne/catkin_ws/devel/setup.zsh"
+[ -e "${ros_ws_setup_path}" ] && source "${ros_ws_setup_path}" 
+unset ros_ws_setup_path
+
+alias rrviz='ROS_MASTER_URI=http://192.168.1.2:11311 rviz'
+alias rrqt_console='ROS_MASTER_URI=http://192.168.1.2:11311 rqt_console'
+
