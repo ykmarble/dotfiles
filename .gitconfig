@@ -10,13 +10,12 @@
     s = status
     st = status
     d = diff
-    df = diff
-    dif = diff
     c = commit
     cm = commit
     ch = checkout
     mg = marge
     br = branch
+    f  = fetch
     graph = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
     gr = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
 [color]
@@ -24,3 +23,7 @@
     diff = true
 [push]
     default = current
+[credential]
+    helper = cache
+[fetch]
+    prune = true
