@@ -1,0 +1,33 @@
+[global_config]
+  borderless = True
+  title_inactive_bg_color = "#505050"
+  title_inactive_fg_color = "#d0d0d0"
+  title_transmit_bg_color = "#151515"
+  title_transmit_fg_color = "#d0d0d0"
+  window_state = maximise
+[keybindings]
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#1a1a10"
+    background_darkness = 0.8
+    background_type = transparent
+    cursor_blink = False
+    cursor_color = "#babdb6"
+    custom_command = tmux attach || tmux new
+    font = Source Han Code JP Medium 10
+    foreground_color = "#d3d7cf"
+    icon_bell = False
+    palette = "#212121:#e74747:#19bf0b:#ffda3a:#5f8cfe:#9464fd:#14e9ce:#eeeeec:#d3d7cf:#ff6e6e:#a2ff8b:#ffe798:#b4b0ff:#d9b3ff:#acfdf2:#f3f3f3"
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_custom_command = True
+    use_system_font = False
