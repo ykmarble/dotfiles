@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
-find $(pwd) -maxdepth 1 -name '.[!.]*' -not -name '.git' -exec ln -isv {} $HOME \;
+find $(dirname $0) -maxdepth 1 -name '.[!.]*' -not -name '.git' -exec ln -isv {} $HOME \;
 echo "finished."
