@@ -5,4 +5,4 @@ cd "$(dirname $0)"
 
 git submodule update --init
 
-find "$(pwd)" -maxdepth 1 -name '.[!.]*' -not -name '.git' -exec ln -isv {} "${HOME}" \;
+find "$(pwd)" -maxdepth 1 -name '.[!.]*' -not -name '.git' -not -name '.gitmodules' -exec ln -isv {} "${HOME}" \;
