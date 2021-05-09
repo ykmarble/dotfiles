@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: InputStream
-# key: InputStream
-# --
-BufferedReader ${1:reader} = new BufferedReader(new InputStreamReader(System.in));

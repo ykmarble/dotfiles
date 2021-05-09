@@ -29,8 +29,7 @@ set showmatch
 set number
 set ruler
 set laststatus=2
-set clipboard&
-set clipboard^=unnamedplus
+set clipboard+=unnamed
 inoremap <C-a> <Home>
 inoremap <C-e> <End>
 inoremap <C-f> <Right>

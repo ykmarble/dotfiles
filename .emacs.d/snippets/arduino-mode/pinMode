@@ -1,5 +1,0 @@
-# -*- mode: snippet -*-
-# name: pinMode()
-# key: pinMode
-# --
-pinMode(${1:pin}, ${2:mode});$0
