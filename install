@@ -4,5 +4,6 @@
 cd "$(dirname $0)"
 
 git submodule update --init
+./.zsh.d/scripts/fzf/install --no-update-rc
 
 find "$(pwd)" -maxdepth 1 -name '.[!.]*' -not -name '.git' -not -name '.gitmodules' -exec ln -isv {} "${HOME}" \;
