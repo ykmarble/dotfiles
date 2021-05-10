@@ -1,5 +1,6 @@
 # alias
 alias a='cd ..'
+alias dc='cd'
 alias l='ls'
 alias ls='ls -hFN --color=auto'
 alias la='ls -A'
