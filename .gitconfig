@@ -7,7 +7,7 @@
     excludesfile = ~/.gitignore
 [alias]
     a = add
-    s = status
+    s = status -s
     st = status
     d = diff
     c = commit

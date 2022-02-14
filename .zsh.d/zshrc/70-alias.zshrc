@@ -1,6 +1,7 @@
 # alias
 alias a='cd ..'
 alias dc='cd'
+alias g='git'
 alias l='ls'
 alias ls='ls -hFN --color=auto'
 alias la='ls -A'

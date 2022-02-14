@@ -11,6 +11,4 @@ zstyle ':completion:*' recent-dirs-insert both
 
 # vcs utils
 autoload -Uz vcs_info
-zstyle ':vcs_info:*' formats ' (%s:%b)'
-zstyle ':vcs_info:*' actionformats ' (%s*%b-%a)'
 

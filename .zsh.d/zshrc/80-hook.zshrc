@@ -1,4 +1,13 @@
 # hooks
+function +vi-git-untracked-hook(){
+    if [[ $(git rev-parse --is-inside-work-tree 2> /dev/null) == 'true' ]] && \
+        git status --porcelain | grep -q '^?? ' 2> /dev/null ; then
+        hook_com[misc]+='?'
+    fi
+}
+
+zstyle ':vcs_info:git+set-message:*' hooks git-untracked-hook
+
 function my_preexec(){
     # update title
     echo -n "\033]2;"
@@ -27,9 +36,7 @@ function my_precmd () {
     fi
     echo -n "\007"
     # vcs
-    psvar=()
     LANG=en_US.UTF-8 vcs_info
-    psvar[1]="$vcs_info_msg_0_"
 }
 
 function my_chpwd(){
