@@ -8,10 +8,10 @@ zstyle ':vcs_info:git:*' unstagedstr "*"
 # prompt
 if [ $SSH_CONNECTION ] || [ -e "/.dockerenv" ];then
 PROMPT='
-%F{magenta}@%F{red}%m%F{white} > %F{green}%d%f ${vcs_info_msg_0_} $([ -n "${VIRTUAL_ENV}" ] && echo -n "%F{blue}(venv:" && echo -n "${VIRTUAL_ENV}" | sed -E "s%/.venv$%%" | sed -E "s%^/.+/%%" | tr -d "\n" && echo -n ")%f")
+%F{magenta}@%F{red}%m%F{white} %F{green}%~%f ${vcs_info_msg_0_} $([ -n "${VIRTUAL_ENV}" ] && echo -n "%F{blue}(venv:" && echo -n "${VIRTUAL_ENV}" | sed -E "s%/.venv$%%" | sed -E "s%^/.+/%%" | tr -d "\n" && echo -n ")%f")
 %# '
 else
 PROMPT='
-%F{magenta}@%m%F{white} > %F{green}%d%f ${vcs_info_msg_0_} $([ -n "${VIRTUAL_ENV}" ] && echo -n "%F{blue}(venv:" && echo -n "${VIRTUAL_ENV}" | sed -E "s%/.venv$%%" | sed -E "s%^/.+/%%" | tr -d "\n" && echo -n ")%f")
+%F{magenta}@%m%F{white} %F{green}%~%f ${vcs_info_msg_0_} $([ -n "${VIRTUAL_ENV}" ] && echo -n "%F{blue}(venv:" && echo -n "${VIRTUAL_ENV}" | sed -E "s%/.venv$%%" | sed -E "s%^/.+/%%" | tr -d "\n" && echo -n ")%f")
 %# '
 fi
