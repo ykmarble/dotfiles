@@ -10,6 +10,9 @@ symbol = " "
 [dart]
 symbol = " "
 
+[directory]
+style = "bold blue"
+
 [docker_context]
 symbol = " "
 
@@ -32,7 +35,7 @@ symbol = " "
 symbol = " "
 
 [hostname]
-ssh_only = false
+format = "[@$hostname]($style) in "
 
 [java]
 symbol = " "
@@ -82,3 +85,6 @@ symbol = " "
 [swift]
 symbol = "ﯣ "
 
+[username]
+format = "[$user]($style)"
+style_user = "bold dimmed green"
