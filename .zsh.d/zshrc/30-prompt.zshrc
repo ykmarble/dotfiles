@@ -1,6 +1,6 @@
 # vcs
 zstyle ':vcs_info:*' formats '%F{blue}%b%f %F{green}%c%f%F{yellow}%u%f%F{yellow}%m%f'
-zstyle ':vcs_info:*' actionformats '%F{blue}%b%f %F%{red}*%a%f'
+zstyle ':vcs_info:*' actionformats '%F{blue}%b%f %F{red}*%a%f'
 zstyle ':vcs_info:git:*' check-for-changes true
 zstyle ':vcs_info:git:*' stagedstr "*"
 zstyle ':vcs_info:git:*' unstagedstr "*"
