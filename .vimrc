@@ -29,7 +29,7 @@ set showmatch
 set number
 set ruler
 set laststatus=2
-set clipboard+=unnamed
+set clipboard=unnamedplus
 inoremap <C-a> <Home>
 inoremap <C-e> <End>
 inoremap <C-f> <Right>
@@ -74,6 +74,12 @@ endif
 function! DisableIME()
     if executable("fcitx-remote")
         call system("fcitx-remote -c")
+    endif
+    if executable("fcitx5-remote")
+        call system("fcitx5-remote -c")
+    endif
+    if executable("ibus")
+        call system("ibus engine xkb:us::eng")
     endif
 endfunction
 autocmd InsertLeave * call DisableIME()
