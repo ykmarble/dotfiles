@@ -15,6 +15,7 @@
     f  = fetch
     graph = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
     gr = log --graph --date=short --decorate=short --pretty=format:'<%Cblue%h> %Cgreen%cd %Creset%s'
+    back = reset 'HEAD^'
 [color]
     ui = true
     diff = true
